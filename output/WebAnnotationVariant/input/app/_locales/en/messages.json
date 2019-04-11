@@ -1,0 +1,86 @@
+{
+  "appName": {
+    "message": "Highlight&Go",
+    "description": "The name of the application"
+  },
+  "appShortName": {
+    "message": "Highlight&Go",
+    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
+  },
+  //
+  "appDescription": {
+    "message": "Mark students' exams through highlights and go!",
+    "description": "The description of the application"
+  },
+  //
+  "browserActionTitle": {
+    "message": "Highlight&Go",
+    "description": "The title of the browser action button"
+  },
+  "HypothesisLoginRequired": {
+    "message": "You are not logged in hypothesis, please login in Hypothes.is or check internet connection.",
+    "description": "Message to show when hypothesis login is required"
+  },
+  "GoogleSheetLoginRequired": {
+    "message": "You need to give permissions to access your Google Spreadsheet.",
+    "description": "Message to show when Google Sheets permission is required"
+  },
+  //
+  "ShareHypothesisGroup": {
+    "message": "Copy and share the group with your students to provide the feedback.",
+    "description": "Message to show when hypothesis group is created"
+  },
+  //
+  "Mode": {
+    "message": "Mode",
+    "description": "Sidebar mode header"
+  },
+  //
+  //
+  //
+  //
+  //
+  "Dimensions": {
+    "message": "Criteria",
+    "description": "Sidebar dimensions header"
+  },
+  //
+  //
+  //
+  //
+  //
+  "ErrorRelatingMoodleAndTool": {
+    "message": "There was a problem while relating the tool with moodle. Please reload the page and try it again."
+  },
+  "ErrorSavingMarksInMoodle": {
+    "message": "Something is something wrong in highlighter configuration that we cannot update moodle. Please reload the page and try it again."
+  },
+  //
+  //
+  //
+  "ContactAdministrator": {
+    "message": "If the error continues, please <a href='https://github.com/haritzmedina/reviewandgo/issues' target='_blank'>contact to Review&Go developers</a>."
+  },
+  "unexpectedError": {
+    "message": "Unexpected error"
+  },
+  "expectedInfoMessageNotFound": {
+    "message": "An information message must go here, but the developer has forgotten to add it..."
+  },
+  "CurrentSelectionEmpty": {
+    "message": "Nothing to highlight, current selection is empty"
+  },
+  "CurrentSelectionNotAnnotable": {
+    "message": "The selected content cannot be highlighted, is not part of the document"
+  },
+  "MoodleWrongAssignmentPage": {
+    "message": "There was a problem when retrieving task information from moodle. Make sure that you are in the main page of the assignment."
+  },
+  "ErrorConfiguringHighlighter": {
+    "message": "There was a problem while creating the hypothes.is group. Please reload the page and try it again."
+  },
+  "errorDeletingHypothesisAnnotation": {
+    "message": "Error deleting hypothesis annotation, please try it again",
+    "description": "Message when fails deleting annotation comment"
+  }
+}

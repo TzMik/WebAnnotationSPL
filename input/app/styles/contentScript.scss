@@ -1,0 +1,28 @@
+@import '../../node_modules/jquery-contextmenu/src/sass/jquery.contextMenu';
+@import '../../node_modules/awesomplete/awesomplete';
+@import './groupSelection';
+@import './tagWrapper';
+@import './sidebar';
+@import './textAnnotator';
+//PVSCL:IFCOND(Marks)
+@import './exam';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(ModeSelector)
+@import './modeManager';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Toolset)
+@import './toolset';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Canvas)
+@import './reviewCanvas';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(NOT(Moodle))
+@import './locationManager';
+@import './slrDataExtraction';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(DefaultCriterias)
+@import './review';
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Citations)
+@import './reviewAssistant';
+//PVSCL:ENDCOND

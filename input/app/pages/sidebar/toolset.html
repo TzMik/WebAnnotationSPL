@@ -1,0 +1,14 @@
+<div id="toolset" class="sidebarContainer" aria-hidden="true">
+  <div id="toolsetHeader" class="containerHeader">
+    Toolset
+  </div>
+  <div id="toolsetBody" class="bodyContainer">
+  </div>
+  <template id="toolsetButtonTemplate">
+    <!--<img type="button" class="toolButton" title="Toolset button" pv:condition="BackLink"/>-->
+    <img id="reviewGeneratorButton" class="toolButton" title="Generate review report" pv:condition="Report"/>
+    <img id="overviewButton" class="toolButton" title="Generate canvas" pv:condition="Canvas"/>
+    <img id="resumeButton" class="toolButton" title="Go to last annotation" pv:condition="Last"/>
+    <img id="deleteAnnotationsButton" class="toolButton" title="Delete all annotations in document" pv:condition="AllDeleter"/>
+  </template>
+</div>
