@@ -5,6 +5,8 @@ const Events = {
   //
   //
   //
+  modeChanged: 'modeChanged',
+  //
   //
   updatedCurrentAnnotations: 'updatedCurrentAnnotations',
   updatedDocumentURL: 'updatedDocumentURL',

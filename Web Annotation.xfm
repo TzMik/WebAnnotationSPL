@@ -241,11 +241,11 @@
         <cm:relation cm:id="i4hYWztBgnP1wzsi_" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="iedVET1blMtta93w-">./iPhDqSDJFSBIopNNY</cm:target>
           <cm:target cm:id="ihB9iKDbIaquc2b9R">./iUz_MdsRybNWOugQv</cm:target>
-          <cm:target cm:id="iETYNWaOqulzm4MU9">./iDVhxCQtWXhwcK9Am</cm:target>
           <cm:target cm:id="i8vwki9dbAXYIgfYw">./iOAX8aDnXAGA6-wzg</cm:target>
         </cm:relation>
         <cm:relation cm:id="iaXlQJeu3Ans31NSb" cm:type="ps:mandatory" cm:range="n">
           <cm:target cm:id="i49B0zVUgzcApLann">./iF23PDAu9HEweS_ZC</cm:target>
+          <cm:target cm:id="iNLsRPrCWUMM6zAAX">./iDVhxCQtWXhwcK9Am</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -259,7 +259,7 @@
           <cm:constant cm:id="ivgZk4BdlEz22dTMe" cm:type="ps:string">Usuario</cm:constant>
         </cm:property>
         <cm:property cm:id="iGiU8BZBEfnZyR0bH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iWbcwMLUfSiIWWeis" cm:type="ps:datetime">2019-04-02T10:18:29.783Z</cm:constant>
+          <cm:constant cm:id="iWbcwMLUfSiIWWeis" cm:type="ps:datetime">2019-04-11T09:34:47.637Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -368,16 +368,16 @@
         <cm:mimedesc cm:id="iye68JBDtRCcDtk09" cm:mimetype="text/plain" cm:encoding="utf-8">UserFilter</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iDVhxCQtWXhwcK9Am" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="iDVhxCQtWXhwcK9Am" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iBnA06JGi4O79pKzA" cm:class="ps:parents">
         <cm:relation cm:id="idX_UY7LEVt5QzVjW" cm:type="ps:parent">
           <cm:target cm:id="iwAI7a5ByU6tfnda-">./ilrPEph01NH81uV0g</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="i9d2nS449hUtZnAdI" cm:class="ps:children">
-        <cm:relation cm:id="iQUIYsxyRjT85S5_D" cm:type="ps:or" cm:range="[1,n]">
-          <cm:target cm:id="i7Zbwj7Sg2v4LECr8">./i4BB-7rLo7GXBQW-i</cm:target>
-          <cm:target cm:id="ixR_oS8cyiGeklwv_">./iM39FeW1T8-3B3RjF</cm:target>
+        <cm:relation cm:id="iO5E8x3jiDtrg-GVa" cm:type="ps:mandatory" cm:range="n">
+          <cm:target cm:id="ixGlAxb5ZlgPqoQKW">./iM39FeW1T8-3B3RjF</cm:target>
+          <cm:target cm:id="iD6tDcGy8nv0vIj3g">./i4BB-7rLo7GXBQW-i</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -391,14 +391,14 @@
           <cm:constant cm:id="iQIm0mQSCIgRKtSOl" cm:type="ps:string">Usuario</cm:constant>
         </cm:property>
         <cm:property cm:id="ixCzOqsy2VoihCbyV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i1Ax47QloXc9Qj7l0" cm:type="ps:datetime">2019-04-02T10:19:04.969Z</cm:constant>
+          <cm:constant cm:id="i1Ax47QloXc9Qj7l0" cm:type="ps:datetime">2019-04-11T09:35:21.207Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iYZTCkg7NlvvP0aDZ" cm:mimetype="text/plain" cm:encoding="utf-8">Selector</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i4BB-7rLo7GXBQW-i" cm:name="ModeSelector" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="i4BB-7rLo7GXBQW-i" cm:name="ModeSelector" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iwpuJKfvv4kzGF_vv" cm:class="ps:parents">
         <cm:relation cm:id="irPGmnQMDqrI7IYid" cm:type="ps:parent">
           <cm:target cm:id="iJ4QfhRF-_TpvYV_k">./iDVhxCQtWXhwcK9Am</cm:target>
@@ -424,14 +424,14 @@
           <cm:constant cm:id="iavWDNw7H7EldIvLE" cm:type="ps:string">Usuario</cm:constant>
         </cm:property>
         <cm:property cm:id="iOJ3LuuwdVQ1Gyfvm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipsuofvypn0CapJUx" cm:type="ps:datetime">2019-04-09T14:08:32.132Z</cm:constant>
+          <cm:constant cm:id="ipsuofvypn0CapJUx" cm:type="ps:datetime">2019-04-11T09:35:21.207Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iD8pQV0Xal81wRrrh" cm:mimetype="text/plain" cm:encoding="utf-8">ModeSelector</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iM39FeW1T8-3B3RjF" cm:name="HypothesisGroupSelector" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="iM39FeW1T8-3B3RjF" cm:name="HypothesisGroupSelector" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i73xl2GyeyqiZYzVL" cm:class="ps:parents">
         <cm:relation cm:id="iN3-xFrDfbUrW-gBZ" cm:type="ps:parent">
           <cm:target cm:id="iszxWXTlMzUbJgVGj">./iDVhxCQtWXhwcK9Am</cm:target>
@@ -441,6 +441,7 @@
         <cm:relation cm:id="iSTAkNEQIsffKILnu" cm:type="ps:alternative" cm:range="1">
           <cm:target cm:id="iGEDSKCq3XnqdgeCm">./i4TSwUTv4DOOjJNwA</cm:target>
           <cm:target cm:id="iw55mNs2wGwmCQl_V">./i7jQciCQZ22twB9ie</cm:target>
+          <cm:target cm:id="iTisAGQylkTPAEBhM">./iz43iCCkyIue4mSH3</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -454,7 +455,7 @@
           <cm:constant cm:id="iHP4LKxU4xCRkf71o" cm:type="ps:string">Usuario</cm:constant>
         </cm:property>
         <cm:property cm:id="iDQF0W_SQcN6WxMPX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0OA5nKiN43pdF8mS" cm:type="ps:datetime">2019-04-02T10:19:16.607Z</cm:constant>
+          <cm:constant cm:id="i0OA5nKiN43pdF8mS" cm:type="ps:datetime">2019-04-11T09:35:09.794Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1509,6 +1510,30 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i8af-sNJDxjEKRMvE" cm:mimetype="text/plain" cm:encoding="utf-8">EvidencingMode</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iz43iCCkyIue4mSH3" cm:name="StaticGroupSelector" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iKVIR8tSYImdBWGtN" cm:class="ps:parents">
+        <cm:relation cm:id="iQfimfHslaJnD47xF" cm:type="ps:parent">
+          <cm:target cm:id="izk4kcfKVdwQy9Jd4">./iM39FeW1T8-3B3RjF</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iudEPxzFbVU7fcmbV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iknqZoN8bYtD_MQY5" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="icDnbc2kMuKDR30_e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i17MLOw0xYOI3Wg-j" cm:type="ps:datetime">2019-04-11T09:31:58.225Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izwVuPvN7WeKmoFd7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="icpQKHOj1hBcegZKv" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4P-g88n6ZUoyXsAa" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iBAyd8S-77NTl5jYu" cm:type="ps:datetime">2019-04-11T09:31:58.225Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ieqipKWbhkxnc6V_c" cm:mimetype="text/plain" cm:encoding="utf-8">StaticGroupSelector</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

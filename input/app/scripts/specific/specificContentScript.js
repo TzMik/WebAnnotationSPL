@@ -37,6 +37,11 @@ class specificContentScript{
       code: Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.subgroup + ':'
     }
   }
+  //PVSCL:ELSEIFCOND(DefaultCriterias)
+  constructor () {
+    this.events = {}
+    this.status = ContentScriptManager.status.notInitialized
+  }
   //PVSCL:ENDCOND
 
   init (callback) {

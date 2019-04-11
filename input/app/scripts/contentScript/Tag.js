@@ -4,7 +4,7 @@ const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
 
 class Tag {
-  constructor (config/*PVSCL:IFCOND(AutomaticSelection)*/, group = null /*PVSCL:ENDCOND*/) {
+  constructor (config/*PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector)*/, group = null /*PVSCL:ENDCOND*/) {
     //PVSCL:IFCOND(AutomaticSelection)
     this.group = group
     //PVSCL:ENDCOND
@@ -75,3 +75,5 @@ Tag.roles = {
     index: 'index'
     //PVSCL:ENDCOND
 }
+
+module.exports = Tag

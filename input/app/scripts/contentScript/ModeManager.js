@@ -2,7 +2,9 @@ const $ = require('jquery')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Events = require('./Events')
+//PVSCL:IFCOND(Student AND Teacher)
 const RolesManager = require('./RolesManager')
+//PVSCL:ENDCOND
 
 class ModeManager {
   constructor (mode) {
@@ -48,7 +50,7 @@ class ModeManager {
     }
     //PVSCL:ENDCOND
   }
-
+  //PVSCL:IFCOND(NOT(ReviewMode))
   loadSidebarToggle (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
     $.get(sidebarURL, (html) => {
@@ -79,7 +81,7 @@ class ModeManager {
     }
     //PVSCL:ENDCOND
   }
-
+  //PVSCL:ENDCOND
   setPanelText () {
     // Mode element
     let modeHeaderLabel = document.querySelector('#modeHeader label')
@@ -146,6 +148,7 @@ class ModeManager {
   }
   //PVSCL:ENDCOND
 
+  //PVSCL:IFCOND(NOT(ReviewMode))
   initEventHandlers (callback) {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     annotatorToggle.addEventListener('click', (event) => {
@@ -168,6 +171,7 @@ class ModeManager {
       callback()
     }
   }
+  //PVSCL:ENDCOND
 }
 
 ModeManager.modes = {

@@ -21,7 +21,7 @@ const Events = require('../contentScript/Events')
 const DefaultCriterias = require('./DefaultCriterias')
 //PVSCL:ENDCOND
 
-let swal = require('sweetalert2')
+//let swal = require('sweetalert2')
 
 class ToolsetBar extends Toolset{
   init() {
@@ -241,7 +241,7 @@ class ToolsetBar extends Toolset{
         if(annotation.highlightText!=null&&annotation.highlightText!='') swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"'+annotation.highlightText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'"</div>'
         if(annotation.comment!=null&&annotation.comment!='') swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">'+annotation.comment.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>'
         if(annotation.suggestedLiterature!=null&&annotation.suggestedLiterature.length>0) swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">'+annotation.suggestedLiterature.map((e) => {return '<li>'+e.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>'}).join('')+'</ul></div>'
-        swal({
+        /*swal({
           html: swalContent,
           confirmButtonText: "View in context"
         }).then((result) => {
@@ -250,7 +250,7 @@ class ToolsetBar extends Toolset{
             window.abwa.contentAnnotator.goToAnnotation(window.abwa.contentAnnotator.allAnnotations.find((e) => {return e.id==annotation.id}))
             document.querySelector("#abwaSidebarButton").style.display = "block"
           }
-        })
+        })*/
       }
 
       let getGroupAnnotationCount = (group) => {
@@ -389,3 +389,5 @@ class ToolsetBar extends Toolset{
     super.hide()
   }
 }
+
+module.exports = ToolsetBar

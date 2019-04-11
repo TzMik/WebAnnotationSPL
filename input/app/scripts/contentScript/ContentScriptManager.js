@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 const ContentTypeManager = require('./ContentTypeManager')
-//PVSCL:IFCOND(ModeSelector)
+//PVSCL:IFCOND(NOT(ReviewMode))
 const ModeManager = require('./ModeManager')
 //PVSCL:ENDCOND
 const Sidebar = require('./Sidebar')
@@ -9,13 +9,8 @@ const TagManager = require('./TagManager')
 //PVSCL:IFCOND(Student AND Teacher)
 const RolesManager = require('./RolesManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(GroupSelector)
 const GroupSelector = require('./GroupSelector')
-//PVSCL:ENDCOND
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//PVSCL:IFCOND(GroupSelector)
-const ConfigDecisionHelper = require('./ConfigDecisionHelper')
-//PVSCL:ENDCOND
 //PVSCL:IFCOND(NOT(Spreadsheet))
 const Config = require('../Config')
 //PVSCL:ENDCOND
@@ -27,9 +22,8 @@ const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
 const RubricManager = require('./RubricManager')
 //PVSCL:ENDCOND
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
-//PVSCL:IFCOND(Toolset)
-const Toolset = require('../specific/ToolsetBar')
-//PVSCL:ENDCOND
+const specificContentScript = require('../specific/specificContentScript')
+const Toolbar = require('../specific/ToolsetBar')
 
 class ContentScriptManager {
   constructor () {
@@ -44,28 +38,24 @@ class ContentScriptManager {
       window.abwa.hypothesisClientManager = new HypothesisClientManager()
       window.abwa.hypothesisClientManager.init((err) => {
         if (err) {
-            //PVSCL:IFCOND(GroupSelector)
             window.abwa.sidebar = new Sidebar()
             window.abwa.sidebar.init(() => {
                 window.abwa.groupSelector = new GroupSelector()
                 window.abwa.groupSelector.init(() => {
                })
             })
-            //PVSCL:ENDCOND
         } else {
           window.abwa.sidebar = new Sidebar()
           window.abwa.sidebar.init(() => {
             window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
             window.abwa.annotationBasedInitializer.init(() => {
-              //PVSCL:IFCOND(GroupSelector)
               window.abwa.groupSelector = new GroupSelector()
               window.abwa.groupSelector.init(() => {
-              //PVSCL:ENDCOND
                 //PVSCL:IFCOND(Student AND Teacher)
                 window.abwa.roleManager = new RolesManager()
                 window.abwa.roleManager.init(() => {
                 //PVSCL:ENDCOND
-                //PVSCL:IFCOND(ModeSelector)
+                //PVSCL:IFCOND(NOT(ReviewMode))
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
                 //PVSCL:ENDCOND
@@ -74,11 +64,9 @@ class ContentScriptManager {
                   window.abwa.tagManager.init(() => {
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
                     window.abwa.contentAnnotator.init(() => {
-                  //PVSCL:ENDCOND
-                      //PVSCL:IFCOND(Toolset)
-                      window.abwa.specificContentManager = new Toolset(Config.review)
+                      window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
-                      //PVSCL:ENDCOND
+                  //PVSCL:ENDCOND
                         //PVSCL:IFCOND(GroupSelector)
                         // Reload for first time the content by group
                         this.reloadContentByGroup()
@@ -87,22 +75,18 @@ class ContentScriptManager {
                         // PVSCL:ENDCOND
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
-                      //PVSCL:IFCOND(Toolset)
-                      })
-                      //PVSCL:ENDCOND
                   //PVSCL:IFCOND(DefaultCriterias)
+                      })
                     })
                   })
                   //PVSCL:ENDCOND
-                //PVSCL:IFCOND(ModeSelector)
+                //PVSCL:IFCOND(NOT(ReviewMode))
                 })
                 //PVSCL:ENDCOND
                 //PVSCL:IFCOND(Student AND Teacher)
                 })
                 //PVSCL:ENDCOND
-              //PVSCL:IFCOND(GroupSelector)
               })
-              //PVSCL:ENDCOND
             })
           })
         }
@@ -125,7 +109,6 @@ class ContentScriptManager {
 
   reloadContentByGroup (callback) {
     //PVSCL:IFCOND(GroupSelector)
-    ConfigDecisionHelper.decideWhichConfigApplyToTheGroup(window.abwa.groupSelector.currentGroup, (config) => {
       // If not configuration is found
       if (_.isEmpty(config)) {
           // TODO Inform user no defined configuration found
@@ -151,7 +134,6 @@ class ContentScriptManager {
             this.initToolset()
             //PVSCL:ENDCOND
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
-            //PVSCL:IFCOND(NOT(DefaultCriterias))
             this.reloadTagsManager(config, () => {
               this.reloadContentAnnotator(config, () => {
                 if (config.userFilter) {
@@ -163,7 +145,6 @@ class ContentScriptManager {
                 }
               })
             })
-            //PVSCL:ENDCOND
           //PVSCL:IFCOND(Moodle)
           })
           //PVSCL:ENDCOND
@@ -172,7 +153,6 @@ class ContentScriptManager {
         //PVSCL:ENDCOND
     //PVSCL:IFCOND(GroupSelector)
       }
-    })
     //PVSCL:ENDCOND
   }
 

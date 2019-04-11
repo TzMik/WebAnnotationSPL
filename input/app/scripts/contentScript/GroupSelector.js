@@ -11,9 +11,11 @@ const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(Student)
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(DefaultCriterias)
 const Config = require('../Config')
-const DefaultHighlighterGenerator = require('../specific/review/DefaultHighlighterGenerator')
+//PVSCL:IFCOND(DefaultCriterias)
+const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(StaticGroupSelector)
 const GroupName = Config.review.groupName
 //PVSCL:ENDCOND
 
@@ -27,7 +29,7 @@ class GroupSelector {
   }
 
   init (callback) {
-    //PVSCL:IFCOND(AutomaticSelection)
+    //PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector)
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {

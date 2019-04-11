@@ -5,9 +5,8 @@ const ContentTypeManager = require('./ContentTypeManager')
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
 //
-//
+const GroupSelector = require('./GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//
 //
 const Config = require('../Config')
 //
@@ -15,9 +14,8 @@ const Config = require('../Config')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
 //
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
-//
-const Toolset = require('../specific/ToolsetBar')
-//
+const specificContentScript = require('../specific/specificContentScript')
+const Toolbar = require('../specific/ToolsetBar')
 
 class ContentScriptManager {
   constructor () {
@@ -32,13 +30,19 @@ class ContentScriptManager {
       window.abwa.hypothesisClientManager = new HypothesisClientManager()
       window.abwa.hypothesisClientManager.init((err) => {
         if (err) {
-            //
+            window.abwa.sidebar = new Sidebar()
+            window.abwa.sidebar.init(() => {
+                window.abwa.groupSelector = new GroupSelector()
+                window.abwa.groupSelector.init(() => {
+               })
+            })
         } else {
           window.abwa.sidebar = new Sidebar()
           window.abwa.sidebar.init(() => {
             window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
             window.abwa.annotationBasedInitializer.init(() => {
-              //
+              window.abwa.groupSelector = new GroupSelector()
+              window.abwa.groupSelector.init(() => {
                 //
                 //
                   //
@@ -46,24 +50,20 @@ class ContentScriptManager {
                   window.abwa.tagManager.init(() => {
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
                     window.abwa.contentAnnotator.init(() => {
-                  //
-                      //
-                      window.abwa.specificContentManager = new Toolset(Config.review)
+                      window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
-                      //
+                  //
                         //
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
-                      //
-                      })
-                      //
                   //
+                      })
                     })
                   })
                   //
                 //
                 //
-              //
+              })
             })
           })
         }
@@ -83,7 +83,17 @@ class ContentScriptManager {
             this.initToolset()
             //
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
-            //
+            this.reloadTagsManager(config, () => {
+              this.reloadContentAnnotator(config, () => {
+                if (config.userFilter) {
+                  this.reloadUserFilter(config, () => {
+                    this.reloadSpecificContentManager(config)
+                  })
+                } else {
+                  this.reloadSpecificContentManager(config)
+                }
+              })
+            })
           //
         //
     //

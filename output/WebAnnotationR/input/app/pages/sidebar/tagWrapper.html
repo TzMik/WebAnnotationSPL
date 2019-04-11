@@ -27,5 +27,7 @@
   <div pv:condition="NOT(Validations)" id="tagHeader" class="containerHeader">
     Criteria
   </div>
-  <div id="tags" class="bodyContainer" />
+  <div id="tags" class="bodyContainer">
+    <div pv:condition="EvidencingMode OR ReviewMode" id="tagsEvidencing" class="tagContainer" />
+  </div>
 </div>

@@ -8,8 +8,15 @@ const _ = require('lodash')
 const ReviewGenerator = require('./ToolsetBar')
 //
 //
+const CustomCriteriasManager = require('./CustomCriteriasManager')
+//
 
 class specificContentScript{
+  //
+  constructor () {
+    this.events = {}
+    this.status = ContentScriptManager.status.notInitialized
+  }
   //
 
   init (callback) {
@@ -20,6 +27,11 @@ class specificContentScript{
 
     })
     //
+    //
+    window.abwa.specific.customCriteriasManager = new CustomCriteriasManager()
+    window.abwa.specific.customCriteriasManager.init(() => {
+
+    })
     //
     //
   }

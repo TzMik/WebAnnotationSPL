@@ -10,7 +10,7 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
-const Alerts = require('../../utils/Alerts')
+//const Alerts = require('../../utils/Alerts')
 //
 //
 
@@ -57,7 +57,41 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
+  redrawAnnotations () {
+	    // Unhighlight all annotations
+	    this.unHighlightAllAnnotations()
+	    // Highlight all annotations
+	    this.highlightAnnotations(this.allAnnotations)
+	  }
   initEvents (callback) {
+    this.initSelectionEvents(() => {
+      this.initAnnotateEvent(() => {
+    	  //
+    		  //
+    			  this.initReloadAnnotationsEvent(() => {
+    				  //
+    				  this.initDeleteAllAnnotationsEvent(() => {
+    				  //
+    					  this.initDocumentURLChangeEvent(() => {
+    						  //
+    						  this.initTagsUpdatedEvent(() => {
+    						  //
+    							// Reload annotations periodically
+    				                if (_.isFunction(callback)) {
+    				                  callback()
+    				                }
+    						  //
+    						  })
+    						  //
+    					  })
+    				  //
+    				  })
+    				  //
+    			  })    		  
+    		  //
+    	  //
+      })
+    })
   }
 
   initDocumentURLChangeEvent (callback) {
@@ -87,6 +121,22 @@ class TextAnnotator extends ContentAnnotator {
   //
 
   //
+  initTagsUpdatedEvent (callback) {
+    this.events.tagsUpdated = {element: document, event: Events.tagsUpdated, handler: this.createtagsUpdatedEventHandler()}
+    this.events.tagsUpdated.element.addEventListener(this.events.tagsUpdated.event, this.events.tagsUpdated.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+    
+  createtagsUpdatedEventHandler (callback) {
+    return () => {
+      this.updateAllAnnotations(() => {
+        console.debug('Updated all the annotations after Tags Updated event')
+      })
+    }
+  }
+  //
 
   createDocumentURLChangeEventHandler (callback) {
     return () => {
@@ -110,6 +160,21 @@ class TextAnnotator extends ContentAnnotator {
   //
 
   //
+  initModeChangeEvent (callback) {
+    this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
+    this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createInitModeChangeEventHandler () {
+    return () => {
+      //
+      //
+    }
+  }
+  //
 
   initAnnotateEvent (callback) {
     this.events.annotateEvent = {element: document, event: Events.annotate, handler: this.createAnnotationEventHandler()}
@@ -130,14 +195,14 @@ class TextAnnotator extends ContentAnnotator {
           // Navigate to the first annotation for this tag
           this.goToFirstAnnotationOfTag(event.detail.tags[0])
         } else {
-          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         //
         return
       }
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
         return
       }
       let range = document.getSelection().getRangeAt(0)
@@ -179,12 +244,11 @@ class TextAnnotator extends ContentAnnotator {
       let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+          //Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
           //
-          this.currentAnnotations.push(annotation)
-          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+          this.allAnnotations.push(annotation)
           //
           LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
           // Send event annotation is created
@@ -278,14 +342,17 @@ class TextAnnotator extends ContentAnnotator {
       console.debug('Observer interval')
       // CreateAnnotationEventHandler funtzioko baldintza berdina
       //
-      if (this.currentAnnotations) {
-        for (let i = 0; i < this.currentAnnotations.length; i++) {
-          let annotation = this.currentAnnotations[i]
-          // Search if annotation exist
-          let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
-          // If annotation doesn't exist, try to find it
-          if (!_.isElement(element)) {
-            Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
+      // If a swal is displayed, do not execute highlighting observer
+      if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        if (this.allAnnotations) {
+          for (let i = 0; i < this.allAnnotations.length; i++) {
+            let annotation = this.allAnnotations[i]
+            // Search if annotation exist
+            let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+            // If annotation doesn't exist, try to find it
+            if (!_.isElement(element)) {
+              Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
+            }
           }
         }
       }
@@ -316,8 +383,8 @@ class TextAnnotator extends ContentAnnotator {
         // Current annotations will be
         // CreateAnnotationEventHandler funtzioko baldintza berdina
         //
-        this.currentAnnotations = this.retrieveCurrentAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+        this.allAnnotations = this.retrieveCurrentAnnotations()
+        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         //
         // Highlight annotations in the DOM
         //
@@ -363,6 +430,36 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
+  //
+  getAllAnnotations (callback) {
+    // Retrieve annotations for current url and group
+    window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
+      url: window.abwa.contentTypeManager.getDocumentURIToSearchInHypothesis(),
+      uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis(),
+      group: window.abwa.groupSelector.currentGroup.id,
+      order: 'asc'
+    }, (err, annotations) => {
+      if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
+      } else {
+        // Search tagged annotations
+        let tagList = window.abwa.tagManager.getTagsList()
+        let taggedAnnotations = []
+        for (let i = 0; i < annotations.length; i++) {
+          // Check if annotation contains a tag of current group
+          let tag = TagManager.retrieveTagForAnnotation(annotations[i], tagList)
+          if (tag) {
+            taggedAnnotations.push(annotations[i])
+          }
+        }
+        if (_.isFunction(callback)) {
+          callback(null, taggedAnnotations)
+        }
+      }
+    })
+  }
   //
 
   retrieveCurrentAnnotations () {
@@ -411,10 +508,10 @@ class TextAnnotator extends ContentAnnotator {
         let items = {}
         // If current user is the same as author, allow to remove annotation
         //
-        if (this.currentUserProfile.userid === annotation.user) {
-          items['delete'] = {name: 'Delete annotation'}
-        }
-        //
+        if (window.abwa.rolesManager.role === RolesManager.roles.reviewer) {
+          items['comment'] = {name: 'Comment'}
+          items['delete'] = {name: 'Delete'}
+        } 
         //
         return {
           callback: (key) => {
@@ -441,7 +538,7 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         if (!result.deleted) {
           // Alert user error happened
-          Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+          //Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
           //
           _.remove(this.allAnnotations, (currentAnnotation) => {
@@ -493,6 +590,22 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
+  //
+  goToAnnotationOfTag (tag) {
+    let annotations = _.filter(this.currentAnnotations, (annotation) => {
+      return annotation.tags.includes(tag)
+    })
+    if (annotations.length > 0) {
+      let index = _.indexOf(annotations, this.lastAnnotation)
+      if (index === -1 || index === annotations.length - 1) {
+        this.goToAnnotation(annotations[0])
+        this.lastAnnotation = annotations[0]
+      } else {
+        this.goToAnnotation(annotations[index + 1])
+        this.lastAnnotation = annotations[index + 1]
+      }
+    }
+  }
   //
 
   goToAnnotation (annotation) {
@@ -695,7 +808,7 @@ class TextAnnotator extends ContentAnnotator {
     }
     // When all the annotations are deleted
     Promise.all(promises).catch(() => {
-      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
+      //Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
       // Update annotation variables
       this.allAnnotations = []

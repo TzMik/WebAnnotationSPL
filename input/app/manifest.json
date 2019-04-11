@@ -11,14 +11,14 @@
         ]
     },
     "content_scripts": [
-        // PVSCL:IFCOND('Spreadsheet')
+        PVSCL:IFCOND('Spreadsheet')
         {
             "matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"],
             "js": ["scripts/googleSheetsContentScript.js"],
             "run_at": "document_end"
         },
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND('Moodle')
+        PVSCL:ENDCOND
+        PVSCL:IFCOND('Moodle')
         {
             "matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*"],
             "js": ["scripts/moodleContentScript.js"],
@@ -28,15 +28,15 @@
             "js": ["scripts/moodleAssignmentAddContentScript.js"],
             "run_at": "document_end"
         }
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND('ACM')
+        PVSCL:ENDCOND
+        PVSCL:IFCOND('ACM')
         {
             "matches": ["*://dl.acm.org/citation.cfm?*"],
             "js": ["scripts/acmContentScript.js"],
             "run_at": "document_end"
         },
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND('GroupSelector')
+        PVSCL:ENDCOND
+        PVSCL:IFCOND('GroupSelector')
         {
             "matches": [
               "https://hypothes.is/groups/*/*"
@@ -46,14 +46,14 @@
             ],
             "run_at": "document_end"
         },
-        // PVSCL:ENDCOND
+        PVSCL:ENDCOND
         {
             "matches": ["*://*/*", "file:///*/*"],
-            // PVSCL:IFCOND('Spreadsheet')
+            PVSCL:IFCOND('Spreadsheet')
             "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*", "https://hypothes.is/login"],
-            // PVSCL:ELSEIFCOND('Moodle')
+            PVSCL:ELSEIFCOND('Moodle')
             "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"],
-            // PVSCL:ENDCOND
+            PVSCL:ENDCOND
             "js": ["scripts/contentScript.js"],
             "css": ["styles/contentScript.css"],
             "run_at": "document_start",
@@ -80,14 +80,14 @@
         "identity",
         "contextMenus",
         "downloads",        
-        // PVSCL:IFCOND('DOI')
+        PVSCL:IFCOND('DOI')
         "*://doi.org/*",
         "*://dx.doi.org/*",
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND('Dropbox')
+        PVSCL:ENDCOND
+        PVSCL:IFCOND('Dropbox')
         "*://www.dropbox.com/s/",
         "*://*.dropboxusercontent.com/*",
-        // PVSCL:ENDCOND
+        PVSCL:ENDCOND
         "file://*/*"
     ],
     "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]

@@ -11,7 +11,7 @@ const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const Alerts = require('../../utils/Alerts')
-//PVSCL:IFCOND(ModeSelector)
+//PVSCL:IFCOND(NOT(ReviewMode))
 const ModeManager = require('../ModeManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Student OR Teacher)
@@ -62,6 +62,42 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   initEvents (callback) {
+    this.initSelectionEvents(() => {
+      this.initAnnotateEvent(() => {
+    	  //PVSCL:IFCOND(NOT(ReviewMode))
+    	  this.initModeChangeEvent(() => {
+    	  //PVSCL:ENDCOND
+    		  //PVSCL:IFCOND(UserFilter)
+    		  this.initUserFilterChangeEvent(() => {
+    		  //PVSCL:ENDCOND
+    			  this.initReloadAnnotationsEvent(() => {
+    				  //PVSCL:IFCOND(AllDeleter)
+    				  this.initDeleteAllAnnotationsEvent(() => {
+    				  //PVSCL:ENDCOND
+    					  this.initDocumentURLChangeEvent(() => {
+    						  //PVSCL:IFCOND(New)
+    						  this.initTagsUpdatedEvent(() => {
+    						  //PVSCL:ENDCOND
+    							// Reload annotations periodically
+    				                if (_.isFunction(callback)) {
+    				                  callback()
+    				                }
+    						  //PVSCL:IFCOND(New)
+    						  })
+    						  //PVSCL:ENDCOND
+    					  })
+    				  //PVSCL:IFCOND(AllDeleter)
+    				  })
+    				  //PVSCL:ENDCOND
+    			  })    		  
+    		  //PVSCL:IFCOND(UserFilter)
+    		  })
+    		  //PVSCL:ENDCOND
+    	  //PVSCL:IFCOND(NOT(ReviewMode))
+    	  })
+    	  //PVSCL:ENDCOND
+      })
+    })
   }
 
   initDocumentURLChangeEvent (callback) {
@@ -160,7 +196,7 @@ class TextAnnotator extends ContentAnnotator {
 
   createInitModeChangeEventHandler () {
     return () => {
-      //PVSCL:IFCOND(ModeSelector)
+      //PVSCL:IFCOND(HighlightMode AND IndexMode)
       if (window.abwa.modeManager.mode === ModeManager.modes.index) {
         // Highlight all annotations
         this.currentAnnotations = this.allAnnotations
@@ -176,7 +212,7 @@ class TextAnnotator extends ContentAnnotator {
         this.activateSelectionEvent()
       }
       //PVSCL:ENDCOND
-      //PVSCL:IFCOND(ModeSelector)
+      //PVSCL:IFCOND(MarkingMode AND EvidencingMode)
       // If is mark or view disable the sidebar closing
       if (window.abwa.modeManager.mode === ModeManager.modes.mark || window.abwa.modeManager.mode === ModeManager.modes.view) {
         this.disableSelectionEvent()
@@ -261,7 +297,7 @@ class TextAnnotator extends ContentAnnotator {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
-          //PVSCL:IFCOND('')
+          //PVSCL:IFCOND(DefaultCriterias)
           this.allAnnotations.push(annotation)
           //PVSCL:ELSECOND
           this.currentAnnotations.push(annotation)
@@ -368,7 +404,7 @@ class TextAnnotator extends ContentAnnotator {
     this.observerInterval = setInterval(() => {
       console.debug('Observer interval')
       // CreateAnnotationEventHandler funtzioko baldintza berdina
-      //PVSCL:IFCOND('')
+      //PVSCL:IFCOND(DefaultCriterias)
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
         if (this.allAnnotations) {
@@ -421,7 +457,7 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         // Current annotations will be
         // CreateAnnotationEventHandler funtzioko baldintza berdina
-        //PVSCL:IFCOND('')
+        //PVSCL:IFCOND(DefaultCriterias)
         this.allAnnotations = this.retrieveCurrentAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         //PVSCL:ELSECOND
@@ -491,7 +527,7 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //PVSCL:IFCOND('')
+  //PVSCL:IFCOND(DefaultCriterias)
   getAllAnnotations (callback) {
     // Retrieve annotations for current url and group
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
@@ -524,7 +560,7 @@ class TextAnnotator extends ContentAnnotator {
   //PVSCL:ENDCOND
 
   retrieveCurrentAnnotations () {
-    //PVSCL:IFCOND('')
+    //PVSCL:IFCOND(IndexMode AND HighlightMode)
     // Depending on the mode of the tool, we must need only
     if (window.abwa.modeManager.mode === ModeManager.modes.index) {
       return this.allAnnotations
@@ -555,7 +591,7 @@ class TextAnnotator extends ContentAnnotator {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
   }
 
-  //PVSCL:IFCOND('')
+  //PVSCL:IFCOND(IndexMode)
   createNextAnnotationHandler (annotation) {
     let annotationIndex = _.findIndex(
       this.currentAnnotations,
@@ -1430,7 +1466,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Moodle)
+  //PVSCL:IFCOND(NOT(Spreadsheet))
   redrawAnnotations () {
     // Unhighlight all annotations
     this.unHighlightAllAnnotations()
