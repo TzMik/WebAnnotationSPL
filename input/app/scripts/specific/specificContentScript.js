@@ -37,11 +37,6 @@ class specificContentScript{
       code: Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.subgroup + ':'
     }
   }
-  //PVSCL:ELSEIFCOND(DefaultCriterias)
-  constructor () {
-    this.events = {}
-    this.status = ContentScriptManager.status.notInitialized
-  }
   //PVSCL:ENDCOND
 
   init (callback) {
@@ -75,6 +70,7 @@ class specificContentScript{
         // Validation handler
         window.abwa.specific.validateAnnotationManager = new ValidateAnnotationManager()
         window.abwa.specific.validateAnnotationManager.init()
+        window.abwa.toolset.show()
         if (_.isFunction(callback)) {
           callback()
         }
@@ -106,8 +102,10 @@ class specificContentScript{
           window.abwa.specific = window.abwa.specific || {}
           window.abwa.tagManager.showViewingTagsContainer()
           window.abwa.sidebar.openSidebar()
+          //PVSCL:IFCOND(Toolset)
           // Toolset hide
           window.abwa.toolset.hide()
+          //PVSCL:ENDCOND
           // Log student reviewed the exam
           // window.abwa.specific.studentLogging = new StudentLogging()
           // window.abwa.specific.studentLogging.init()
@@ -121,7 +119,12 @@ class specificContentScript{
         window.abwa.specific.moodleCommentManager.init()
         //PVSCL:ENDCOND
       }
+      
     })
+    //PVSCL:ENDCOND
+    //PVSCL:IFCOND(NOT(Moodle) AND Toolset)
+    window.abwa.toolset.show()
+    //PVSCL:ENDCOND
   }
 
   //PVSCL:IFCOND(Moodle)

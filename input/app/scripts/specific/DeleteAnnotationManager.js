@@ -1,7 +1,7 @@
 const Events = require('../../contentScript/Events')
 const Config = require('../../Config')
 const CommonHypersheetManager = require('./CommonHypersheetManager')
-const swal = require('sweetalert2')
+//const swal = require('sweetalert2')
 const _ = require('lodash')
 
 class DeleteAnnotationManager {
@@ -30,11 +30,11 @@ class DeleteAnnotationManager {
         if (err) {
           // TODO Show user an error number
           console.error(err)
-          swal({
+          /*swal({
             type: 'error',
             title: 'Oops...',
             text: 'Unable to update hypersheet. Ensure you have permission to update it and try it again.'
-          })
+          })*/
         } else {
           // Nothing to do
           console.debug('Correctly updated google sheet with created annotation')

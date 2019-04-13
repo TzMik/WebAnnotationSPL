@@ -35,42 +35,42 @@ class ValidateAnnotationManager {
         this.removeOldValidationAnnotations(typeOfFacetData, (err, result) => {
           if (err) {
             console.error(err)
-            swal({
+            /*swal({
               type: 'error',
               title: 'Oops...',
               text: 'Unable to validate the classification. Unable to remove previously validate annotation.'
-            })
+            })*/
           } else {
             // Create new validation annotation
             this.createNewValidationAnnotation(typeOfFacetData, (err, validateAnnotation) => {
               if (err) {
                 console.error(err)
-                swal({
+                /*swal({
                   type: 'error',
                   title: 'Oops...',
                   text: 'Unable to validate the classification. Unable to create validate annotation.'
-                })
+                })*/
               } else {
                 typeOfFacetData.validateAnnotation = validateAnnotation
                 this.validateClassificationOnHypersheet(typeOfFacetData, (err, result) => {
                   if (err) {
                     // TODO Show user an error number
                     console.error(err)
-                    swal({
+                    /*swal({
                       type: 'error',
                       title: 'Oops...',
                       text: 'Unable to update hypersheet. Ensure you have permission to update it and try it again.'
-                    })
+                    })*/
                   } else {
                     console.debug('Validated annotation ' + annotation.id)
                     // Nothing to do, everything went okay
-                    swal({ // TODO i18n
+                    /*swal({ // TODO i18n
                       position: 'top-end',
                       type: 'success',
                       title: 'Correctly validated',
                       showConfirmButton: false,
                       timer: 1500
-                    })
+                    })*/
                   }
                 })
               }

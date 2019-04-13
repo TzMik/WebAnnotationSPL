@@ -5,7 +5,7 @@ const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientMan
 const GoogleSheetParser = require('./GoogleSheetParser')
 const HypothesisGroupInitializer = require('./HypothesisGroupInitializer')
 
-const swal = require('sweetalert2')
+//const swal = require('sweetalert2')
 
 class GoogleSheetContentScriptManager {
   init (callback) {
@@ -14,9 +14,9 @@ class GoogleSheetContentScriptManager {
     window.hag.hypothesisClientManager.init(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
-          swal('Oops!',
+          /*swal('Oops!',
             'Unable to configure current spreadsheet. Failed login to services.', // TODO i18n
-            'error') // Notify error to user
+            'error') // Notify error to user*/
           if (_.isFunction(callback)) {
             callback()
           }
@@ -37,7 +37,7 @@ class GoogleSheetContentScriptManager {
   }
 
   showToolIsConfiguring () {
-    swal({
+    /*swal({
       position: 'top-end',
       title: 'Configuring the tool, please be patient', // TODO i18n
       text: 'If the tool takes too much time, please reload the page and try again.',
@@ -45,7 +45,7 @@ class GoogleSheetContentScriptManager {
       onOpen: () => {
         swal.showLoading()
       }
-    })
+    })*/
   }
 
   initLoginProcess (callback) {

@@ -1,6 +1,6 @@
 const $ = require('jquery')
 const _ = require('lodash')
-const swal = require('sweetalert2')
+//const swal = require('sweetalert2')
 
 class BackLink{
   //PVSCL:IFCOND(BackToSpreadsheet)

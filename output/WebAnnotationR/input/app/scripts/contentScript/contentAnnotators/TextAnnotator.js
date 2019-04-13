@@ -57,12 +57,6 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  redrawAnnotations () {
-	    // Unhighlight all annotations
-	    this.unHighlightAllAnnotations()
-	    // Highlight all annotations
-	    this.highlightAnnotations(this.allAnnotations)
-	  }
   initEvents (callback) {
     this.initSelectionEvents(() => {
       this.initAnnotateEvent(() => {
@@ -159,21 +153,6 @@ class TextAnnotator extends ContentAnnotator {
 
   //
 
-  //
-  initModeChangeEvent (callback) {
-    this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
-    this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
-  createInitModeChangeEventHandler () {
-    return () => {
-      //
-      //
-    }
-  }
   //
 
   initAnnotateEvent (callback) {
@@ -281,8 +260,9 @@ class TextAnnotator extends ContentAnnotator {
       text: '',
       uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
     }
-    //
-    if (!_.isEmpty(window.abwa.contentTypeManager.documentFingerprint)) {
+    
+    if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
+      let pdfFingerprint = window.abwa.contentTypeManager.pdfFingerprint
       data.document = {
         documentFingerprint: window.abwa.contentTypeManager.documentFingerprint,
         link: [{
@@ -292,6 +272,7 @@ class TextAnnotator extends ContentAnnotator {
         }]
       }
     }
+    //
     // If citation pdf is found
     if (!_.isEmpty(window.abwa.contentTypeManager.citationPdf)) {
       let pdfUrl = window.abwa.contentTypeManager.doi
@@ -388,7 +369,7 @@ class TextAnnotator extends ContentAnnotator {
         //
         // Highlight annotations in the DOM
         //
-        this.highlightAnnotations(this.currentAnnotations)
+        this.highlightAnnotations(this.allAnnotations)
         //
         if (_.isFunction(callback)) {
           callback()
@@ -420,7 +401,6 @@ class TextAnnotator extends ContentAnnotator {
         })
         // Redraw all annotations
         this.redrawAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         //
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         if (_.isFunction(callback)) {
@@ -430,36 +410,6 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //
-  getAllAnnotations (callback) {
-    // Retrieve annotations for current url and group
-    window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
-      url: window.abwa.contentTypeManager.getDocumentURIToSearchInHypothesis(),
-      uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis(),
-      group: window.abwa.groupSelector.currentGroup.id,
-      order: 'asc'
-    }, (err, annotations) => {
-      if (err) {
-        if (_.isFunction(callback)) {
-          callback(err)
-        }
-      } else {
-        // Search tagged annotations
-        let tagList = window.abwa.tagManager.getTagsList()
-        let taggedAnnotations = []
-        for (let i = 0; i < annotations.length; i++) {
-          // Check if annotation contains a tag of current group
-          let tag = TagManager.retrieveTagForAnnotation(annotations[i], tagList)
-          if (tag) {
-            taggedAnnotations.push(annotations[i])
-          }
-        }
-        if (_.isFunction(callback)) {
-          callback(null, taggedAnnotations)
-        }
-      }
-    })
-  }
   //
 
   retrieveCurrentAnnotations () {
@@ -484,6 +434,70 @@ class TextAnnotator extends ContentAnnotator {
 
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
+    //
+    // Get annotation color for an annotation
+    let tagInstance = window.abwa.tagManager.findAnnotationTagInstance(annotation)
+    if (tagInstance) {
+    	let color = tagInstance.getColor()
+    //
+    //
+    try {
+    	//
+        let highlightedElements = DOMTextUtils.highlightContent(
+          annotation.target[0].selector, classNameToHighlight, annotation.id)        	  
+        //
+        // Highlight in same color as button
+        highlightedElements.forEach(highlightedElement => {
+          // If need to highlight, set the color corresponding to, in other case, maintain its original color
+          $(highlightedElement).css('background-color',/**/ color /**/)
+          highlightedElement.dataset.color = /**/color/**/
+          //
+          let group = null
+          if (LanguageUtils.isInstanceOf(tagInstance, TagGroup)) {
+            group = tagInstance
+            // Set message
+            //
+            highlightedElement.title = group.config.name + '\nLevel is pending, please right click to set a level.'
+            //
+          } else if (LanguageUtils.isInstanceOf(tagInstance, Tag)) {
+            group = tagInstance.group
+            //
+            highlightedElement.title = group.config.name + '\nLevel: ' + tagInstance.name
+            //
+          }
+          if (!_.isEmpty(annotation.text)) {
+        	//
+        	try {
+              let feedback = JSON.parse(annotation.text)
+              highlightedElement.title += '\nFeedback: ' + feedback.comment
+            } catch (e) {
+        	//
+            highlightedElement.title += '\nFeedback: ' + annotation.text
+            //
+            }
+            //
+          }
+          //
+        })
+        // Create context menu event for highlighted elements
+        this.createContextMenuForAnnotation(annotation)
+        //
+        this.createDoubleClickEventHandler(annotation)
+        //
+    } catch (e) {
+        // TODO Handle error (maybe send in callback the error ¿?)
+        if (_.isFunction(callback)) {
+          callback(new Error('Element not found'))
+        }
+    } finally {
+        if (_.isFunction(callback)) {
+          callback()
+        }
+    }
+    //
+    }
+    //
+    //
   }
 
   //
@@ -579,7 +593,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  goToFirstAnnotationOfTag (params) {
+  goToFirstAnnotationOfTag (/**/) {
     //
     let annotation = _.find(this.allAnnotations, (annotation) => {
       return annotation.tags.includes(tag)
@@ -674,10 +688,7 @@ class TextAnnotator extends ContentAnnotator {
 
   unHighlightAllAnnotations () {
     //
-    let highlightedElements = _.flatten(_.map(
-      this.allAnnotations,
-      (annotation) => { return [...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')] })
-    )
+    let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
     //
     DOMTextUtils.unHighlightElements(highlightedElements)
   }
@@ -786,6 +797,13 @@ class TextAnnotator extends ContentAnnotator {
   }
   //
 
+  //
+  redrawAnnotations () {
+    // Unhighlight all annotations
+    this.unHighlightAllAnnotations()
+    // Highlight all annotations
+    this.highlightAnnotations(this.allAnnotations)
+  }
   //
 
   //

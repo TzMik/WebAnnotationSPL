@@ -1,4 +1,4 @@
-const Alerts = require('../../utils/Alerts')
+//const Alerts = require('../../utils/Alerts')
 const MoodleClientManager = require('../../moodle/MoodleClientManager')
 const Events = require('../../contentScript/Events')
 const _ = require('lodash')
@@ -19,7 +19,7 @@ class MoodleCommentManager {
         event: Events.reply,
         handler: this.replyAnnotationEventHandler((err) => {
           if (err) {
-            Alerts.errorAlert({text: err.message})
+            //Alerts.errorAlert({text: err.message})
           } else {
             //
           }

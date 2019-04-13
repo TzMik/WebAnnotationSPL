@@ -1,11 +1,11 @@
 /* eslint-disable */
 
-const Alerts = require('../../utils/Alerts')
+//const Alerts = require('../../utils/Alerts')
 const Config = require('../../Config')
 //const {Review, Mark, MajorConcern, MinorConcern, Strength, Annotation} = require('../../exporter/reviewModel.js')
 const {Review,Annotation,AnnotationGroup} = require('../../exporter/reviewModel.js')
 
-let swal = require('sweetalert2')
+//let swal = require('sweetalert2')
 
 const ReviewAssistant = {
   parseAnnotations (annotations){
@@ -48,24 +48,24 @@ const ReviewAssistant = {
     let strengthNum = review.strengths.length;
     let concernNum = review.majorConcerns.length + review.minorConcerns.length;
     if (strengthNum === 0 && concernNum > 0){
-      swal({
+      /*swal({
         type: 'info',
         text: 'You should consider including strengths too.',
         toast: true,
         showConfirmButton: false,
         timer: 5000,
         position: 'bottom-end'
-      })
+      })*/
     }
     else if (concernNum === 0 && strengthNum > 0) {
-      swal({
+      /*swal({
         type: 'info',
         text: 'You should consider including weaknesses too.',
         toast: true,
         showConfirmButton: false,
         timer: 5000,
         position: 'bottom-end'
-      })
+      })*/
     }
   },
   checkSelective: () => {

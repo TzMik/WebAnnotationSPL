@@ -5,7 +5,7 @@ const _ = require('lodash')
 //
 //
 //
-const ReviewGenerator = require('./ToolsetBar')
+const Toolset = require('./ToolsetBar')
 //
 //
 const CustomCriteriasManager = require('./CustomCriteriasManager')
@@ -13,18 +13,13 @@ const CustomCriteriasManager = require('./CustomCriteriasManager')
 
 class specificContentScript{
   //
-  constructor () {
-    this.events = {}
-    this.status = ContentScriptManager.status.notInitialized
-  }
-  //
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
     //
-    window.abwa.specific.reviewGenerator = new ReviewGenerator()
-    window.abwa.specific.reviewGenerator.init(() => {
-
+    window.abwa.toolset = new Toolset()
+    window.abwa.toolset.init(() => {
+    	window.abwa.toolset.show()
     })
     //
     //
@@ -33,6 +28,15 @@ class specificContentScript{
 
     })
     //
+    //
+    //
+    
+    //
+  }
+
+  //
+
+  destroy(){
     //
   }
 }

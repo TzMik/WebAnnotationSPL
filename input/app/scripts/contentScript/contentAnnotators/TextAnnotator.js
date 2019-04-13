@@ -10,7 +10,7 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
-const Alerts = require('../../utils/Alerts')
+//const Alerts = require('../../utils/Alerts')
 //PVSCL:IFCOND(NOT(ReviewMode))
 const ModeManager = require('../ModeManager')
 //PVSCL:ENDCOND
@@ -185,7 +185,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(ModeSelector)
+  //PVSCL:IFCOND(NOT(ReviewMode))
   initModeChangeEvent (callback) {
     this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
     this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
@@ -243,16 +243,16 @@ class TextAnnotator extends ContentAnnotator {
           // Navigate to the first annotation for this tag
           this.goToFirstAnnotationOfTag(event.detail.tags[0])
         } else {
-          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         //PVSCL:ELSECOND
-        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         //PVSCL:ENDCOND
         return
       }
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
         return
       }
       let range = document.getSelection().getRangeAt(0)
@@ -294,7 +294,7 @@ class TextAnnotator extends ContentAnnotator {
       let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+          //Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
           //PVSCL:IFCOND(DefaultCriterias)
@@ -334,6 +334,18 @@ class TextAnnotator extends ContentAnnotator {
       text: '',
       uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
     }
+    
+    if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
+      let pdfFingerprint = window.abwa.contentTypeManager.pdfFingerprint
+      data.document = {
+        documentFingerprint: window.abwa.contentTypeManager.documentFingerprint,
+        link: [{
+          href: 'urn:x-txt:' + window.abwa.contentTypeManager.documentFingerprint
+        }, {
+          href: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
+        }]
+      }
+    }
     //PVSCL:IFCOND(DOI)
     // If doi is available, add it to the annotation
     if (!_.isEmpty(window.abwa.contentTypeManager.doi)) {
@@ -345,16 +357,6 @@ class TextAnnotator extends ContentAnnotator {
       data.document.link.push({href: 'doi:' + doi})
     }
     //PVSCL:ENDCOND
-    if (!_.isEmpty(window.abwa.contentTypeManager.documentFingerprint)) {
-      data.document = {
-        documentFingerprint: window.abwa.contentTypeManager.documentFingerprint,
-        link: [{
-          href: 'urn:x-txt:' + window.abwa.contentTypeManager.documentFingerprint
-        }, {
-          href: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
-        }]
-      }
-    }
     // If citation pdf is found
     if (!_.isEmpty(window.abwa.contentTypeManager.citationPdf)) {
       let pdfUrl = window.abwa.contentTypeManager.doi
@@ -465,10 +467,12 @@ class TextAnnotator extends ContentAnnotator {
         LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
         //PVSCL:ENDCOND
         // Highlight annotations in the DOM
-        //PVSCL:IFCOND('')
+        //PVSCL:IFCOND(Moodle)
         this.redrawAnnotations()
-        //PVSCL:ELSECOND
+        //PVSCL:ELSEIFCOND(Spreadsheet)
         this.highlightAnnotations(this.currentAnnotations)
+        //PVSCL:ELSECOND
+        this.highlightAnnotations(this.allAnnotations)
         //PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback()
@@ -517,7 +521,6 @@ class TextAnnotator extends ContentAnnotator {
         })
         // Redraw all annotations
         this.redrawAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         //PVSCL:ENDCOND
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         if (_.isFunction(callback)) {
@@ -527,7 +530,7 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //PVSCL:IFCOND(DefaultCriterias)
+  //PVSCL:IFCOND(Spreadsheet)
   getAllAnnotations (callback) {
     // Retrieve annotations for current url and group
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
@@ -589,6 +592,132 @@ class TextAnnotator extends ContentAnnotator {
 
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
+    //PVSCL:IFCOND(NOT(Spreadsheet))
+    // Get annotation color for an annotation
+    let tagInstance = window.abwa.tagManager.findAnnotationTagInstance(annotation)
+    if (tagInstance) {
+    	let color = tagInstance.getColor()
+    //PVSCL:ENDCOND
+    //PVSCL:IFCOND(Spreadsheet)
+    let tagList = window.abwa.tagManager.getTagsList()
+    let tagForAnnotation = TagManager.retrieveTagForAnnotation(annotation, tagList)
+    //PVSCL:ENDCOND
+    try {
+    	//PVSCL:IFCOND(Spreadsheet)
+    	 // TODO Remove this case for google drive
+        if (window.location.href.includes('drive.google.com')) {
+          // Ensure popup exists
+          if (document.querySelector('.a-b-r-x')) {
+        //PVSCL:ENDCOND
+        let highlightedElements = DOMTextUtils.highlightContent(
+          annotation.target[0].selector, classNameToHighlight, annotation.id)        	  
+        //PVSCL:IFCOND(Spreadsheet)
+          }
+        } else {
+           highlightedElements = DOMTextUtils.highlightContent(
+           annotation.target[0].selector, classNameToHighlight, annotation.id)
+        }
+        //PVSCL:ENDCOND
+        // Highlight in same color as button
+        highlightedElements.forEach(highlightedElement => {
+          // If need to highlight, set the color corresponding to, in other case, maintain its original color
+          $(highlightedElement).css('background-color',/*PVSCL:IFCOND(Spreadsheet)*/ tagForAnnotation.color /*PVSCL:ELSECOND*/ color /*PVSCL:ENDCOND*/)
+          highlightedElement.dataset.color = /*PVSCL:IFCOND(Spreadsheet)*/tagForAnnotation.color/*PVSCL:ELSECOND*/color/*PVSCL:ENDCOND*/
+          //PVSCL:IFCOND(Spreadsheet)
+          highlightedElement.dataset.tags = tagForAnnotation.tags
+          let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
+          if (this.config.namespace === Config.exams.namespace) {
+            let tagGroup = _.find(window.abwa.tagManager.currentTags, (tagGroup) => { return _.find(tagGroup.tags, tagForAnnotation) })
+            let highestMark = _.last(tagGroup.tags).name
+            highlightedElement.title = 'Rubric: ' + tagGroup.config.name + '\nMark: ' + tagForAnnotation.name + ' of ' + highestMark
+          } else if (this.config.namespace === Config.slrDataExtraction.namespace) {
+            highlightedElement.title = 'Author: ' + user + '\n' + 'Category: ' + tagForAnnotation.name
+          } else {
+            highlightedElement.title = 'Author: ' + user + '\n'
+          }
+          //PVSCL:ELSECOND
+          let group = null
+          if (LanguageUtils.isInstanceOf(tagInstance, TagGroup)) {
+            group = tagInstance
+            // Set message
+            //PVSCL:IFCOND(Moodle)
+            highlightedElement.title = 'Rubric competence: ' + group.config.name + '\nMark is pending, go to marking mode.'
+            //PVSCL:ELSECOND
+            highlightedElement.title = group.config.name + '\nLevel is pending, please right click to set a level.'
+            //PVSCL:ENDCOND
+          } else if (LanguageUtils.isInstanceOf(tagInstance, Tag)) {
+            group = tagInstance.group
+            //PVSCL:IFCOND(Moodle)
+            // Get highest mark
+            let highestMark = _.last(group.tags).name
+            highlightedElement.title = 'Rubric competence: ' + group.config.name + '\nMark: ' + tagInstance.name + ' of ' + highestMark
+            //PVSCL:ELSECOND
+            highlightedElement.title = group.config.name + '\nLevel: ' + tagInstance.name
+            //PVSCL:ENDCOND
+          }
+          if (!_.isEmpty(annotation.text)) {
+        	//PVSCL:IFCOND(DefaultCriterias)
+        	try {
+              let feedback = JSON.parse(annotation.text)
+              highlightedElement.title += '\nFeedback: ' + feedback.comment
+            } catch (e) {
+        	//PVSCL:ENDCOND
+            highlightedElement.title += '\nFeedback: ' + annotation.text
+            //PVSCL:IFCOND(DefaultCriterias)
+            }
+            //PVSCL:ENDCOND
+          }
+          //PVSCL:ENDCOND
+        })
+        // Create context menu event for highlighted elements
+        this.createContextMenuForAnnotation(annotation)
+        //PVSCL:IFCOND(Spreadsheet)
+        this.createNextAnnotationHandler(annotation)
+        //PVSCL:ELSECOND
+        this.createDoubleClickEventHandler(annotation)
+        //PVSCL:ENDCOND
+    } catch (e) {
+        // TODO Handle error (maybe send in callback the error ¿?)
+        if (_.isFunction(callback)) {
+          callback(new Error('Element not found'))
+        }
+    } finally {
+        if (_.isFunction(callback)) {
+          callback()
+        }
+    }
+    //PVSCL:IFCOND(NOT(Spreadsheet))
+    }
+    //PVSCL:IFCOND(Moodle)
+    else {
+        let color = 'rgba(0, 0, 0, 0.5)' // Neutral color for elements to remove
+        try {
+          // Highlight elements
+          let highlightedElements = DOMTextUtils.highlightContent(
+            annotation.target[0].selector, this.noUsefulHighlightClassName, annotation.id)
+          highlightedElements.forEach(highlightedElement => {
+            // If need to highlight, set the color corresponding to, in other case, maintain its original color
+            $(highlightedElement).css('background-color', color)
+            // Add title
+            let criteriaName = AnnotationUtils.getTagSubstringFromAnnotation(annotation, 'exam:isCriteriaOf:')
+            let levelName = AnnotationUtils.getTagSubstringFromAnnotation(annotation, 'exam:mark:')
+            let criteriaLevelText = ''
+            if (_.isString(levelName)) {
+              criteriaLevelText = 'This annotation pertains to the criteria ' + criteriaName + ' with level ' + levelName + ' which is not in your rubric.\n'
+            } else {
+              criteriaLevelText = 'This annotation pertains to the criteria ' + criteriaName + ' which is not in your rubric.\n'
+            }
+            highlightedElement.title = criteriaLevelText +
+              'Please consider re-marking this assignment (if the criteria exists) or deleting this annotation.'
+            // Create context menu event for highlighted elements
+            this.createContextMenuForNonUsefulAnnotation(annotation)
+          })
+        } finally {
+
+        }
+    }
+    //PVSCL:ENDCOND
+    //PVSCL:ENDCOND
   }
 
   //PVSCL:IFCOND(IndexMode)
@@ -721,11 +850,11 @@ class TextAnnotator extends ContentAnnotator {
     if (_.last(repliesData.replies) && _.last(repliesData.replies).user === window.abwa.groupSelector.user.userid) {
         inputValue = _.last(repliesData.replies).text
     }
-    Alerts.inputTextAlert({
+    /*Alerts.inputTextAlert({
       input: 'textarea',
       inputPlaceholder: inputValue || 'Type your reply here...',
       inputValue: inputValue || '',
-      html: repliesData.htmlText,
+      html: repliesData.htmlText,*/
       callback: (err, result) => {
         if (err) {
         } else {
@@ -739,7 +868,7 @@ class TextAnnotator extends ContentAnnotator {
             window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(replyAnnotationData, (err, replyAnnotation) => {
               if (err) {
                 // Show error when creating annotation
-                Alerts.errorAlert({text: 'There was an error when replying, please try again. Make sure you are logged in Hypothes.is.'})
+                //Alerts.errorAlert({text: 'There was an error when replying, please try again. Make sure you are logged in Hypothes.is.'})
               } else {
                 // Dispatch event of new reply is created
                 LanguageUtils.dispatchCustomEvent(Events.reply, {
@@ -757,7 +886,7 @@ class TextAnnotator extends ContentAnnotator {
               }, (err, replyAnnotation) => {
                 if (err) {
                   // Show error when updating annotation
-                  Alerts.errorAlert({text: 'There was an error when editing your reply, please try again. Make sure you are logged in Hypothes.is.'})
+                  //Alerts.errorAlert({text: 'There was an error when editing your reply, please try again. Make sure you are logged in Hypothes.is.'})
                 } else {
                   // TODO Remove the comment and create the new one in moodle
                   LanguageUtils.dispatchCustomEvent(Events.reply, {
@@ -772,7 +901,7 @@ class TextAnnotator extends ContentAnnotator {
           console.log(result)
         }
       }
-    })
+    //})
   }
 
   createRepliesData (annotation) {
@@ -837,7 +966,7 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         if (!result.deleted) {
           // Alert user error happened
-          Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+          //Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
           //PVSCL:IFCOND('') // NOT la baldintza de CreateAnnotationEventHandler
           // Remove annotation from data model
@@ -873,10 +1002,10 @@ class TextAnnotator extends ContentAnnotator {
     // Get previous assignments
     let previousAssignments = this.retrievePreviousAssignments()
     let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
-    Alerts.multipleInputAlert({
+    /*Alerts.multipleInputAlert({
       title: criteriaName,
       html: previousAssignmentsUI.outerHTML + '<textarea data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>',
-      onBeforeOpen: (swalMod) => {
+      */onBeforeOpen: (swalMod) => {
         // Add event listeners for append buttons
         let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
         previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
@@ -898,15 +1027,15 @@ class TextAnnotator extends ContentAnnotator {
             })
           })
         })
-      },
+      }/*,
       // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
       preConfirm: () => {
         comment = document.querySelector('#comment').value
-      },
+      },*/
       callback: (err, result) => {
         if (!_.isUndefined(comment)) {
           if (err) {
-            window.alert('Unable to load alert. Is this an annotable document?')
+            //window.alert('Unable to load alert. Is this an annotable document?')
           } else {
             // Update annotation
             annotation.text = comment || ''
@@ -916,7 +1045,7 @@ class TextAnnotator extends ContentAnnotator {
               (err, annotation) => {
                 if (err) {
                   // Show error message
-                  Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+                  //Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
                 } else {
                   // Update current annotations
                   let currentIndex = _.findIndex(this.currentAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
@@ -959,7 +1088,7 @@ class TextAnnotator extends ContentAnnotator {
         (err, annotation) => {
           if (err) {
             // Show error message
-            Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+            //Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
           } else {
             // Update current annotations
             //PVSCL:IFCOND('') //La misma que CreateAnnotationEventHandler
@@ -1215,14 +1344,18 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  goToFirstAnnotationOfTag (params) {
+  goToFirstAnnotationOfTag (/*PVSCL:IFCOND(Spreadsheet)*/params/*PVSCL:ELSEECOND*/tag/*PVSCL:ENDCOND*/) {
     //PVSCL:IFCOND(DefaultCriterias)
     let annotation = _.find(this.allAnnotations, (annotation) => {
       return annotation.tags.includes(tag)
     })
     //PVSCL:ELSECOND
     let annotation = _.find(this.currentAnnotations, (annotation) => {
+      //PVSCL:IFCOND(Moodle)
       return annotation.tags.includes(tag)
+      //PVSCL:ELSECOND
+      return _.isEqual(annotation.tags, params.tags)
+      //PVSCL:ENDCOND
     })
     //PVSCL:ENDCOND
     if (annotation) {
@@ -1316,7 +1449,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   unHighlightAllAnnotations () {
-    //PVSCL:IFCOND(NOT(DefaultCriterias))
+    //PVSCL:IFCOND(DefaultCriterias)
     let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
     //PVSCL:ELSECOND
     let highlightedElements = _.flatten(_.map(
@@ -1495,7 +1628,7 @@ class TextAnnotator extends ContentAnnotator {
     }
     // When all the annotations are deleted
     Promise.all(promises).catch(() => {
-      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
+      //Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
       // Update annotation variables
       this.allAnnotations = []

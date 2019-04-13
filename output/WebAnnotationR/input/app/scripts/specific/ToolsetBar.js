@@ -3,7 +3,7 @@ const Toolset = require('../contentScript/Toolset')
 //
 const axios = require('axios')
 const _ = require('lodash')
-const Alerts = require('../utils/Alerts')
+//const Alerts = require('../utils/Alerts')
 const LanguageUtils = require('../utils/LanguageUtils')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
@@ -28,8 +28,9 @@ class ToolsetBar extends Toolset{
 
       //
       let generatorImageURL = chrome.extension.getURL('/images/generator.png')
-      this.generatorImage = this.toolsetButtonTemplate.querySelector('#reviewGeneratorButton')
+      this.generatorImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.generatorImage.src = generatorImageURL
+      this.toolsetBody.appendChild(this.generatorImage)
       this.generatorImage.addEventListener('click', () => {
         this.generateReviewButtonHandler()
       })
@@ -38,8 +39,9 @@ class ToolsetBar extends Toolset{
       //
       // Set delete annotations image and event
       let deleteAnnotationsImageURL = chrome.extension.getURL('/images/deleteAnnotations.png')
-      this.deleteAnnotationsImage = this.toolsetButtonTemplate.querySelector('#deleteAnnotationsButton')
+      this.deleteAnnotationsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteAnnotationsImage.src = deleteAnnotationsImageURL
+      this.toolsetBody.appendChild(this.deleteAnnotationsImage)
       this.deleteAnnotationsImage.addEventListener('click', () => {
         this.deleteAnnotations()
       })
@@ -48,8 +50,9 @@ class ToolsetBar extends Toolset{
       //
       // Set create canvas image and event
       let overviewImageURL = chrome.extension.getURL('/images/overview.png')
-      this.overviewImage = this.container.querySelector('#overviewButton')
+      this.overviewImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.overviewImage.src = overviewImageURL
+      this.toolsetBody.appendChild(this.overviewImage)
       this.overviewImage.addEventListener('click', () => {
         this.generateCanvas()
       })
@@ -58,8 +61,9 @@ class ToolsetBar extends Toolset{
       //
       // Set resume image and event
       let resumeImageURL = chrome.extension.getURL('/images/resume.png')
-      this.resumeImage = this.container.querySelector('#resumeButton')
+      this.resumeImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.resumeImage.src = resumeImageURL
+      this.toolsetBody.appendChild(this.resumeImage)
       this.resumeImage.addEventListener('click', () => {
         this.resume()
       })
@@ -103,7 +107,7 @@ class ToolsetBar extends Toolset{
 
   //
   generateReview () {
-    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    //Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let report = review.toString()
     let blob = new Blob([report], {type: 'text/plain;charset=utf-8'})
@@ -111,17 +115,17 @@ class ToolsetBar extends Toolset{
     let docTitle = 'Review report'
     if(title!=='') docTitle += ' for '+title
     FileSaver.saveAs(blob, docTitle+'.txt')
-    Alerts.closeAlert()
+    //Alerts.closeAlert()
   }
   //
 
   //
   deleteAnnotations () {
     // Ask user if they are sure to delete it
-    Alerts.confirmAlert({
+    /*Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationTitle'),
-      text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),
+      text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),*/
       callback: (err, toDelete) => {
         // It is run only when the user confirms the dialog, so delete all the annotations
         if (err) {
@@ -133,14 +137,14 @@ class ToolsetBar extends Toolset{
           window.abwa.sidebar.openSidebar()
         }
       }
-    })
+    //})
   }
   //
 
   //
   generateCanvas () {
     window.abwa.sidebar.closeSidebar()
-    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    //Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let canvasPageURL = chrome.extension.getURL('pages/specific/review/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
@@ -198,10 +202,10 @@ class ToolsetBar extends Toolset{
       }
 
       let displayAnnotation = (annotation) => {
-        let swalContent = '';
-        if(annotation.highlightText!=null&&annotation.highlightText!='') swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"'+annotation.highlightText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'"</div>'
-        if(annotation.comment!=null&&annotation.comment!='') swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">'+annotation.comment.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>'
-        if(annotation.suggestedLiterature!=null&&annotation.suggestedLiterature.length>0) swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">'+annotation.suggestedLiterature.map((e) => {return '<li>'+e.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>'}).join('')+'</ul></div>'
+        //let swalContent = '';
+        //if(annotation.highlightText!=null&&annotation.highlightText!='') //swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"'+annotation.highlightText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'"</div>'
+        //if(annotation.comment!=null&&annotation.comment!='') //swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">'+annotation.comment.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>'
+        //if(annotation.suggestedLiterature!=null&&annotation.suggestedLiterature.length>0) //swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">'+annotation.suggestedLiterature.map((e) => {return '<li>'+e.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>'}).join('')+'</ul></div>'
         /*swal({
           html: swalContent,
           confirmButtonText: "View in context"
@@ -293,7 +297,7 @@ class ToolsetBar extends Toolset{
         }
         canvasContainer.appendChild(clusterElement)
       }
-      Alerts.closeAlert()
+      //Alerts.closeAlert()
     })
   }
   //

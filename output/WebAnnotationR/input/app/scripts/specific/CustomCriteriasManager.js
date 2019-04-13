@@ -1,4 +1,4 @@
-const Alerts = require('../utils/Alerts')
+//const Alerts = require('../utils/Alerts')
 const Events = require('../contentScript/Events')
 const Criteria = require('../model/Criteria')
 const Level = require('../model/Level')
@@ -63,12 +63,12 @@ class CustomCriteriasManager {
     return (event) => {
       let isSidebarOpened = window.abwa.sidebar.isOpened()
       window.abwa.sidebar.closeSidebar()
-      Alerts.inputTextAlert({
+      /*Alerts.inputTextAlert({
         input: 'text',
-        inputPlaceholder: 'Insert the name for the new criteria...',
+        inputPlaceholder: 'Insert the name for the new criteria...',*/
         callback: (err, name) => {
           if (err) {
-            Alerts.errorAlert({text: 'Unable to create this custom criteria, try it again.'})
+            //Alerts.errorAlert({text: 'Unable to create this custom criteria, try it again.'})
           } else {
             // TODO Check if there is not other criteria with the same value
             this.createNewCustomCriteria({
@@ -82,7 +82,7 @@ class CustomCriteriasManager {
             })
           }
         }
-      })
+      //})
     }
   }
 
@@ -101,7 +101,7 @@ class CustomCriteriasManager {
     // Push annotations to hypothes.is
     window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotations(annotations, (err, annotations) => {
       if (err) {
-        Alerts.errorAlert({title: 'Unable to create a custom category', text: 'Error when trying to create a new custom category. Please try again.'})
+        //Alerts.errorAlert({title: 'Unable to create a custom category', text: 'Error when trying to create a new custom category. Please try again.'})
         callback(err)
       } else {
         // Reload sidebar
@@ -150,7 +150,7 @@ class CustomCriteriasManager {
         }
         // When all the annotations are deleted
         Promise.all(promises).catch(() => {
-          Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations for this tag, please reload and try it again.'})
+          //Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations for this tag, please reload and try it again.'})
         }).then(() => {
           // Update tag manager and then update all annotations
           setTimeout(() => {
@@ -197,10 +197,10 @@ class CustomCriteriasManager {
 
   deleteCriteriaHandler (tagGroup) {
     // Ask user if they are sure to delete the current tag
-    Alerts.confirmAlert({
+    /*Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: chrome.i18n.getMessage('DeleteCriteriaConfirmationTitle'),
-      text: chrome.i18n.getMessage('DeleteCriteriaConfirmationMessage'),
+      text: chrome.i18n.getMessage('DeleteCriteriaConfirmationMessage'),*/
       callback: (err, toDelete) => {
         // It is run only when the user confirms the dialog, so delete all the annotations
         if (err) {
@@ -209,7 +209,7 @@ class CustomCriteriasManager {
           this.deleteTag(tagGroup)
         }
       }
-    })
+    //})
   }
 
   modifyCriteriaHandler (tagGroup, defaultNameValue = null, defaultDescriptionValue = null) {
@@ -217,7 +217,7 @@ class CustomCriteriasManager {
     let criteriaDescription
     let formCriteriaNameValue = defaultNameValue || tagGroup.config.name
     let formCriteriaDescriptionValue = defaultDescriptionValue || tagGroup.config.options.description
-    Alerts.multipleInputAlert({
+    /*Alerts.multipleInputAlert({
       title: 'Modifying criteria name and description',
       html: '<div>' +
         '<input id="criteriaName" class="swal2-input customizeInput" value="' + formCriteriaNameValue + '"/>' +
@@ -229,13 +229,13 @@ class CustomCriteriasManager {
         // Retrieve values from inputs
         criteriaName = document.getElementById('criteriaName').value
         criteriaDescription = document.getElementById('criteriaDescription').value
-      },
+      },*/
       callback: () => {
         this.modifyCriteria({
           tagGroup: tagGroup, name: criteriaName, description: criteriaDescription
         })
       }
-    })
+    //})
   }
 
   modifyCriteria ({tagGroup, name, description, callback}) {
@@ -270,13 +270,13 @@ class CustomCriteriasManager {
       // If name has changed, check if there is not other criteria with the same value
       if (this.alreadyExistsThisCriteriaName(name)) {
         // Alert already exists
-        Alerts.errorAlert({
+        /*Alerts.errorAlert({
           title: 'Criteria already exists',
-          text: 'A criteria with the name ' + name + ' already exists.',
+          text: 'A criteria with the name ' + name + ' already exists.',*/
           callback: () => {
             this.modifyCriteriaHandler(tagGroup, name, description)
           }
-        })
+        //})
       } else {
         // Update all annotations review:isCriteriaOf:
         window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
@@ -284,7 +284,7 @@ class CustomCriteriasManager {
         }, (err, annotationsToUpdateTag) => {
           if (err) {
             // Unable to update
-            Alerts.errorAlert({text: 'Unable to update criteria.'})
+            //Alerts.errorAlert({text: 'Unable to update criteria.'})
           } else {
             let oldTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':' + tagGroup.config.name
             let newTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':' + name

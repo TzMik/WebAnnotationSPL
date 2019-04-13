@@ -1,4 +1,4 @@
-const swal = require('sweetalert2')
+//const swal = require('sweetalert2')
 const _ = require('lodash')
 const GoogleSheetClient = require('./GoogleSheetClient')
 
@@ -86,13 +86,13 @@ class GoogleSheetsClientManager {
    * @param callback
    */
   askUserToLogInGoogleSheets (callback) {
-    swal({
+    /*swal({
       title: 'Google sheets login required', // TODO i18n
       text: chrome.i18n.getMessage('GoogleSheetLoginRequired'),
       type: 'info',
       showCancelButton: true
     }).then((result) => {
-      if (result.value) {
+      if (result.value) {*/
         chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
           if (result.error) {
             if (_.isFunction(callback)) {
@@ -104,10 +104,10 @@ class GoogleSheetsClientManager {
             }
           }
         })
-      } else {
+     /* } else {
         callback(new Error('User don\'t want to log in google sheets'))
       }
-    })
+    })*/
   }
 }
 

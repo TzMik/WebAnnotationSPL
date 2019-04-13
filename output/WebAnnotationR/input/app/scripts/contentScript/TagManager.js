@@ -8,7 +8,7 @@ const ColorUtils = require('../utils/ColorUtils')
 const Events = require('./Events')
 const Tag = require('./Tag')
 const TagGroup = require('./TagGroup')
-const Alerts = require('../utils/Alerts')
+//const Alerts = require('../utils/Alerts')
 //
 //
 const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
@@ -69,7 +69,7 @@ class TagManager {
       order: 'desc'
     }, (err, annotations) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
+        //Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
       } else {
         // Retrieve tags which has the namespace
         annotations = _.filter(annotations, (annotation) => {
@@ -109,14 +109,14 @@ class TagManager {
       let promise = Promise.resolve(annotations) // TODO Check if it is okay
       if (annotations.length === 0) {
         promise = new Promise((resolve) => {
-          if (!Alerts.isVisible()) {
+          /*if (!Alerts.isVisible()) {
             Alerts.loadingAlert({title: 'Configuration in progress', text: 'We are configuring everything to start reviewing.', position: Alerts.position.center})
-          }
+          }*/
           DefaultHighlighterGenerator.createDefaultAnnotations(window.abwa.groupSelector.currentGroup, (err, annotations) => {
             if (err) {
-              Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
+              //Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
             } else {
-              Alerts.closeAlert()
+              //Alerts.closeAlert()
               resolve(annotations)
             }
           })
@@ -590,19 +590,8 @@ class TagManager {
 	//
   }
   
-  showTagsContainerForMode (mode) {
-    if (mode === ModeManager.modes.evidencing) {
-      this.showEvidencingTagsContainer()
-    } else if (mode === ModeManager.modes.mark) {
-      this.showMarkingTagsContainer()
-    } else if (mode === ModeManager.modes.view) {
-      this.showViewingTagsContainer()
-    }
-  }
   //
   showEvidencingTagsContainer () {
-    $(this.tagsContainer.viewing).attr('aria-hidden', 'true')
-    $(this.tagsContainer.marking).attr('aria-hidden', 'true')
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
   }
   //
@@ -619,11 +608,6 @@ class TagManager {
   }
   //
   //
-  showViewingTagsContainer () {
-    $(this.tagsContainer.viewing).attr('aria-hidden', 'false')
-    $(this.tagsContainer.marking).attr('aria-hidden', 'true')
-    $(this.tagsContainer.evidencing).attr('aria-hidden', 'true')
-  }
   //
   
   //
