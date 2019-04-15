@@ -10,11 +10,11 @@ class Toolset {
     axios.get(this.page).then((response) => {
       // Insert toolset container
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
-      debugger
       this.sidebarContainer.insertAdjacentHTML('afterbegin', response.data)
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
+      window.abwa.toolset.show()
       if (_.isFunction(callback)) {
         callback()
       }

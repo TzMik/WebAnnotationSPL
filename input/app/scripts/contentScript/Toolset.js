@@ -15,6 +15,7 @@ class Toolset {
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
+      window.abwa.toolset.show()
       if (_.isFunction(callback)) {
         callback()
       }

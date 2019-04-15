@@ -19,7 +19,7 @@ class specificContentScript{
     //
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init(() => {
-    	window.abwa.toolset.show()
+    	
     })
     //
     //
