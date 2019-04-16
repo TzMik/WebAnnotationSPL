@@ -19,8 +19,8 @@ const MoodleGradingManager = require('./MoodleGradingManager')
 const MoodleCommentManager = require('./MoodleCommentManager')
 const AssessmentManager = require('./AssessmentManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Generator)
-const ReviewGenerator = require('./ToolsetBar')
+//PVSCL:IFCOND(Toolset)
+const Toolset = require('./ToolsetBar')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(New)
 const CustomCriteriasManager = require('./CustomCriteriasManager')
@@ -42,8 +42,8 @@ class specificContentScript{
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
     //PVSCL:IFCOND(Generator)
-    window.abwa.specific.reviewGenerator = new ReviewGenerator()
-    window.abwa.specific.reviewGenerator.init(() => {
+    window.abwa.toolset = new Toolset()
+    window.abwa.toolset.init(() => {
 
     })
     //PVSCL:ENDCOND

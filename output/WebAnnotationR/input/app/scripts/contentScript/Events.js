@@ -19,3 +19,5 @@ const Events = {
   //
   updatedAllAnnotations: 'updatedAllAnnotations'
 }
+
+module.exports = Events

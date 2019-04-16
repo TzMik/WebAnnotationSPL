@@ -62,8 +62,8 @@ class ContentScriptManager {
                   //PVSCL:IFCOND(DefaultCriterias)
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
-                    //window.abwa.contentAnnotator = new TextAnnotator(Config.review)
-                    //window.abwa.contentAnnotator.init(() => {
+                    window.abwa.contentAnnotator = new TextAnnotator(Config.review)
+                    window.abwa.contentAnnotator.init(() => {
                       window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
                   //PVSCL:ENDCOND
@@ -77,7 +77,7 @@ class ContentScriptManager {
                         console.log('Initialized content script manager')
                   //PVSCL:IFCOND(DefaultCriterias)
                       })
-                    //})
+                    })
                   })
                   //PVSCL:ENDCOND
                 //PVSCL:IFCOND(NOT(ReviewMode))

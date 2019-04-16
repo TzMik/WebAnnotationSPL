@@ -7,22 +7,22 @@
     "message": "Highlight&Go",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
-  //PVSCL:IFCOND(Validations)
+  PVSCL:IFCOND(Validations)
   "appDescription": {
     "message": "Highlight your primary studies and go!",
     "description": "The description of the application"
   },
-  //PVSCL:ELSEIFCOND(Marks)
+  PVSCL:ELSEIFCOND(Marks)
   "appDescription": {
     "message": "Mark students' exams through highlights and go!",
     "description": "The description of the application"
   },
-  //PVSCL:ELSECOND
+  PVSCL:ELSECOND
   "appDescription": {
     "message": "Review papers using highlights and go!",
     "description": "The description of the application"
   },
-  //PVSCL:ENDCOND
+  PVSCL:ENDCOND
   "browserActionTitle": {
     "message": "Highlight&Go",
     "description": "The title of the browser action button"
@@ -35,90 +35,90 @@
     "message": "You need to give permissions to access your Google Spreadsheet.",
     "description": "Message to show when Google Sheets permission is required"
   },
-  //PVSCL:IFCOND(Validations)
+  PVSCL:IFCOND(Validations)
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with the rest of the reviewers to start data extraction collaboratively.",
     "description": "Message to show when hypothesis group is created"
   },
-  //PVSCL:ELSEIFCOND(Marks)
+  PVSCL:ELSEIFCOND(Marks)
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with your students to provide the feedback.",
     "description": "Message to show when hypothesis group is created"
   },
-  //PVSCL:ENDCOND
+  PVSCL:ENDCOND
   "Mode": {
     "message": "Mode",
     "description": "Sidebar mode header"
   },
-  //PVSCL:IFCOND('')
+  PVSCL:IFCOND(HihglightMode)
   "Highlight": {
     "message": "Mapping",
     "description": "Sidebar highlight label"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND('')
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(IndexMode)
   "Index": {
     "message": "Checker",
     "description": "Sidebar index label"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND('')
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(MarkingMode)
   "Marking": {
     "message": "Marking",
     "description": "Sidebar highlight label"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND('')
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(EvidencingMode)
   "Evidencing": {
     "message": "Evidencing",
     "description": "Sidebar evidence annotation"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Validations)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(Validations)
   "Dimensions": {
     "message": "Facets",
     "description": "Sidebar dimensions header"
   },
-  //PVSCL:ELSECOND
+  PVSCL:ELSECOND
   "Dimensions": {
     "message": "Criteria",
     "description": "Sidebar dimensions header"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Comments)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(Comments)
   "errorUpdatingAnnotationComment": {
     "message": "Error updating annotation comment, please try it again.",
     "description": "Message when fails updating annotation comment"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(BackToMoodle)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(BackToMoodle)
   "backToWorkspace": {
     "message": "Back to workspace",
     "description": "Text for link to return to workspace in sidebar"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND('')
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(EvidencingMode)
   "noEvidencesFoundForMarkingTitle": {
     "message": "No evidences found for this mark"
   },
   "noEvidencesFoundForMarkingText": {
     "message": "You haven't annotated any evidence for this mark, would you like to grade this student with $1?"
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Moodle)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(Moodle)
   "ErrorRelatingMoodleAndTool": {
     "message": "There was a problem while relating the tool with moodle. Please reload the page and try it again."
   },
   "ErrorSavingMarksInMoodle": {
     "message": "Something is something wrong in highlighter configuration that we cannot update moodle. Please reload the page and try it again."
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Generator)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(Generator)
   "GeneratingReviewReport": {
     "message": "Generating review report, please be patient."
   },
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(AllDeleter)
+  PVSCL:ENDCOND
+  PVSCL:IFCOND(AllDeleter)
   "DeleteAllAnnotationsConfirmationTitle": {
     "message": "Do you want to delete all the annotations?"
   },
@@ -131,7 +131,7 @@
   "DeleteCriteriaConfirmationMessage": {
     "message": "You are going to delete this criteria. This will also delete all the annotations done in all the documents with this criteria. Are you sure that do you want to delete them? You cannot undo this action."
   },
-  //PVSCL:ENDCOND
+  PVSCL:ENDCOND
   "ContactAdministrator": {
     "message": "If the error continues, please <a href='https://github.com/haritzmedina/reviewandgo/issues' target='_blank'>contact to Review&Go developers</a>."
   },

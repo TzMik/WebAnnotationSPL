@@ -30,17 +30,22 @@ class ToolsetBar extends Toolset{
       let generatorImageURL = chrome.extension.getURL('/images/generator.png')
       this.generatorImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.generatorImage.src = generatorImageURL
+      this.generatorImage.id = 'reviewGeneratorButton'
+      this.generatorImage.title = 'Generate report'
       this.toolsetBody.appendChild(this.generatorImage)
       this.generatorImage.addEventListener('click', () => {
-        this.generateReviewButtonHandler()
+    	  this.generateReview()
       })
       //
+      
+    //
 
       //
       // Set delete annotations image and event
       let deleteAnnotationsImageURL = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteAnnotationsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteAnnotationsImage.src = deleteAnnotationsImageURL
+      
       this.toolsetBody.appendChild(this.deleteAnnotationsImage)
       this.deleteAnnotationsImage.addEventListener('click', () => {
         this.deleteAnnotations()
@@ -73,7 +78,7 @@ class ToolsetBar extends Toolset{
     })
   }
 
-  //
+/*  //
   generateReviewButtonHandler () {
     // Create context menu
     $.contextMenu({
@@ -101,7 +106,7 @@ class ToolsetBar extends Toolset{
       }
     })
   }
-  //
+  //*/
 
   //
 
@@ -126,17 +131,17 @@ class ToolsetBar extends Toolset{
       alertType: Alerts.alertType.question,
       title: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationTitle'),
       text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),*/
-      callback: (err, toDelete) => {
+      //callback: (err, toDelete) => {
         // It is run only when the user confirms the dialog, so delete all the annotations
-        if (err) {
+        //if (err) {
           // Nothing to do
-        } else {
+        //} else {
           // Dispatch delete all annotations event
           LanguageUtils.dispatchCustomEvent(Events.deleteAllAnnotations)
           // TODO Check if it is better to maintain the sidebar opened or not
           window.abwa.sidebar.openSidebar()
-        }
-      }
+        //}
+      //}
     //})
   }
   //

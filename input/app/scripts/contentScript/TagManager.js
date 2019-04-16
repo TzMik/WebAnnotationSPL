@@ -1057,10 +1057,14 @@ class TagManager {
   getGroupFromAnnotation (annotation) {
     let tags = annotation.tags
     let criteriaTag = _.find(tags, (tag) => {
-      return tag.includes(/*PVSCL:IFCOND(Mark)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/)
-    }).replace(/*PVSCL:IFCOND(Mark)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/, '')
+      return tag.includes(/*PVSCL:IFCOND(Marks)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/)
+    }).replace(/*PVSCL:IFCOND(Marks)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/, '')
     return _.find(window.abwa.tagManager.currentTags, (tagGroupInstance) => {
+      //PVSCL:IFCOND(Marks)
       return criteriaName === tagGroupInstance.config.name
+      //PVSCL:ELSECOND
+      return criteriaTag === tagGroupInstance.config.name
+      //PVSCL:ENDCOND
     })
   }
 

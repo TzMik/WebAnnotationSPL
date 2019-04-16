@@ -70,10 +70,8 @@ class GroupSelector {
           // TODO Create default group
           DefaultHighlighterGenerator.createReviewHypothesisGroup((err, group) => {
             if (err) {
-              debugger
               //Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for the application. Please check if you are logged in Hypothes.is.'})
             } else {
-              debugger
               this.currentGroup = group
               callback(null)
             }

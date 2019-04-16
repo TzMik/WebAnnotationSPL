@@ -29,3 +29,5 @@ const Events = {
   //PVSCL:ENDCOND
   updatedAllAnnotations: 'updatedAllAnnotations'
 }
+
+module.exports = Events

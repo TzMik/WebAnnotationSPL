@@ -19,7 +19,7 @@ class specificContentScript{
     //
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init(() => {
-    	
+
     })
     //
     //
@@ -30,7 +30,7 @@ class specificContentScript{
     //
     //
     //
-    
+    window.abwa.toolset.show()
     //
   }
 

@@ -590,8 +590,18 @@ class TagManager {
 	//
   }
   
+  showTagsContainerForMode (mode) {
+    if (mode === ModeManager.modes.evidencing) {
+      this.showEvidencingTagsContainer()
+    } else if (mode === ModeManager.modes.mark) {
+      this.showMarkingTagsContainer()
+    } else if (mode === ModeManager.modes.view) {
+      this.showViewingTagsContainer()
+    }
+  }
   //
   showEvidencingTagsContainer () {
+    //
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
   }
   //
@@ -608,6 +618,11 @@ class TagManager {
   }
   //
   //
+  showViewingTagsContainer () {
+    $(this.tagsContainer.viewing).attr('aria-hidden', 'false')
+    $(this.tagsContainer.marking).attr('aria-hidden', 'true')
+    $(this.tagsContainer.evidencing).attr('aria-hidden', 'true')
+  }
   //
   
   //
@@ -650,7 +665,9 @@ class TagManager {
       return tag.includes(/**/ 'review:isCriteriaOf:' /**/)
     }).replace(/**/ 'review:isCriteriaOf:' /**/, '')
     return _.find(window.abwa.tagManager.currentTags, (tagGroupInstance) => {
-      return criteriaName === tagGroupInstance.config.name
+      //
+      return criteriaTag === tagGroupInstance.config.name
+      //
     })
   }
 

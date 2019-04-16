@@ -48,8 +48,8 @@ class ContentScriptManager {
                   //
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
-                    //window.abwa.contentAnnotator = new TextAnnotator(Config.review)
-                    //window.abwa.contentAnnotator.init(() => {
+                    window.abwa.contentAnnotator = new TextAnnotator(Config.review)
+                    window.abwa.contentAnnotator.init(() => {
                       window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
                   //
@@ -58,7 +58,7 @@ class ContentScriptManager {
                         console.log('Initialized content script manager')
                   //
                       })
-                    //})
+                    })
                   })
                   //
                 //
