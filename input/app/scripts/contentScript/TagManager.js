@@ -260,7 +260,6 @@ class TagManager {
       tagGroupsAnnotations[groups[i]].config.color = colorList[i]
     }
     //PVSCL:ENDCOND
-	//PVSCL:ENDCOND
 	for (let i = 0; i < this.model.groupAnnotations.length; i++) {
 	  let tagAnnotation = this.model.groupAnnotations[i]
 	  let tagName = this.retrieveTagNameByPrefix(this.model.groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.subgroup))
@@ -283,6 +282,7 @@ class TagManager {
 	      this.model.currentTags = tagGroupsAnnotations
 	    }
 	  }
+		
 	}
     tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => {
       //PVSCL:IFCOND(DefaultCriterias)
@@ -337,6 +337,7 @@ class TagManager {
     //PVSCL:ENDCOND
     // Hash to array
     return _.sortBy(tagGroupsAnnotations, 'config.name')
+    //PVSCL:ENDCOND
   }
   
   //PVSCL:IFCOND(Spreadsheet)
@@ -1112,6 +1113,27 @@ class TagManager {
     })
     //PVSCL:ENDCOND
   }
+  
+  //PVSCL:IFCOND(Spreadsheet)
+  createPanel (indexRole) {
+    if (this.tags.length > 0) {
+      let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
+      let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
+      let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
+      let groupNameSpan = tagGroup.querySelector('.groupName')
+      groupNameSpan.innerText = this.config.name
+      groupNameSpan.title = this.config.name
+      for (let j = 0; j < this.tags.length; j++) {
+        let tagButton = this.tags[j].createButton()
+        if (indexRole) {
+          tagButton.setAttribute('role', Tag.roles.index)
+        }
+        tagButtonContainer.append(tagButton)
+      }
+      return tagGroup
+    }
+  }
+  //PVSCL:ENDCOND
 }
   
 module.exports = TagManager

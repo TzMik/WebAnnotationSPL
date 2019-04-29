@@ -1,5 +1,5 @@
-const Events = require('../../contentScript/Events')
-const Config = require('../../Config')
+const Events = require('../contentScript/Events')
+const Config = require('../Config')
 const CommonHypersheetManager = require('./CommonHypersheetManager')
 //const swal = require('sweetalert2')
 const _ = require('lodash')

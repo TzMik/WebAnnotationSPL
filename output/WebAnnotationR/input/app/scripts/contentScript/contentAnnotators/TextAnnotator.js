@@ -522,9 +522,8 @@ class TextAnnotator extends ContentAnnotator {
         let items = {}
         // If current user is the same as author, allow to remove annotation
         //
-      
-          items['comment'] = {name: 'Comment'}
-          items['delete'] = {name: 'Delete'}
+        //
+        items['delete'] = {name: 'Delete'}
         //
         return {
           callback: (key) => {
@@ -592,7 +591,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  goToFirstAnnotationOfTag (tag) {
+  goToFirstAnnotationOfTag (/**/tag/**/) {
     //
     let annotation = _.find(this.allAnnotations, (annotation) => {
       return annotation.tags.includes(tag)

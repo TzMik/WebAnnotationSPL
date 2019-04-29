@@ -15,7 +15,8 @@ const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
 //
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
-const Toolbar = require('../specific/ToolsetBar')
+const Toolset = require('../specific/ToolsetBar')
+//
 
 class ContentScriptManager {
   constructor () {

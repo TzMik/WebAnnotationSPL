@@ -1,6 +1,6 @@
-const MappingStudy = require('../../model/MappingStudy')
-const Facet = require('../../model/Facet')
-const Code = require('../../model/Code')
+const MappingStudy = require('../model/MappingStudy')
+const Facet = require('../model/Facet')
+const Code = require('../model/Code')
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
 

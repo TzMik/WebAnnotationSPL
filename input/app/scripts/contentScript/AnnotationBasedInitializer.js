@@ -45,8 +45,12 @@ class AnnotationBasedInitializer {
     // Check if annotation is in hash params
     let decodedUri = decodeURIComponent(window.location.href)
     let params = URLUtils.extractHashParamsFromUrl(decodedUri)
-    if (!_.isEmpty(params) && _.has(params, Config.exams.urlParamName)) {
+    if (!_.isEmpty(params) && /* PVSCL:IFCOND(Spreadsheet) */ !_.isEmpty(params.hag /* PVSCL:ELSECOND*/_.has(params, Config.exams.urlParamName/*PVSCL:ENDCOND*/)) {
+      // PVSCL:IFCOND(Spreadsheet)
+      return params.hag
+      //PVSCL:ELSECOND
       return params[Config.exams.urlParamName]
+      //PVSCL:ENDCOND
     } else {
       return false
     }

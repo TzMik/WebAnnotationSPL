@@ -23,7 +23,10 @@ const RubricManager = require('./RubricManager')
 //PVSCL:ENDCOND
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
-const Toolbar = require('../specific/ToolsetBar')
+const Toolset = require('../specific/ToolsetBar')
+//PVSCL:IFCOND(Spreadsheet)
+const ConfigDecisionHelper = require('./ConfigDecisionHelper')
+//PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -109,13 +112,16 @@ class ContentScriptManager {
 
   reloadContentByGroup (callback) {
     //PVSCL:IFCOND(GroupSelector)
+	  ConfigDecisionHelper.decideWhichConfigApplyToTheGroup(window.abwa.groupSelector.currentGroup, (config) => {
       // If not configuration is found
       if (_.isEmpty(config)) {
           // TODO Inform user no defined configuration found
           console.debug('No supported configuration found for this group')
           this.destroyAugmentationOperations()
           this.destroyTagsManager()
+          //PVSCL:IFCOND(UserFilter)
           this.destroyUserFilter()
+          //PVSCL:ENDCOND
           this.destroyContentAnnotator()
           this.destroySpecificContentManager()
       } else {
@@ -153,6 +159,7 @@ class ContentScriptManager {
         //PVSCL:ENDCOND
     //PVSCL:IFCOND(GroupSelector)
       }
+	  })
     //PVSCL:ENDCOND
   }
 

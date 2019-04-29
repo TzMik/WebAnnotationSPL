@@ -45,7 +45,7 @@ class ToolsetBar extends Toolset{
       let deleteAnnotationsImageURL = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteAnnotationsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteAnnotationsImage.src = deleteAnnotationsImageURL
-      
+      this.deleteAnnotationsImage.title = 'Delete all annotations'
       this.toolsetBody.appendChild(this.deleteAnnotationsImage)
       this.deleteAnnotationsImage.addEventListener('click', () => {
         this.deleteAnnotations()
@@ -57,6 +57,7 @@ class ToolsetBar extends Toolset{
       let overviewImageURL = chrome.extension.getURL('/images/overview.png')
       this.overviewImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.overviewImage.src = overviewImageURL
+      this.overviewImage.title = 'Create canvas image'
       this.toolsetBody.appendChild(this.overviewImage)
       this.overviewImage.addEventListener('click', () => {
         this.generateCanvas()
@@ -68,6 +69,7 @@ class ToolsetBar extends Toolset{
       let resumeImageURL = chrome.extension.getURL('/images/resume.png')
       this.resumeImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.resumeImage.src = resumeImageURL
+      this.resumeImage.title = 'Go to last annotation'
       this.toolsetBody.appendChild(this.resumeImage)
       this.resumeImage.addEventListener('click', () => {
         this.resume()

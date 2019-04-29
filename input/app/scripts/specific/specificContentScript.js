@@ -41,7 +41,7 @@ class specificContentScript{
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
-    //PVSCL:IFCOND(Generator)
+    //PVSCL:IFCOND(Toolset)
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init(() => {
 

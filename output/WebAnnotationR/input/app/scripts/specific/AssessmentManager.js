@@ -1,9 +1,9 @@
-const Events = require('../../contentScript/Events')
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const Alerts = require('../../utils/Alerts')
+const Events = require('../contentScript/Events')
+const AnnotationUtils = require('../utils/AnnotationUtils')
+const Alerts = require('../utils/Alerts')
 const Mark = require('./Mark')
 const _ = require('lodash')
-const Rubric = require('../../model/Rubric')
+const Rubric = require('../model/Rubric')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
 const RETRIEVE_ANNOTATIONS_FOR_ASSIGNMENT_INTERVAL_IN_SECONDS = 10
@@ -268,7 +268,7 @@ class AssessmentManager {
               // Manage error
               //window.alert('Unable to create alert for: noEvidencesFoundForMarking. Reload the page, and if the error continues please contact administrator.')
             } else {
-              const TextAnnotator = require('../../contentScript/contentAnnotators/TextAnnotator')
+              const TextAnnotator = require('../contentScript/contentAnnotators/TextAnnotator')
               window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(TextAnnotator.constructAnnotation(null, newTagList), (err, annotation) => {
                 if (err) {
                   //Alerts.errorAlert({text: err.message})

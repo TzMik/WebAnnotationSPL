@@ -189,7 +189,6 @@ class TagManager {
       tagGroup.config.color = color
     }
     //
-	//
 	for (let i = 0; i < this.model.groupAnnotations.length; i++) {
 	  let tagAnnotation = this.model.groupAnnotations[i]
 	  let tagName = this.retrieveTagNameByPrefix(this.model.groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.subgroup))
@@ -212,6 +211,7 @@ class TagManager {
 	      this.model.currentTags = tagGroupsAnnotations
 	    }
 	  }
+		
 	}
     tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => {
       //
@@ -242,6 +242,7 @@ class TagManager {
     //
     // Hash to array
     return _.sortBy(tagGroupsAnnotations, 'config.name')
+    //
   }
   
   //
@@ -700,6 +701,8 @@ class TagManager {
     })
     //
   }
+  
+  //
 }
   
 module.exports = TagManager
