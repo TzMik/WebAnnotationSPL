@@ -11,6 +11,8 @@ const Events = {
   updatedCurrentAnnotations: 'updatedCurrentAnnotations',
   updatedDocumentURL: 'updatedDocumentURL',
   //
+  comment: 'annotationComment',
+  //
   //
   //
   tagsUpdated: 'tagsUpdated',

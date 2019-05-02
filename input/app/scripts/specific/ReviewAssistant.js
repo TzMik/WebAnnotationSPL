@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-//const Alerts = require('../../utils/Alerts')
+const Alerts = require('../../utils/Alerts')
 const Config = require('../../Config')
 //const {Review, Mark, MajorConcern, MinorConcern, Strength, Annotation} = require('../../exporter/reviewModel.js')
 const {Review,Annotation,AnnotationGroup} = require('../../exporter/reviewModel.js')

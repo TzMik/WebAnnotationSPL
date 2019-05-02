@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 const CryptoUtils = require('../utils/CryptoUtils')
 
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
@@ -49,10 +49,10 @@ class ContentTypeManager {
               chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)}}, (fileMetadata) => {
                 if (_.isEmpty(fileMetadata)) {
                   // Warn user document is not from moodle
-                  /*Alerts.warningAlert({
+                  Alerts.warningAlert({
                     text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
                     title: 'This file is not downloaded from moodle'
-                  })*/
+                  })
                   this.documentURL = window.PDFViewerApplication.url
                 } else {
                   this.fileMetadata = fileMetadata.file
@@ -82,10 +82,10 @@ class ContentTypeManager {
             chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.location.href)}}, (fileMetadata) => {
               if (_.isEmpty(fileMetadata)) {
                 // Warn user document is not from moodle
-                /*Alerts.warningAlert({
+                Alerts.warningAlert({
                   text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
                   title: 'This file is not downloaded from moodle'
-                })*/
+                })
                 this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
               } else {
                 this.fileMetadata = fileMetadata.file
@@ -204,15 +204,17 @@ class ContentTypeManager {
   }
 
   initSupportWebURLChange () {
-    this.urlChangeInterval = setInterval(() => {
-      let newUrl = URLUtils.retrieveMainUrl(window.location.href)
-      if (newUrl !== this.documentURL) {
-        console.debug('Document URL updated from %s to %s', this.documentURL, newUrl)
-        this.documentURL = newUrl
-        // Dispatch event
-        LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.documentURL})
-      }
-    }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
+    if (this.documentType !== ContentTypeManager.documentTypes.pdf){
+      this.urlChangeInterval = setInterval(() => {
+        let newUrl = URLUtils.retrieveMainUrl(window.location.href)
+        if (newUrl !== this.documentURL) {
+          console.debug('Document URL updated from %s to %s', this.documentURL, newUrl)
+          this.documentURL = newUrl
+          // Dispatch event
+          LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.documentURL})
+        }
+      }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
+    }
   }
 
   tryToLoadPlainTextFingerprint () {

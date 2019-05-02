@@ -7,7 +7,7 @@ const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, chec
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
 //PVSCL:ENDCOND
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(Student)
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
@@ -35,10 +35,10 @@ class GroupSelector {
       if (err) {
         // Stop propagating the rest of the functions, because it is not logged in hypothesis
         // Show that user need to log in hypothes.is to continue
-        /*Alerts.errorAlert({
+        Alerts.errorAlert({
           title: 'Log in Hypothes.is required',
           text: chrome.i18n.getMessage('HypothesisLoginRequired')
-        })*/
+        })
       } else {
         // Retrieve user profile (for further uses in other functionalities of the tool)
         this.retrieveUserProfile(() => {
@@ -151,14 +151,14 @@ class GroupSelector {
         } else {
           //PVSCL:IFCOND(Moodle)
           // Warn user not group is defined, configure tool first
-          //Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start the application'}) // TODO i18n
+          Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start the application'}) // TODO i18n
           //PVSCL:ELSEIFCOND(DefaultCriterias)
           // TODO i18n
-          //Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
+          Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
           DefaultHighlighterGenerator.createReviewHypothesisGroup((err, group) => {
             if (err) {
-              //Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for the application. Please check if you are logged in Hypothes.is.'})
+              Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for the application. Please check if you are logged in Hypothes.is.'})
             } else {
               this.currentGroup = group
               callback(null)

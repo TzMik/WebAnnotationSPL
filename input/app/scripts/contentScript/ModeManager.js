@@ -183,6 +183,7 @@ ModeManager.modes = {
   //PVSCL:ENDCOND
   //PVSCL:IFCOND(MarkingMode)
   'mark': 'mark',
+  //PVSCL:ENDCOND
   //PVSCL:IFCOND(EvidencingMode)
   'evidencing': 'evidencing',
   //PVSCL:ENDCOND

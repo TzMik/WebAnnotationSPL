@@ -22,7 +22,12 @@ class specificContentScript{
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
-    
+    //
+    window.abwa.toolset = new Toolset()
+    window.abwa.toolset.init(() => {
+
+    })
+    //
     //
     //
     // Enable different functionality if current user is the teacher or student

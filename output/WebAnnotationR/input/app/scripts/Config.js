@@ -52,7 +52,7 @@ const Config = {
     }
   },
   review: {
-    groupName: 'ReviewAndGo',
+    groupName: 'ReviewAndGoSPL',
     namespace: 'review',
     tags: { // Defined tags for the domain
       grouped: { // Grouped annotations

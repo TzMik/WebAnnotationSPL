@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 const CryptoUtils = require('../utils/CryptoUtils')
 
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
@@ -36,7 +36,7 @@ class ContentTypeManager {
           this.pdfFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint
           // Get document URL
           if (this.urlParam) {
-            this.documentURL = this.urlParam || 'urn:x-pdf:' + this.pdfFingerprint
+            this.documentURL = this.urlParam
             if (_.isFunction(callback)) {
               callback()
             }
@@ -44,23 +44,23 @@ class ContentTypeManager {
             // Is a local file
             if (window.PDFViewerApplication.url.startsWith('file:///')) {
               this.localFile = true
-              //
               // Check in moodle download manager if the file exists
               chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)}}, (fileMetadata) => {
                 if (_.isEmpty(fileMetadata)) {
                   // Warn user document is not from moodle
-                  /*Alerts.warningAlert({
+                  Alerts.warningAlert({
                     text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
-                    title: 'This file is not downloaded from moodle'
-                  })*/
+                    title: 'This file is not downloaded from moodle'})
                   this.documentURL = window.PDFViewerApplication.url
                 } else {
                   this.fileMetadata = fileMetadata.file
                   this.documentURL = fileMetadata.file.url
                   this.getContextAndItemIdInLocalFile()
                 }
+                if (_.isFunction(callback)) {
+                  callback()
+                }
               })
-              //
             } else { // Is an online resource
               // Support in ajax websites web url change, web url can change dynamically, but locals never do
               this.initSupportWebURLChange()
@@ -82,10 +82,9 @@ class ContentTypeManager {
             chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.location.href)}}, (fileMetadata) => {
               if (_.isEmpty(fileMetadata)) {
                 // Warn user document is not from moodle
-                /*Alerts.warningAlert({
+                Alerts.warningAlert({
                   text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
-                  title: 'This file is not downloaded from moodle'
-                })*/
+                  title: 'This file is not downloaded from moodle'})
                 this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
               } else {
                 this.fileMetadata = fileMetadata.file
@@ -114,11 +113,7 @@ class ContentTypeManager {
   destroy (callback) {
     if (this.documentType === ContentTypeManager.documentTypes.pdf) {
       // Reload to original pdf website
-      if (_.isUndefined(this.documentURL) || _.isNull(this.documentURL)) {
-        window.location.href = window.PDFViewerApplication.baseUrl
-      } else {
-        window.location.href = this.documentURL
-      }
+      window.location.href = this.documentURL
     } else {
       if (_.isFunction(callback)) {
         callback()
@@ -196,11 +191,7 @@ class ContentTypeManager {
   }
 
   getDocumentURIToSaveInHypothesis () {
-    if (this.localFile) {
-      return 'urn:x-pdf:' + this.pdfFingerprint
-    } else {
-      return this.documentURL
-    }
+    return this.documentURL
   }
 
   initSupportWebURLChange () {
@@ -221,18 +212,18 @@ class ContentTypeManager {
       let fileTextContent = fileTextContentElement.innerText
       this.documentFingerprint = CryptoUtils.hash(fileTextContent.innerText)
     }
-  }    
+  }
 }
 
 ContentTypeManager.documentTypes = {
-    html: {
-        name: 'html',
-        selectors: ['FragmentSelector', 'RangeSelector', 'TextPositionSelector', 'TextQuoteSelector']
-    },
-    pdf: {
-        name: 'pdf',
-        selectors: ['FragmentSelector', 'TextPositionSelector', 'TextQuoteSelector']
-    }
+  html: {
+    name: 'html',
+    selectors: ['FragmentSelector', 'RangeSelector', 'TextPositionSelector', 'TextQuoteSelector']
+  },
+  pdf: {
+    name: 'pdf',
+    selectors: ['FragmentSelector', 'TextPositionSelector', 'TextQuoteSelector']
+  }
 }
 
 module.exports = ContentTypeManager

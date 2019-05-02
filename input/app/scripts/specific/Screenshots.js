@@ -2,7 +2,7 @@ const html2canvas = require('html2canvas')
 window.html2canvas = require('html2canvas')
 const FileSaver = require('file-saver')
 const JsPDF = require('jspdf')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 const _ = require('lodash')
 
 class Screenshots {
@@ -16,13 +16,13 @@ class Screenshots {
       // Go to first page
       window.PDFViewerApplication.page = 1
 
-      /*Alerts.loadingAlert({
+      Alerts.loadingAlert({
         title: 'Please hold on',
         text: 'We are creating the annotated PDF document (<span></span> of ' + window.PDFViewerApplication.pagesCount + ')',
         timerIntervalHandler: (swal) => {
           swal.getContent().querySelector('span').textContent = window.PDFViewerApplication.page
         }
-      })*/
+      })
       // Create pdf file
       let pdf = new JsPDF('p', 'cm', 'a4', true)
       // Redraw annotations
@@ -64,7 +64,7 @@ class Screenshots {
           // Restore previous page and zoom
           window.PDFViewerApplication.pdfViewer.currentScale = currentScale
           window.PDFViewerApplication.page = currentPage
-          //Alerts.closeAlert()
+          Alerts.closeAlert()
           pdf.save('activity.pdf')
           // Callback
           if (_.isFunction(callback)) {

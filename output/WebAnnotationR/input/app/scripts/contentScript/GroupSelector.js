@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const $ = require('jquery')
 //
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 //
 const Config = require('../Config')
 //
@@ -25,10 +25,10 @@ class GroupSelector {
       if (err) {
         // Stop propagating the rest of the functions, because it is not logged in hypothesis
         // Show that user need to log in hypothes.is to continue
-        /*Alerts.errorAlert({
+        Alerts.errorAlert({
           title: 'Log in Hypothes.is required',
           text: chrome.i18n.getMessage('HypothesisLoginRequired')
-        })*/
+        })
       } else {
         // Retrieve user profile (for further uses in other functionalities of the tool)
         this.retrieveUserProfile(() => {
@@ -66,11 +66,11 @@ class GroupSelector {
         } else {
           //
           // TODO i18n
-          //Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
+          Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
           DefaultHighlighterGenerator.createReviewHypothesisGroup((err, group) => {
             if (err) {
-              //Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for the application. Please check if you are logged in Hypothes.is.'})
+              Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for the application. Please check if you are logged in Hypothes.is.'})
             } else {
               this.currentGroup = group
               callback(null)

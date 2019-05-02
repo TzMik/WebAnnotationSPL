@@ -106,7 +106,7 @@ class AssessmentManager {
         this.mark(level)
       } else {
         // Unable to retrieve criteria or level
-        //Alerts.errorAlert({title: 'Unable to mark', text: 'There was an error when trying to mark this assignment, please reload the page and try it again.' + chrome.i18n.getMessage('ContactAdministrator')})
+        Alerts.errorAlert({title: 'Unable to mark', text: 'There was an error when trying to mark this assignment, please reload the page and try it again.' + chrome.i18n.getMessage('ContactAdministrator')})
       }
     })
     document.addEventListener(Events.comment, (event) => {
@@ -123,12 +123,12 @@ class AssessmentManager {
         }
         // Update moodle
         this.updateMoodle(() => {
-          /*Alerts.temporalAlert({
+          Alerts.temporalAlert({
             text: 'Comment updated in moodle',
             title: 'Moodle updated',
             type: Alerts.alertType.success,
             toast: true
-          })*/
+          })
         })
       }
     })
@@ -259,19 +259,19 @@ class AssessmentManager {
       let annotations = mark.annotations
       if (annotations.length === 0) {
         // Ask user
-        /*Alerts.confirmAlert({
+        Alerts.confirmAlert({
           title: chrome.i18n.getMessage('noEvidencesFoundForMarkingTitle', criteria.name),
           text: chrome.i18n.getMessage('noEvidencesFoundForMarkingText', level.name),
-          alertType: Alerts.alertType.warning,*/
+          alertType: Alerts.alertType.warning,
           callback: (err) => {
             if (err) {
               // Manage error
-              //window.alert('Unable to create alert for: noEvidencesFoundForMarking. Reload the page, and if the error continues please contact administrator.')
+              window.alert('Unable to create alert for: noEvidencesFoundForMarking. Reload the page, and if the error continues please contact administrator.')
             } else {
               const TextAnnotator = require('../contentScript/contentAnnotators/TextAnnotator')
               window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(TextAnnotator.constructAnnotation(null, newTagList), (err, annotation) => {
                 if (err) {
-                  //Alerts.errorAlert({text: err.message})
+                  Alerts.errorAlert({text: err.message})
                 } else {
                   mark.annotations = [annotation]
                   this.updateAnnotationsInHypothesis(annotations, () => {
@@ -279,12 +279,12 @@ class AssessmentManager {
                   })
                   // Update moodle
                   this.updateMoodle(() => {
-                    /*Alerts.temporalAlert({
+                    Alerts.temporalAlert({
                       text: 'The mark is updated in moodle',
                       title: 'Correctly marked',
                       type: Alerts.alertType.success,
                       toast: true
-                    })*/
+                    })
                   })
                 }
               })
@@ -302,17 +302,17 @@ class AssessmentManager {
         // Update moodle
         this.updateMoodle((err, result) => {
           if (err) {
-            /*Alerts.errorAlert({
+            Alerts.errorAlert({
               text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
               title: 'Unable to update marks in moodle'
-            })*/
+            })
           } else {
-            /*Alerts.temporalAlert({
+            Alerts.temporalAlert({
               text: 'The mark is updated in moodle',
               title: 'Correctly marked',
               type: Alerts.alertType.success,
               toast: true
-            })*/
+            })
           }
         })
       }

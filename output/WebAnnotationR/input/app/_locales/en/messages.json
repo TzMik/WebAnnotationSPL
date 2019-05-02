@@ -41,6 +41,11 @@
   },
   
   
+  "errorUpdatingAnnotationComment": {
+    "message": "Error updating annotation comment, please try it again.",
+    "description": "Message when fails updating annotation comment"
+  },
+  
   
   
   

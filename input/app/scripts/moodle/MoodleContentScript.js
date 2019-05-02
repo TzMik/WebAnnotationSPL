@@ -5,7 +5,7 @@ const Rubric = require('../model/Rubric')
 const Criteria = require('../model/Criteria')
 const Level = require('../model/Level')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 const LanguageUtils = require('../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
@@ -20,11 +20,11 @@ class MoodleContentScript {
 
   init (callback) {
     // Ask for configuration
-    /*Alerts.confirmAlert({title: 'Application assignment configuration',
+    Alerts.confirmAlert({title: 'Application assignment configuration',
       text: 'Do you want to configure this assignment to mark using this application?',
       cancelCallback: () => {
         callback(null)
-      },*/
+      },
       callback: () => {
         // Create hypothesis client
         this.initHypothesisClient(() => {
@@ -40,7 +40,7 @@ class MoodleContentScript {
               this.moodleClientManager.init((err) => {
                 if (err) {
                   // Unable to init moodle client manager
-                  //Alerts.errorAlert({text: 'Unable to retrieve rubric from moodle, have you the required permissions to get the rubric via API?'})
+                  Alerts.errorAlert({text: 'Unable to retrieve rubric from moodle, have you the required permissions to get the rubric via API?'})
                   callback(err)
                 } else {
                   let promises = []
@@ -66,10 +66,10 @@ class MoodleContentScript {
                   }))
                   Promise.all(promises).catch((rejects) => {
                     let reject = _.isArray(rejects) ? rejects[0] : rejects
-                    /*Alerts.errorAlert({
+                    Alerts.errorAlert({
                       title: 'Something went wrong',
                       text: reject.message
-                    })*/
+                    })
                   }).then((resolves) => {
                     if (resolves && resolves.length > 1) {
                       let rubric = null
@@ -84,14 +84,14 @@ class MoodleContentScript {
                       // Send task to background
                       chrome.runtime.sendMessage({scope: 'task', cmd: 'createHighlighters', data: {rubric: CircularJSON.stringifyStrict(rubric), students: students, courseId: assignmentData.courseId}}, (result) => {
                         if (result.err) {
-                          /*Alerts.errorAlert({
+                          Alerts.errorAlert({
                             title: 'Something went wrong',
                             text: 'Error when sending createHighlighters to the background. Please try it again.'
-                          })*/
+                          })
                         } else {
                           let minutes = result.minutes
                           let notFirstTime = false
-                          /*Alerts.infoAlert({
+                          Alerts.infoAlert({
                             title: 'Configuration started',
                             text: 'We are configuring the assignment to mark using this application.' +
                               `This can take around <b>${minutes} minute(s)</b>.` +
@@ -108,7 +108,7 @@ class MoodleContentScript {
                               })
                             },
                             timerIntervalPeriodInSeconds: 2
-                          })*/
+                          })
                           // Show message
                           callback(null)
                         }
@@ -116,17 +116,18 @@ class MoodleContentScript {
                     }
                   }).catch((rejects) => {
                     let reject = _.isArray(rejects) ? rejects[0] : rejects
-                    /*Alerts.errorAlert({
+                    Alerts.errorAlert({
                       title: 'Something went wrong',
                       text: reject.message + '.\n' + chrome.i18n.getMessage('ContactAdministrator')
-                    })*/
+                    })
                   })
                 }
               })
             }
           })
         })
-      }})
+      }
+    })
   }
 
   getRubric (cmid, courseId, callback) {
@@ -164,10 +165,10 @@ class MoodleContentScript {
   }
 
   showToolIsConfiguring () {
-    /*Alerts.loadingAlert({
+    Alerts.loadingAlert({
       title: 'Configuring the tool, please be patient', // TODO i18n
       text: 'If the tool takes too much time, please reload the page and try again.'
-    })*/
+    })
   }
 
   initHypothesisClient (callback) {
@@ -213,14 +214,14 @@ class MoodleContentScript {
         callback(null, rubric)
       } else {
         // Message user assignment has not a rubric associated
-        //Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
+        Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
         if (_.isFunction(callback)) {
           callback()
         }
       }
     } else {
       // Message user assignment has not a rubric associated
-      //Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
+      Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
       if (_.isFunction(callback)) {
         callback()
       }

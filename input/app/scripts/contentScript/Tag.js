@@ -5,9 +5,7 @@ const ColorUtils = require('../utils/ColorUtils')
 
 class Tag {
   constructor (config/*PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector)*/, group = null /*PVSCL:ENDCOND*/) {
-    //PVSCL:IFCOND(AutomaticSelection)
     this.group = group
-    //PVSCL:ENDCOND
     this.name = config.name
     this.namespace = config.namespace
     this.tags = config.tags || [config.namespace + ':' + config.name]

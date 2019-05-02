@@ -10,9 +10,12 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
-//const Alerts = require('../../utils/Alerts')
+const Alerts = require('../../utils/Alerts')
+const AnnotationUtils = require('../../utils/AnnotationUtils')
 //
 //
+const Config = require('../../Config')
+//let swal = require('sweetalert2')
 
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const REMOVE_OVERLAYS_INTERVAL_IN_SECONDS = 3
@@ -174,14 +177,14 @@ class TextAnnotator extends ContentAnnotator {
           // Navigate to the first annotation for this tag
           this.goToFirstAnnotationOfTag(event.detail.tags[0])
         } else {
-          //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         //
         return
       }
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
         return
       }
       let range = document.getSelection().getRangeAt(0)
@@ -223,7 +226,7 @@ class TextAnnotator extends ContentAnnotator {
       let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
-          //Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
           //
@@ -523,6 +526,8 @@ class TextAnnotator extends ContentAnnotator {
         // If current user is the same as author, allow to remove annotation
         //
         //
+        items['comment'] = {name: 'Comment'}
+        //
         items['delete'] = {name: 'Delete'}
         //
         return {
@@ -530,6 +535,10 @@ class TextAnnotator extends ContentAnnotator {
             //
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
+            }
+            //
+            if (key === 'comment') {
+              this.commentAnnotationHandler(annotation)
             }
             //
             //
@@ -550,8 +559,14 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         if (!result.deleted) {
           // Alert user error happened
-          //Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+          Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
+          // // NOT la baldintza de CreateAnnotationEventHandler
+          // Remove annotation from data model
+          _.remove(this.currentAnnotations, (currentAnnotation) => {
+            return currentAnnotation.id === annotation.id
+          })
+          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
           //
           _.remove(this.allAnnotations, (currentAnnotation) => {
             return currentAnnotation.id === annotation.id
@@ -567,7 +582,104 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
+  commentAnnotationHandler (annotation) {
+	// Close sidebar if opened
+	    let isSidebarOpened = window.abwa.sidebar.isOpened()
+	    this.closeSidebar()
+	    
+	let that = this
+
+    let updateAnnotation = (textObject) => {
+      annotation.text = JSON.stringify(textObject)
+      // Assign level to annotation
+      let level = textObject.level || null
+      if (level != null) {
+        let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
+        let pole = tagGroup.tags.find((e) => { return e.name === level })
+        annotation.tags = pole.tags
+      }
+      window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(
+	              annotation.id,
+	              annotation,
+	              (err, annotation) => {
+	                if (err) {
+	                  // Show error message
+	                  Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+	                } else {
+	                  // Update current annotations
+	                  let currentIndex = _.findIndex(this.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
+	                  this.allAnnotations.splice(currentIndex, 1, annotation)
+	                  // Update all annotations
+	                  let allIndex = _.findIndex(this.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
+	                  this.allAnnotations.splice(allIndex, 1, annotation)
+	                  // Dispatch updated annotations events
+	                  LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+	                  LanguageUtils.dispatchCustomEvent(Events.comment, {annotation: annotation})
+	                  // Redraw annotations
+	                  DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
+	                  this.highlightAnnotation(annotation)
+	                }
+	              })
+
+    }
+   
+    let groupTag = window.abwa.tagManager.getGroupFromAnnotation(annotation)
+    let criterionName = groupTag.config.name
+
+    let hasLevel = (annotation, level) => {
+      return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
+    }
+    let poles = groupTag.tags.map((e) => { return e.name })
+    // let poleChoiceRadio = poles.length>0 ? '<h3>Pole</h3>' : ''
+    let poleChoiceRadio = '<div>'
+    poles.forEach((e) => {
+      poleChoiceRadio += '<input type="radio" name="pole" class="swal2-radio poleRadio" value="' + e + '" '
+      if (hasLevel(annotation, e)) poleChoiceRadio += 'checked'
+      poleChoiceRadio += '>'
+      switch (e) {
+        case 'Strength':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/strength.png') + '"/>'
+          break
+        case 'Major weakness':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/majorConcern.png') + '"/>'
+          break
+        case 'Minor weakness':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/minorConcern.png') + '"/>'
+          break
+      }
+      poleChoiceRadio += ' <span class="swal2-label" style="margin-right:5%;" title="\'+e+\'">' + e + '</span>'
+    })
+    poleChoiceRadio += '</div>'
+    	let newComment
+    	let suggestedLiterature
+    	let level
+    	let textObject = JSON.parse(annotation.text)
+    	let comment = textObject.comment || ''
+	    Alerts.multipleInputAlert({
+	      title: criterionName,
+	      html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	      preConfirm: () => {
+	    	  newComment = $('#swal-textarea').val()
+	          suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
+	          level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
+	      },
+	      callback: (err, result) => {
+	    	  updateAnnotation({comment: newComment, level: level})
+	            if (isSidebarOpened) {
+	              this.openSidebar()
+	            }
+	      }
+	    })
+	    
+	  $('.poleRadio + img').on('click', function () {
+        $(this).prev('.poleRadio').prop('checked', true)
+      })
+  }
+
   //
+
+  //
+
 
   retrieveHighlightClassName () {
     return this.highlightClassName // TODO Depending on the status of the application
@@ -824,7 +936,7 @@ class TextAnnotator extends ContentAnnotator {
     }
     // When all the annotations are deleted
     Promise.all(promises).catch(() => {
-      //Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
+      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
       // Update annotation variables
       this.allAnnotations = []

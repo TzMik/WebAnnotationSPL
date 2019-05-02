@@ -1,40 +1,25 @@
 const _ = require('lodash')
 const $ = require('jquery')
-//
-//const Alerts = require('../utils/Alerts')
-//
+const Alerts = require('../utils/Alerts')
 const CryptoUtils = require('../utils/CryptoUtils')
-//
-const Config = require('../Config')
-//
-//
 
 class GroupSelector {
   constructor () {
-    //
     this.groups = null
-    //
     this.currentGroup = null
     this.user = {}
   }
 
   init (callback) {
-    //
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {
         // Stop propagating the rest of the functions, because it is not logged in hypothesis
-        // Show that user need to log in hypothes.is to continue
-        /*Alerts.errorAlert({
-          title: 'Log in Hypothes.is required',
-          text: chrome.i18n.getMessage('HypothesisLoginRequired')
-        })*/
       } else {
         // Retrieve user profile (for further uses in other functionalities of the tool)
         this.retrieveUserProfile(() => {
           // Define current group
           this.defineCurrentGroup(() => {
-            console.debug('Initialized group selector')
             if (_.isFunction(callback)) {
               callback(null)
             }
@@ -42,26 +27,18 @@ class GroupSelector {
         })
       }
     })
-    //
   }
-
-  //
-
   defineCurrentGroup (callback) {
-    //
-    //
     let fileMetadata = window.abwa.contentTypeManager.fileMetadata
     // Get group name from file metadata
     let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
     let hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
-    //
     // Load all the groups belonged to current user
     this.retrieveHypothesisGroups((err, groups) => {
       if (err) {
+
       } else {
-        //
         let group = _.find(groups, (group) => { return group.name === hashedGroupName })
-        //
         if (_.isObject(group)) {
           // Current group will be that group
           this.currentGroup = group
@@ -69,17 +46,13 @@ class GroupSelector {
             callback(null)
           }
         } else {
-          //
           // Warn user not group is defined, configure tool first
-          //Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start the application'}) // TODO i18n
-          //
+          Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start Mark&Go'}) // TODO i18n
         }
       }
     })
-    //
   }
 
-  //
   checkIsLoggedIn (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
@@ -136,10 +109,8 @@ class GroupSelector {
       }
     })
   }
-  //
 
   destroy (callback) {
-    //
     if (_.isFunction(callback)) {
       callback()
     }

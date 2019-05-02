@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const URLUtils = require('../utils/URLUtils')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 
 const Config = require('../Config')
 
@@ -16,7 +16,7 @@ class AnnotationBasedInitializer {
       if (window.abwa.hypothesisClientManager.isLoggedIn() === false) {
         window.abwa.hypothesisClientManager.logInHypothesis((err, token) => {
           if (err) {
-            //Alerts.errorAlert({title: 'Log in hypothes.is is required', text: 'To use the application it is necessary to log in Hypothes.is.'})
+            Alerts.errorAlert({title: 'Log in hypothes.is is required', text: 'To use the application it is necessary to log in Hypothes.is.'})
           } else {
             // Reload web page
             document.location.reload()

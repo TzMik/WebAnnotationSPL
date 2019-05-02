@@ -30,7 +30,7 @@ class specificContentScript{
     //
     //
     //
-    window.abwa.toolset.show()
+    //window.abwa.toolset.show()
     //
   }
 

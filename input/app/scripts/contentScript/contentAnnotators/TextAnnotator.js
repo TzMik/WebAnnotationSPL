@@ -10,13 +10,15 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
-//const Alerts = require('../../utils/Alerts')
+const Alerts = require('../../utils/Alerts')
 //PVSCL:IFCOND(NOT(ReviewMode))
 const ModeManager = require('../ModeManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Student OR Teacher)
 const RolesManager = require('../RolesManager')
 //PVSCL:ENDCOND
+const Config = require('../../Config')
+//let swal = require('sweetalert2')
 
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const REMOVE_OVERLAYS_INTERVAL_IN_SECONDS = 3
@@ -243,16 +245,16 @@ class TextAnnotator extends ContentAnnotator {
           // Navigate to the first annotation for this tag
           this.goToFirstAnnotationOfTag(event.detail.tags[0])
         } else {
-          //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         //PVSCL:ELSECOND
-        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         //PVSCL:ENDCOND
         return
       }
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        //Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
         return
       }
       let range = document.getSelection().getRangeAt(0)
@@ -294,7 +296,7 @@ class TextAnnotator extends ContentAnnotator {
       let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
-          //Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
           //PVSCL:IFCOND(DefaultCriterias)
@@ -494,13 +496,13 @@ class TextAnnotator extends ContentAnnotator {
           callback(err)
         }
       } else {
-        //PVSCL:IFCOND('')
+        //PVSCL:IFCOND(Replys)
         // Get reply annotations
         this.replyAnnotations = _.remove(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND('')
+        //PVSCL:IFCOND(Spreadsheet)
         // Search tagged annotations
         let tagList = window.abwa.tagManager.getTagsList()
         let taggedAnnotations = []
@@ -858,11 +860,11 @@ class TextAnnotator extends ContentAnnotator {
     if (_.last(repliesData.replies) && _.last(repliesData.replies).user === window.abwa.groupSelector.user.userid) {
         inputValue = _.last(repliesData.replies).text
     }
-    /*Alerts.inputTextAlert({
+    Alerts.inputTextAlert({
       input: 'textarea',
       inputPlaceholder: inputValue || 'Type your reply here...',
       inputValue: inputValue || '',
-      html: repliesData.htmlText,*/
+      html: repliesData.htmlText,
       callback: (err, result) => {
         if (err) {
         } else {
@@ -876,7 +878,7 @@ class TextAnnotator extends ContentAnnotator {
             window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(replyAnnotationData, (err, replyAnnotation) => {
               if (err) {
                 // Show error when creating annotation
-                //Alerts.errorAlert({text: 'There was an error when replying, please try again. Make sure you are logged in Hypothes.is.'})
+                Alerts.errorAlert({text: 'There was an error when replying, please try again. Make sure you are logged in Hypothes.is.'})
               } else {
                 // Dispatch event of new reply is created
                 LanguageUtils.dispatchCustomEvent(Events.reply, {
@@ -894,7 +896,7 @@ class TextAnnotator extends ContentAnnotator {
               }, (err, replyAnnotation) => {
                 if (err) {
                   // Show error when updating annotation
-                  //Alerts.errorAlert({text: 'There was an error when editing your reply, please try again. Make sure you are logged in Hypothes.is.'})
+                  Alerts.errorAlert({text: 'There was an error when editing your reply, please try again. Make sure you are logged in Hypothes.is.'})
                 } else {
                   // TODO Remove the comment and create the new one in moodle
                   LanguageUtils.dispatchCustomEvent(Events.reply, {
@@ -909,7 +911,7 @@ class TextAnnotator extends ContentAnnotator {
           console.log(result)
         }
       }
-    //})
+    })
   }
 
   createRepliesData (annotation) {
@@ -974,9 +976,9 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         if (!result.deleted) {
           // Alert user error happened
-          //Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+          Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
-          //PVSCL:IFCOND('') // NOT la baldintza de CreateAnnotationEventHandler
+          //PVSCL:IFCOND(DefaultCriterias) // NOT la baldintza de CreateAnnotationEventHandler
           // Remove annotation from data model
           _.remove(this.currentAnnotations, (currentAnnotation) => {
             return currentAnnotation.id === annotation.id
@@ -997,12 +999,11 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //PVSCL:IFCOND(Comments)
   commentAnnotationHandler (annotation) {
     // Close sidebar if opened
     let isSidebarOpened = window.abwa.sidebar.isOpened()
     this.closeSidebar()
-    //PVSCL:IFCOND(Moodle)
+    //PVSCL:IFCOND(Moodle AND Comments)
     // Inputs
     let comment
     // Get annotation criteria
@@ -1010,10 +1011,10 @@ class TextAnnotator extends ContentAnnotator {
     // Get previous assignments
     let previousAssignments = this.retrievePreviousAssignments()
     let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
-    /*Alerts.multipleInputAlert({
+    Alerts.multipleInputAlert({
       title: criteriaName,
       html: previousAssignmentsUI.outerHTML + '<textarea data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>',
-      */onBeforeOpen: (swalMod) => {
+      onBeforeOpen: (swalMod) => {
         // Add event listeners for append buttons
         let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
         previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
@@ -1035,15 +1036,15 @@ class TextAnnotator extends ContentAnnotator {
             })
           })
         })
-      }/*,
+      },
       // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
       preConfirm: () => {
         comment = document.querySelector('#comment').value
-      },*/
+      },
       callback: (err, result) => {
         if (!_.isUndefined(comment)) {
           if (err) {
-            //window.alert('Unable to load alert. Is this an annotable document?')
+            window.alert('Unable to load alert. Is this an annotable document?')
           } else {
             // Update annotation
             annotation.text = comment || ''
@@ -1053,7 +1054,7 @@ class TextAnnotator extends ContentAnnotator {
               (err, annotation) => {
                 if (err) {
                   // Show error message
-                  //Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+                  Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
                 } else {
                   // Update current annotations
                   let currentIndex = _.findIndex(this.currentAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
@@ -1077,13 +1078,14 @@ class TextAnnotator extends ContentAnnotator {
           }
         }
       }
-    })
+    
     //PVSCL:ELSECOND
     let that = this
-    let updateAnnotation = (comment/*PVSCL:IFCOND(Citations)*/, literature/*PVSCL:ENDCOND*//*PVSCL:IFCOND(Strengths)*/, level /*PVSCL:ENDCOND*/) => {
-      annotation.text = JSON.stringify({comment: comment/* PVSCL:IFCOND(Citations)*/, suggestedLiterature: literature/*PVSCL:ENDCOND*/})
+    let updateAnnotation = (textObject) => {
+      annotation.text = JSON.stringify(textObject)
       //PVSCL:IFCOND(Strengths)
       // Assign level to annotation
+      let level = textObject.level || null
       if (level != null) {
         let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
         let pole = tagGroup.tags.find((e) => { return e.name === level })
@@ -1096,10 +1098,10 @@ class TextAnnotator extends ContentAnnotator {
         (err, annotation) => {
           if (err) {
             // Show error message
-            //Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+            Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
           } else {
             // Update current annotations
-            //PVSCL:IFCOND('') //La misma que CreateAnnotationEventHandler
+            //PVSCL:IFCOND(DefaultCriterias) //La misma que CreateAnnotationEventHandler
             let currentIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
             this.allAnnotations.splice(currentIndex, 1, annotation)
             //PVSCL:ELSECOND
@@ -1109,7 +1111,7 @@ class TextAnnotator extends ContentAnnotator {
             let allIndex = _.findIndex(this.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
             this.allAnnotations.splice(allIndex, 1, annotation)
             // Dispatch updated annotations events
-            //PVSCL:IFCOND('') //La misma que la de arriba
+            //PVSCL:IFCOND(DefaultCriterias) //La misma que la de arriba
             LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: that.allAnnotations})
             //PVSCL:ELSECOND
             LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
@@ -1125,150 +1127,118 @@ class TextAnnotator extends ContentAnnotator {
       if (isSidebarOpened) {
         this.openSidebar()
       }
-      let showAlert = (form) => {
-        //PVSCL:IFCOND(Citations)
-        let suggestedLiteratureHtml = (lit) => {
-          let html = ''
-          for (let i in lit) {
-            html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
-          }
-          return html
-        }
-        //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Strengths)
-        let hasLevel = (annotation, level) => {
-          return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
-        }
-        let groupTag = window.abwa.tagManager.getGroupFromAnnotation(annotation)
-        let criterionName = groupTag.config.name
-        let poles = groupTag.tags.map((e) => { return e.name })
-        // let poleChoiceRadio = poles.length>0 ? '<h3>Pole</h3>' : ''
-        let poleChoiceRadio = '<div>'
-        poles.forEach((e) => {
-          poleChoiceRadio += '<input type="radio" name="pole" class="swal2-radio poleRadio" value="' + e + '" '
-          if (hasLevel(annotation, e)) poleChoiceRadio += 'checked'
-          poleChoiceRadio += '>'
-          switch (e) {
-            case 'Strength':
-              poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/strength.png') + '"/>'
-              break
-            case 'Major weakness':
-              poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/majorConcern.png') + '"/>'
-              break
-            case 'Minor weakness':
-              poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/minorConcern.png') + '"/>'
-              break
-          }
-          poleChoiceRadio += ' <span class="swal2-label" style="margin-right:5%;" title="\'+e+\'">' + e + '</span>'
-        })
-        poleChoiceRadio += '</div>'
-        //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Citations)
-        swal({
-          html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">' + form.comment + '</textarea>' + '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(form.suggestedLiterature) + '</ul>',
-          showLoaderOnConfirm: true,
-          width: '40em',
-          preConfirm: () => {
-            let newComment = $('#swal-textarea').val()
-            let suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
-            let level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
-            if (newComment !== null && newComment !== '') {
-              $.ajax('http://text-processing.com/api/sentiment/', {
-                  method: 'POST',
-                  data: {text: newComment}
-              }).done(function (ret) {
-                if (ret.label === 'neg' && ret.probability.neg > 0.55) {
-                  swal({
-                    type: 'warning',
-                    text: 'The message may be ofensive. Please modify it.',
-                    showCancelButton: true,
-                    cancelButtonText: 'Modify comment',
-                    confirmButtonText: 'Save as it is',
-                    reverseButtons: true
-                  }).then((result) => {
-                    if (result.value) {
-                      updateAnnotation(newComment, suggestedLiterature, level)
-                    } else if (result.dismiss === swal.DismissReason.cancel) {
-                      showAlert({comment: newComment, suggestedLiterature: suggestedLiterature})
-                    }
-                  })
-                } else {
-                  // Update annotation
-                  updateAnnotation(newComment, suggestedLiterature, level)
-                }
-              })
-            } else {
-              // Update annotation
-              updateAnnotation('', suggestedLiterature, level)
-            }
-          },
-          onOpen: () => {
-            $('.removeReference').on('click', function () {
-              $(this).closest('li').remove()
-            })
-          }
-        })
-        //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Strengths)
-        $('.poleRadio + img').on('click', function () {
-          $(this).prev('.poleRadio').prop('checked', true)
-        })
-        //PVSCL:ENDCOND
-      }
-      $('#swal-input1').autocomplete({
-        source: function (request, response) {
-          $.ajax({
-            url: 'http://dblp.org/search/publ/api',
-            data: {
-              q: request.term,
-              format: 'json',
-              h: 5
-            },
-            success: function (data) {
-              response(data.result.hits.hit.map((e) => { return {label: e.info.title + ' (' + e.info.year + ')', value: e.info.title + ' (' + e.info.year + ')', info: e.info} }))
-            }
-          })
-        },
-        minLength: 3,
-        delay: 500,
-        select: function (event, ui) {
-          let content = ''
-          if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
-            content += ui.item.info.authors.author.join(', ') + ': '
-          } else if (ui.item.info.authors !== null) {
-            content += ui.item.info.authors.author + ': '
-          }
-          if (ui.item.info.title !== null) {
-            content += ui.item.info.title
-          }
-          if (ui.item.info.year !== null) {
-            content += ' (' + ui.item.info.year + ')'
-          }
-          let a = document.createElement('a')
-          a.className = 'removeReference'
-          a.addEventListener('click', function (e) {
-            $(e.target).closest('li').remove()
-          })
-          let li = document.createElement('li')
-          $(li).append(a, '<span title="' + content + '">' + content + '</span>')
-          $('#literatureList').append(li)
-          setTimeout(function () {
-            $('#swal-input1').val('')
-          }, 10)
-        },
-        appendTo: '.swal2-container',
-        create: function () {
-          $('.ui-autocomplete').css('max-width', $('#swal2-content').width())
-        }
-      })
     }
+
     //PVSCL:IFCOND(Citations)
-    if (annotation.text === null || annotation.text === '') {
-      showAlert({comment: '', suggestedLiterature: []})
-    } else {
-      showAlert(JSON.parse(annotation.text))
+    let suggestedLiteratureHtml = (lit) => {
+      let html = ''
+      for (let i in lit) {
+        html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
+      }
+      return html
     }
     //PVSCL:ENDCOND
+    //PVSCL:IFCOND(Strengths)
+    let hasLevel = (annotation, level) => {
+      return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
+    }
+    let groupTag = window.abwa.tagManager.getGroupFromAnnotation(annotation)
+    let criterionName = groupTag.config.name
+    let poles = groupTag.tags.map((e) => { return e.name })
+    // let poleChoiceRadio = poles.length>0 ? '<h3>Pole</h3>' : ''
+    let poleChoiceRadio = '<div>'
+    poles.forEach((e) => {
+      poleChoiceRadio += '<input type="radio" name="pole" class="swal2-radio poleRadio" value="' + e + '" '
+      if (hasLevel(annotation, e)) poleChoiceRadio += 'checked'
+      poleChoiceRadio += '>'
+      switch (e) {
+        case 'Strength':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/strength.png') + '"/>'
+          break
+        case 'Major weakness':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/majorConcern.png') + '"/>'
+          break
+        case 'Minor weakness':
+          poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/minorConcern.png') + '"/>'
+          break
+      }
+      poleChoiceRadio += ' <span class="swal2-label" style="margin-right:5%;" title="\'+e+\'">' + e + '</span>'
+    })
+    poleChoiceRadio += '</div>'
+    //PVSCL:ENDCOND
+    //PVSCL:IFCOND(Comments)
+    let newComment
+    let suggestedLiterature
+	let level
+	let textObject = JSON.parse(annotation.text)
+	let comment = textObject.comment || ''
+	Alerts.multipleInputAlert({
+	  title: criterionName,
+	  html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  preConfirm: () => {
+	    newComment = $('#swal-textarea').val()
+	    suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
+	    level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
+	  },
+	  callback: (err, result) => {
+	    updateAnnotation({comment: newComment, level: level})
+	    if (isSidebarOpened) {
+	      this.openSidebar()
+	    }
+	  }
+	})
+	
+	$('.poleRadio + img').on('click', function () {
+      $(this).prev('.poleRadio').prop('checked', true)
+    })
+    
+    //PVSCL:IFCOND(Citations)
+    $('#swal-input1').autocomplete({
+      source: function (request, response) {
+        $.ajax({
+          url: 'http://dblp.org/search/publ/api',
+          data: {
+            q: request.term,
+            format: 'json',
+            h: 5
+          },
+          success: function (data) {
+            response(data.result.hits.hit.map((e) => { return {label: e.info.title + ' (' + e.info.year + ')', value: e.info.title + ' (' + e.info.year + ')', info: e.info} }))
+          }
+        })
+      },
+      minLength: 3,
+      delay: 500,
+      select: function (event, ui) {
+        let content = ''
+        if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
+          content += ui.item.info.authors.author.join(', ') + ': '
+        } else if (ui.item.info.authors !== null) {
+          content += ui.item.info.authors.author + ': '
+        }
+        if (ui.item.info.title !== null) {
+          content += ui.item.info.title
+        }
+        if (ui.item.info.year !== null) {
+          content += ' (' + ui.item.info.year + ')'
+        }
+        let a = document.createElement('a')
+        a.className = 'removeReference'
+        a.addEventListener('click', function (e) {
+          $(e.target).closest('li').remove()
+        })
+        let li = document.createElement('li')
+        $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+        $('#literatureList').append(li)
+        setTimeout(function () {
+          $('#swal-input1').val('')
+        }, 10)
+      },
+      appendTo: '.swal2-container',
+      create: function () {
+        $('.ui-autocomplete').css('max-width', $('#swal2-content').width())
+      }
+    })
     //PVSCL:ENDCOND
   }
 
@@ -1328,7 +1298,7 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
   //PVSCL:ENDCOND
-  //PVSCL:ENDCOND
+
 
   retrieveHighlightClassName () {
     return this.highlightClassName // TODO Depending on the status of the application
@@ -1636,7 +1606,7 @@ class TextAnnotator extends ContentAnnotator {
     }
     // When all the annotations are deleted
     Promise.all(promises).catch(() => {
-      //Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
+      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
       // Update annotation variables
       this.allAnnotations = []

@@ -1,26 +1,16 @@
 const _ = require('lodash')
-
 const ContentTypeManager = require('./ContentTypeManager')
-//
 const ModeManager = require('./ModeManager')
-//
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
-//
-const RolesManager = require('./RolesManager')
-//
 const GroupSelector = require('./GroupSelector')
-const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//
 const Config = require('../Config')
-//
-//
+const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
+const UserFilter = require('./UserFilter')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
-//
-const TextAnnotator = require('./contentAnnotators/TextAnnotator')
-const specificContentScript = require('../specific/specificContentScript')
-const Toolset = require('../specific/ToolsetBar')
-//
+const RolesManager = require('./RolesManager')
+const RubricManager = require('./RubricManager')
+const MarkAndGoToolset = require('../specific/ToolsetBar')
 
 class ContentScriptManager {
   constructor () {
@@ -33,95 +23,85 @@ class ContentScriptManager {
     this.status = ContentScriptManager.status.initializing
     this.loadContentTypeManager(() => {
       window.abwa.hypothesisClientManager = new HypothesisClientManager()
-      window.abwa.hypothesisClientManager.init((err) => {
-        if (err) {
-            window.abwa.sidebar = new Sidebar()
-            window.abwa.sidebar.init(() => {
-                window.abwa.groupSelector = new GroupSelector()
-                window.abwa.groupSelector.init(() => {
-               })
-            })
-        } else {
-          window.abwa.sidebar = new Sidebar()
-          window.abwa.sidebar.init(() => {
-            window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
-            window.abwa.annotationBasedInitializer.init(() => {
-              window.abwa.groupSelector = new GroupSelector()
-              window.abwa.groupSelector.init(() => {
-                //
-                window.abwa.roleManager = new RolesManager()
-                window.abwa.roleManager.init(() => {
-                //
-                //
+      window.abwa.hypothesisClientManager.init(() => {
+        window.abwa.sidebar = new Sidebar()
+        window.abwa.sidebar.init(() => {
+          window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
+          window.abwa.annotationBasedInitializer.init(() => {
+            window.abwa.groupSelector = new GroupSelector()
+            window.abwa.groupSelector.init(() => {
+              window.abwa.roleManager = new RolesManager()
+              window.abwa.roleManager.init(() => {
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
-                //
-                  //
-                        //
-                        this.status = ContentScriptManager.status.initialized
-                        console.log('Initialized content script manager')
-                  //
-                //
+                  // Reload for first time the content by group
+                  this.reloadContentByGroup()
+                  // Initialize listener for group change to reload the content
+                  this.initListenerForGroupChange()
+                  this.status = ContentScriptManager.status.initialized
+                  console.log('Initialized content script manager')
                 })
-                //
-                //
-                })
-                //
               })
             })
           })
-        }
+        })
       })
     })
   }
 
-  //
-
-  reloadContentByGroup (callback) {
-    //
-        //
-        let config = Config.exams // Configuration for this tool is exams
-        //
-        //
-        this.reloadRolesManager(config, () => {
-        //
-          //
-          this.reloadRubricManager(config, () => {
-          //
-            //
-            // Initialize sidebar toolset
-            this.initToolset()
-            //
-            // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
-            this.reloadTagsManager(config, () => {
-              this.reloadContentAnnotator(config, () => {
-                if (config.userFilter) {
-                  this.reloadUserFilter(config, () => {
-                    this.reloadSpecificContentManager(config)
-                  })
-                } else {
-                  this.reloadSpecificContentManager(config)
-                }
-              })
-            })
-          //
-          })
-          //
-        //
-        })
-        //
-    //
+  initListenerForGroupChange () {
+    this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
+    document.addEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent, false)
   }
 
-  //
+  groupChangedEventHandlerCreator () {
+    return (event) => {
+      this.reloadContentByGroup()
+    }
+  }
+
+  reloadContentByGroup (callback) {
+    let config = Config.exams // Configuration for this tool is exams
+    this.reloadRolesManager(config, () => {
+      this.reloadRubricManager(config, () => {
+        // Initialize sidebar toolset
+        this.initToolset()
+        // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
+        this.reloadTagsManager(config, () => {
+          this.reloadContentAnnotator(config, () => {
+            if (config.userFilter) {
+              this.reloadUserFilter(config, () => {
+                this.reloadSpecificContentManager(config)
+              })
+            } else {
+              this.reloadSpecificContentManager(config)
+            }
+          })
+        })
+      })
+    })
+  }
+
+  initToolset () {
+    window.abwa.toolset = new MarkAndGoToolset()
+    window.abwa.toolset.init()
+  }
+
+  reloadRubricManager (config, callback) {
+    this.destroyRubricManager()
+    window.abwa.rubricManager = new RubricManager(config)
+    window.abwa.rubricManager.init(callback)
+  }
+
   reloadContentAnnotator (config, callback) {
+    const TextAnnotator = require('./contentAnnotators/TextAnnotator')
     // Destroy current content annotator
     this.destroyContentAnnotator()
     // Create a new content annotator for the current group
     if (config.contentAnnotator === 'text') {
       window.abwa.contentAnnotator = new TextAnnotator(config)
     } else {
-      window.abwa.contentAnnotator = new TextAnnotator(config) // TODO Depending on the type of annotator
+      window.abwa.contentAnnotator = new TextAnnotator(config)
     }
     window.abwa.contentAnnotator.init(callback)
   }
@@ -130,46 +110,10 @@ class ContentScriptManager {
     // Destroy current tag manager
     this.destroyTagsManager()
     // Create a new tag manager for the current group
-    window.abwa.tagManager = new TagManager(config.namespace, config.tags) // TODO Depending on the type of annotator
+    window.abwa.tagManager = new TagManager(config.namespace, config.tags)
     window.abwa.tagManager.init(callback)
   }
 
-  reloadSpecificContentManager (config, callback) {
-    // Destroy current specific content manager
-    this.destroySpecificContentManager()
-    const SLRDataExtractionContentScript = require('../specific/specificContentScript')
-    window.abwa.specificContentManager = new SLRDataExtractionContentScript(config)
-    window.abwa.specificContentManager.init()
-  }
-
-  destroySpecificContentManager () {
-    if (window.abwa.specificContentManager) {
-      window.abwa.specificContentManager.destroy()
-    }
-  }
-  //
-  //
-  initToolset () {
-      window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
-      window.abwa.toolset.init()
-  }
-  //
-
-  //
-  reloadRubricManager (config, callback) {
-    this.destroyRubricManager()
-    window.abwa.rubricManager = new RubricManager(config)
-    window.abwa.rubricManager.init(callback)
-  }
-
-  destroyRubricManager (callback) {
-    if (!_.isEmpty(window.abwa.rubricManager)) {
-      window.abwa.rubricManager.destroy()
-    }
-  }
-  //
-
-  //
   reloadRolesManager (config, callback) {
     // Destroy current role manager
     this.destroyRolesManager()
@@ -181,12 +125,17 @@ class ContentScriptManager {
     }
   }
 
+  destroyRubricManager (callback) {
+    if (!_.isEmpty(window.abwa.rubricManager)) {
+      window.abwa.rubricManager.destroy()
+    }
+  }
+
   destroyRolesManager (callback) {
     if (!_.isEmpty(window.abwa.roleManager)) {
       window.abwa.roleManager.destroy()
     }
   }
-  //
 
   destroyContentAnnotator () {
     // Destroy current content annotator
@@ -201,33 +150,55 @@ class ContentScriptManager {
     }
   }
 
-  destroyAugmentationOperations () {
-    // Destroy current augmentation operations
-    if (!_.isEmpty(window.abwa.augmentationManager)) {
-      window.abwa.augmentationManager.destroy()
-    }
+  reloadUserFilter (config, callback) {
+    // Destroy user filter
+    this.destroyUserFilter()
+    // Create user filter
+    window.abwa.userFilter = new UserFilter(config)
+    window.abwa.userFilter.init(callback)
   }
 
-  //
+  destroyUserFilter (callback) {
+    // Destroy current user filter
+    if (!_.isEmpty(window.abwa.userFilter)) {
+      window.abwa.userFilter.destroy()
+    }
+  }
 
   destroy (callback) {
     console.log('Destroying content script manager')
     this.destroyContentTypeManager(() => {
-      this.destroyAugmentationOperations()
       this.destroyTagsManager()
       this.destroyContentAnnotator()
-      //
+      this.destroyUserFilter()
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           window.abwa.hypothesisClientManager.destroy(() => {
             this.status = ContentScriptManager.status.notInitialized
             if (_.isFunction(callback)) {
+              callback()
             }
           })
         })
       })
-      //
+      document.removeEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent)
     })
+  }
+
+  reloadSpecificContentManager (config, callback) {
+    // Destroy current specific content manager
+    this.destroySpecificContentManager()
+    if (config.namespace === 'exam') {
+      const ExamDataExtractionContentScript = require('../specific/specificContentScript')
+      window.abwa.specificContentManager = new ExamDataExtractionContentScript(config)
+      window.abwa.specificContentManager.init()
+    }
+  }
+
+  destroySpecificContentManager () {
+    if (window.abwa.specificContentManager) {
+      window.abwa.specificContentManager.destroy()
+    }
   }
 
   loadContentTypeManager (callback) {

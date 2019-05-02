@@ -3,7 +3,7 @@ const Toolset = require('../contentScript/Toolset')
 //
 const axios = require('axios')
 const _ = require('lodash')
-//const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 const LanguageUtils = require('../utils/LanguageUtils')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
@@ -114,7 +114,7 @@ class ToolsetBar extends Toolset{
 
   //
   generateReview () {
-    //Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let report = review.toString()
     let blob = new Blob([report], {type: 'text/plain;charset=utf-8'})
@@ -122,39 +122,40 @@ class ToolsetBar extends Toolset{
     let docTitle = 'Review report'
     if(title!=='') docTitle += ' for '+title
     FileSaver.saveAs(blob, docTitle+'.txt')
-    //Alerts.closeAlert()
+    Alerts.closeAlert()
   }
   //
 
   //
   deleteAnnotations () {
     // Ask user if they are sure to delete it
-    /*Alerts.confirmAlert({
+    Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationTitle'),
-      text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),*/
-      //callback: (err, toDelete) => {
+      text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),
+      callback: (err, toDelete) => {
         // It is run only when the user confirms the dialog, so delete all the annotations
-        //if (err) {
+        if (err) {
           // Nothing to do
-        //} else {
+        } else {
           // Dispatch delete all annotations event
           LanguageUtils.dispatchCustomEvent(Events.deleteAllAnnotations)
           // TODO Check if it is better to maintain the sidebar opened or not
           window.abwa.sidebar.openSidebar()
-        //}
-      //}
-    //})
+        }
+      }
+    })
   }
   //
 
   //
   generateCanvas () {
     window.abwa.sidebar.closeSidebar()
-    //Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
-    let canvasPageURL = chrome.extension.getURL('pages/specific/review/reviewCanvas.html')
+    let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
+      debugger
       document.body.lastChild.insertAdjacentHTML('afterend', response.data)
       document.querySelector("#abwaSidebarButton").style.display = "none"
 
@@ -304,7 +305,7 @@ class ToolsetBar extends Toolset{
         }
         canvasContainer.appendChild(clusterElement)
       }
-      //Alerts.closeAlert()
+      Alerts.closeAlert()
     })
   }
   //
