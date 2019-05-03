@@ -42,13 +42,13 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
       
-    //PVSCL:IFCOND(Screenshots)
+      //PVSCL:IFCOND(Screenshots)
       let screenshotsImageURL = chrome.extension.getURL('/images/screenshot.png')
-      this.screenshotsImageURL = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
-      this.screenshotsImageURL.src = generatorImageURL
-      this.screenshotsImageURL.title = 'Take screenshots'
-      this.toolsetBody.appendChild(this.generatorImage)
-      this.screenshotsImageURL.addEventListener('click', () => {
+      this.screenshotsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.screenshotsImage.src = screenshotsImageURL
+      this.screenshotsImage.title = 'Take screenshots'
+      this.toolsetBody.appendChild(this.screenshotsImage)
+      this.screenshotsImage.addEventListener('click', () => {
     	  this.generateScreenshot()
       })
       //PVSCL:ENDCOND

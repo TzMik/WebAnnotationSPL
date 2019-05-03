@@ -1122,11 +1122,7 @@ class TextAnnotator extends ContentAnnotator {
             DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
             this.highlightAnnotation(annotation)
           }
-        }
-      )
-      if (isSidebarOpened) {
-        this.openSidebar()
-      }
+        })
     }
 
     //PVSCL:IFCOND(Citations)
@@ -1170,7 +1166,8 @@ class TextAnnotator extends ContentAnnotator {
     let newComment
     let suggestedLiterature
 	let level
-	let textObject = JSON.parse(annotation.text)
+	let textObject = {}
+	if (annotation.text !== "") textObject = JSON.parse(annotation.text)
 	let comment = textObject.comment || ''
 	Alerts.multipleInputAlert({
 	  title: criterionName,
@@ -1181,7 +1178,7 @@ class TextAnnotator extends ContentAnnotator {
 	    level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
 	  },
 	  callback: (err, result) => {
-	    updateAnnotation({comment: newComment, level: level})
+	    updateAnnotation({comment: newComment/*PVSCL:IFCOND(Citations)*/, suggestedLiterature: suggestedLiterature/*PVSCL:ENDCOND*/})
 	    if (isSidebarOpened) {
 	      this.openSidebar()
 	    }
@@ -1239,6 +1236,8 @@ class TextAnnotator extends ContentAnnotator {
         $('.ui-autocomplete').css('max-width', $('#swal2-content').width())
       }
     })
+    //PVSCL:ENDCOND
+    //PVSCL:ENDCOND
     //PVSCL:ENDCOND
   }
 

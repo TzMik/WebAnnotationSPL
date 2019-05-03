@@ -123,7 +123,7 @@ class specificContentScript{
     })
     //PVSCL:ENDCOND
     //PVSCL:IFCOND(NOT(Moodle) AND Toolset)
-    window.abwa.toolset.show()
+    //window.abwa.toolset.show()
     //PVSCL:ENDCOND
   }
 

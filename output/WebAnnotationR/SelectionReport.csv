@@ -21,7 +21,7 @@ UserFilter;false
 Toolset;true
 Canvas;true
 Generator;true
-Screenshots;false
+Screenshots;true
 Report;true
 BackLink;false
 BackToMoodle;false
@@ -55,4 +55,4 @@ Validations;false
 Strengths;true
 Comments;true
 Replys;false
-Citations;false
+Citations;true

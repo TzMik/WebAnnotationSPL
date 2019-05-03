@@ -5,7 +5,7 @@ const ColorUtils = require('../utils/ColorUtils')
 
 class Tag {
   constructor (config/**/, group = null /**/) {
-	this.group = group
+    this.group = group
     this.name = config.name
     this.namespace = config.namespace
     this.tags = config.tags || [config.namespace + ':' + config.name]

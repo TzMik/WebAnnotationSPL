@@ -188,17 +188,17 @@ class ContentTypeManager {
   }
 
   initSupportWebURLChange () {
-	if (this.documentType !== ContentTypeManager.documentTypes.pdf){
-		this.urlChangeInterval = setInterval(() => {
-		      let newUrl = URLUtils.retrieveMainUrl(window.location.href)
-		      if (newUrl !== this.documentURL) {
-		        console.debug('Document URL updated from %s to %s', this.documentURL, newUrl)
-		        this.documentURL = newUrl
-		        // Dispatch event
-		        LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.documentURL})
-		      }
-		    }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
-	}
+    if (this.documentType !== ContentTypeManager.documentTypes.pdf){
+      this.urlChangeInterval = setInterval(() => {
+        let newUrl = URLUtils.retrieveMainUrl(window.location.href)
+        if (newUrl !== this.documentURL) {
+          console.debug('Document URL updated from %s to %s', this.documentURL, newUrl)
+          this.documentURL = newUrl
+          // Dispatch event
+          LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.documentURL})
+        }
+      }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
+    }
   }
 
   tryToLoadPlainTextFingerprint () {

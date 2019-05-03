@@ -1,5 +1,7 @@
 const Toolset = require('../contentScript/Toolset')
 //
+const Screenshots = require('./Screenshots')
+//
 //
 const axios = require('axios')
 const _ = require('lodash')
@@ -38,7 +40,16 @@ class ToolsetBar extends Toolset{
       })
       //
       
-    //
+      //
+      let screenshotsImageURL = chrome.extension.getURL('/images/screenshot.png')
+      this.screenshotsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.screenshotsImage.src = screenshotsImageURL
+      this.screenshotsImage.title = 'Take screenshots'
+      this.toolsetBody.appendChild(this.screenshotsImage)
+      this.screenshotsImage.addEventListener('click', () => {
+    	  this.generateScreenshot()
+      })
+      //
 
       //
       // Set delete annotations image and event
@@ -93,6 +104,8 @@ class ToolsetBar extends Toolset{
         items['report'] = {name: 'Generate report'}
         //
         //
+        items['screenshot'] = {name: 'Generate annotated PDF'}
+        //
         return {
           callback: (key, opt) => {
             if (key === 'report') {
@@ -100,6 +113,8 @@ class ToolsetBar extends Toolset{
               this.generateReview()
               //
             } else if (key === 'screenshot') {
+              //
+              this.generateScreenshot()
               //
             }
           },
@@ -110,6 +125,10 @@ class ToolsetBar extends Toolset{
   }
   //*/
 
+  //
+  generateScreenshot () {
+    Screenshots.takeScreenshot()
+  }
   //
 
   //
@@ -155,7 +174,6 @@ class ToolsetBar extends Toolset{
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
-      debugger
       document.body.lastChild.insertAdjacentHTML('afterend', response.data)
       document.querySelector("#abwaSidebarButton").style.display = "none"
 
