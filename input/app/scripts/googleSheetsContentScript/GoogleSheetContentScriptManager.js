@@ -5,7 +5,9 @@ const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientMan
 const GoogleSheetParser = require('./GoogleSheetParser')
 const HypothesisGroupInitializer = require('./HypothesisGroupInitializer')
 
-//const swal = require('sweetalert2')
+const Alerts = require('../utils/Alerts')
+
+const swal = require('sweetalert2')
 
 class GoogleSheetContentScriptManager {
   init (callback) {
@@ -14,9 +16,9 @@ class GoogleSheetContentScriptManager {
     window.hag.hypothesisClientManager.init(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
-          /*swal('Oops!',
+          swal('Oops!',
             'Unable to configure current spreadsheet. Failed login to services.', // TODO i18n
-            'error') // Notify error to user*/
+            'error') // Notify error to user
           if (_.isFunction(callback)) {
             callback()
           }
@@ -37,7 +39,7 @@ class GoogleSheetContentScriptManager {
   }
 
   showToolIsConfiguring () {
-    /*swal({
+    swal({
       position: 'top-end',
       title: 'Configuring the tool, please be patient', // TODO i18n
       text: 'If the tool takes too much time, please reload the page and try again.',
@@ -45,7 +47,7 @@ class GoogleSheetContentScriptManager {
       onOpen: () => {
         swal.showLoading()
       }
-    })*/
+    })
   }
 
   initLoginProcess (callback) {
@@ -72,9 +74,7 @@ class GoogleSheetContentScriptManager {
     window.hag.googleSheetParser.parse((err, parsedSheetMappingStudy) => {
       if (err) {
         console.error(err)
-        if (_.isFunction(callback)) {
-          callback()
-        }
+        Alerts.errorAlert({text: err.message})
       } else {
         console.debug('Parsed mapping study data from gSheet')
         console.debug(parsedSheetMappingStudy)

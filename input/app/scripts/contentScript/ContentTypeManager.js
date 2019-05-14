@@ -44,7 +44,7 @@ class ContentTypeManager {
             // Is a local file
             if (window.PDFViewerApplication.url.startsWith('file:///')) {
               this.localFile = true
-              //PVSCL:IFCOND(Moodle)
+              //PVSCL:IFCOND(Moodle, LINE)
               // Check in moodle download manager if the file exists
               chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)}}, (fileMetadata) => {
                 if (_.isEmpty(fileMetadata)) {

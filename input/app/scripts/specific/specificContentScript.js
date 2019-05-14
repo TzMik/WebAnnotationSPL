@@ -1,33 +1,33 @@
 const _ = require('lodash')
-//PVSCL:IFCOND(Moodle)
+//PVSCL:IFCOND(Moodle, LINE)
 const jsYaml = require('js-yaml')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(NOT(DefaultCriterias))
+//PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
 const Config = require('../Config')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Spreadsheet)
+//PVSCL:IFCOND(Spreadsheet, LINE)
 const PrimaryStudySheetManager = require('./PrimaryStudySheetManager')
 const MappingStudyManager = require('./MappingStudyManager')
 const CreateAnnotationManager = require('./CreateAnnotationManager')
 const DeleteAnnotationManager = require('./DeleteAnnotationManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Validate)
+//PVSCL:IFCOND(Validations, LINE)
 const ValidateAnnotationManager = require('./ValidateAnnotationManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Moodle)
+//PVSCL:IFCOND(Moodle, LINE)
 const MoodleGradingManager = require('./MoodleGradingManager')
 const MoodleCommentManager = require('./MoodleCommentManager')
 const AssessmentManager = require('./AssessmentManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Toolset)
+//PVSCL:IFCOND(Toolset, LINE)
 const Toolset = require('./ToolsetBar')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(New)
+//PVSCL:IFCOND(New, LINE)
 const CustomCriteriasManager = require('./CustomCriteriasManager')
 //PVSCL:ENDCOND
 
 class specificContentScript{
-  //PVSCL:IFCOND(Spreadsheet)
+  //PVSCL:IFCOND(Spreadsheet, LINE)
   constructor () {
     this.backToSpreadsheetLink = null
     this.spreadsheetId = null
@@ -41,19 +41,19 @@ class specificContentScript{
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
-    //PVSCL:IFCOND(Toolset)
+    //PVSCL:IFCOND(Toolset AND DefaultCriterias, LINE)
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init(() => {
 
     })
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(New)
+    //PVSCL:IFCOND(New, LINE)
     window.abwa.specific.customCriteriasManager = new CustomCriteriasManager()
     window.abwa.specific.customCriteriasManager.init(() => {
 
     })
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Spreadsheet)
+    //PVSCL:IFCOND(Spreadsheet, LINE)
     window.abwa.specific = window.abwa.specific || {}
     // Retrieve mapping study manager
     window.abwa.specific.mappingStudyManager = new MappingStudyManager()
@@ -61,6 +61,10 @@ class specificContentScript{
       // Retrieve primary study sheet
       window.abwa.specific.primaryStudySheetManager = new PrimaryStudySheetManager()
       window.abwa.specific.primaryStudySheetManager.init(() => {
+    	//PVSCL:IFCOND(Toolset, LINE)
+    	window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
+        window.abwa.toolset.init()
+    	//PVSCL:ENDCOND
         // Create annotation handler
         window.abwa.specific.createAnnotationManager = new CreateAnnotationManager()
         window.abwa.specific.createAnnotationManager.init()
@@ -70,13 +74,13 @@ class specificContentScript{
         // Validation handler
         window.abwa.specific.validateAnnotationManager = new ValidateAnnotationManager()
         window.abwa.specific.validateAnnotationManager.init()
-        window.abwa.toolset.show()
+        //window.abwa.toolset.show()
         if (_.isFunction(callback)) {
           callback()
         }
       })
     })
-    //PVSCL:ELSEIFCOND(Moodle)
+    //PVSCL:ELSEIFCOND(Moodle, LINE)
     // Enable different functionality if current user is the teacher or student
     this.currentUserIsTeacher((err, isTeacher) => {
       if (err) {
@@ -94,7 +98,7 @@ class specificContentScript{
             cmid: window.abwa.rubricManager.rubric.cmid
           })
           window.abwa.specific.assessmentManager.init()
-          //PVSCL:IFCOND(Toolset)
+          //PVSCL:IFCOND(Toolset, LINE)
           // Toolset show
           window.abwa.toolset.show()
           //PVSCL:ENDCOND
@@ -102,7 +106,7 @@ class specificContentScript{
           window.abwa.specific = window.abwa.specific || {}
           window.abwa.tagManager.showViewingTagsContainer()
           window.abwa.sidebar.openSidebar()
-          //PVSCL:IFCOND(Toolset)
+          //PVSCL:IFCOND(Toolset, LINE)
           // Toolset hide
           window.abwa.toolset.hide()
           //PVSCL:ENDCOND
@@ -113,7 +117,7 @@ class specificContentScript{
             callback()
           }
         }
-        //PVSCL:IFCOND(Replys)
+        //PVSCL:IFCOND(Replys, LINE)
         // Enable handler for replies
         window.abwa.specific.moodleCommentManager = new MoodleCommentManager()
         window.abwa.specific.moodleCommentManager.init()
@@ -122,12 +126,12 @@ class specificContentScript{
       
     })
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(NOT(Moodle) AND Toolset)
+    //PVSCL:IFCOND(NOT(Moodle) AND Toolset, LINE)
     //window.abwa.toolset.show()
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(Moodle)
+  //PVSCL:IFCOND(Moodle, LINE)
   currentUserIsTeacher (callback) {
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
       url: window.abwa.groupSelector.currentGroup.url,
@@ -153,14 +157,14 @@ class specificContentScript{
   //PVSCL:ENDCOND
 
   destroy(){
-    //PVSCL:IFCOND(Spreadsheet)
+    //PVSCL:IFCOND(Spreadsheet, LINE)
     // TODO Destroy managers
     window.abwa.specific.mappingStudyManager.destroy()
     window.abwa.specific.primaryStudySheetManager.destroy()
     window.abwa.specific.createAnnotationManager.destroy()
     window.abwa.specific.deleteAnnotationManager.destroy()
     window.abwa.specific.validateAnnotationManager.destroy()
-    //PVSCL:ELSEIFCOND(Moodle)
+    //PVSCL:ELSEIFCOND(Moodle, LINE)
     try {
       if (window.abwa.specific) {
         if (window.abwa.specific.moodleGradingManager) {

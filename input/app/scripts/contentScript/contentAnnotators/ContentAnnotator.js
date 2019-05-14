@@ -6,7 +6,7 @@ class ContentAnnotator {
   closeSidebar () {
     window.abwa.sidebar.closeSidebar()
   }
-  //PVSCL:IFCOND(AllDeleter)
+  //PVSCL:IFCOND(AllDeleter, LINE)
   deleteAllAnnotations(){}
   //PVSCL:ENDCOND
 }

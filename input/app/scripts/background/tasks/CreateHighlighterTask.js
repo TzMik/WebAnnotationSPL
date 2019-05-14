@@ -194,7 +194,7 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  //PVSCL:IFCOND(Teacher)
+  //PVSCL:IFCOND(Teacher, LINE)
   createTeacherAnnotation ({teacherId, hypothesisGroup}, callback) {
     let teacherAnnotation = this.generateTeacherAnnotation(teacherId, hypothesisGroup)
     // Check if annotation already exists

@@ -4,7 +4,7 @@ const Config = require('../Config')
 
 class RolesManager {
   constructor () {
-    //PVSCL:IFCOND(Student)
+    //PVSCL:IFCOND(Student, LINE)
     this.role = RolesManager.roles.student
     //PVSCL:ELSECOND
     this.role = RolesManager.roles.reviewer
@@ -12,7 +12,7 @@ class RolesManager {
   }
 
   init (callback) {
-    //PVSCL:IFCOND(Student)
+    //PVSCL:IFCOND(Student, LINE)
     this.getUserRole(() => {
       if (_.isFunction(callback)) {
         callback()
@@ -29,7 +29,7 @@ class RolesManager {
    * Retrieve current user role
    */
 
-  //PVSCL:IFCOND(Teacher)
+  //PVSCL:IFCOND(Teacher, LINE)
   getUserRole (callback) {
     this.currentUserIsTeacher((err, isTeacher) => {
       if (err) {
@@ -78,7 +78,7 @@ class RolesManager {
 }
 
 RolesManager.roles = {
-  //PVSCL:IFCOND(Student)
+  //PVSCL:IFCOND(Student, LINE)
   'student': 'student',
   'teacher': 'teacher'
   //PVSCL:ELSECOND

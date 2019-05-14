@@ -1,27 +1,20 @@
 const _ = require('lodash')
 const $ = require('jquery')
-//
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
-//
-//const Alerts = require('../utils/Alerts')
-//
+const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
-//
-//
 
 class GroupSelector {
   constructor () {
-    //
     this.currentGroup = null
     this.user = {}
   }
 
   init (callback) {
-    //
     console.debug('Initializing group selector')
     this.addGroupSelectorToSidebar(() => {
       this.reloadGroupsContainer(() => {
@@ -30,11 +23,8 @@ class GroupSelector {
         }
       })
     })
-    //PVSCL: ELSECOND
-    //
   }
 
-  //
   addGroupSelectorToSidebar (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
@@ -45,10 +35,8 @@ class GroupSelector {
       }
     })
   }
-  //
 
   defineCurrentGroup (callback) {
-    //
     // If initialization annotation is set
 	debugger
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
@@ -95,10 +83,8 @@ class GroupSelector {
         }
       }
     }
-    //
   }
 
-  //
   reloadGroupsContainer (callback) {
     if (window.abwa.hypothesisClientManager.isLoggedIn()) {
       // Hide login/sign up form
@@ -202,15 +188,12 @@ class GroupSelector {
       })
     })
   }
-  //
 
   destroy (callback) {
-    //
     // Destroy intervals
     if (this.loggedInInterval) {
       clearInterval(this.loggedInInterval)
     }
-    //
     if (_.isFunction(callback)) {
       callback()
     }

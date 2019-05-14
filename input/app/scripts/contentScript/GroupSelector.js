@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const $ = require('jquery')
-//PVSCL:IFCOND(GroupSelector)
+//PVSCL:IFCOND(GroupSelector, LINE)
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
@@ -8,20 +8,20 @@ const selectedGroupNamespace = 'hypothesis.currentGroup'
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
 //PVSCL:ENDCOND
 const Alerts = require('../utils/Alerts')
-//PVSCL:IFCOND(Student)
+//PVSCL:IFCOND(Student, LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
 const Config = require('../Config')
-//PVSCL:IFCOND(DefaultCriterias)
+//PVSCL:IFCOND(DefaultCriterias, LINE)
 const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(StaticGroupSelector)
+//PVSCL:IFCOND(StaticGroupSelector, LINE)
 const GroupName = Config.review.groupName
 //PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
-    //PVSCL:IFCOND(AutomaticSelection)
+    //PVSCL:IFCOND(AutomaticSelection, LINE)
     this.groups = null
     //PVSCL:ENDCOND
     this.currentGroup = null
@@ -29,7 +29,7 @@ class GroupSelector {
   }
 
   init (callback) {
-    //PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector)
+    //PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector, LINE)
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {
@@ -52,7 +52,7 @@ class GroupSelector {
         })
       }
     })
-    //PVSCL:ELSEIFCOND(GroupSelector)
+    //PVSCL:ELSEIFCOND(GroupSelector, LINE)
     console.debug('Initializing group selector')
     this.addGroupSelectorToSidebar(() => {
       this.reloadGroupsContainer(() => {
@@ -61,11 +61,11 @@ class GroupSelector {
         }
       })
     })
-    //PVSCL: ELSECOND
+    //PVSCL:ELSECOND
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(GroupSelector)
+  //PVSCL:IFCOND(GroupSelector, LINE)
   addGroupSelectorToSidebar (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
@@ -79,7 +79,7 @@ class GroupSelector {
   //PVSCL:ENDCOND
 
   defineCurrentGroup (callback) {
-    //PVSCL:IFCOND(GroupSelector)
+    //PVSCL:IFCOND(GroupSelector, LINE)
     // If initialization annotation is set
 	debugger
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
@@ -127,7 +127,7 @@ class GroupSelector {
       }
     }
     //PVSCL:ELSECOND
-    //PVSCL:IFCOND(Student)
+    //PVSCL:IFCOND(Student, LINE)
     let fileMetadata = window.abwa.contentTypeManager.fileMetadata
     // Get group name from file metadata
     let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
@@ -137,7 +137,7 @@ class GroupSelector {
     this.retrieveHypothesisGroups((err, groups) => {
       if (err) {
       } else {
-        //PVSCL:IFCOND(Student)
+        //PVSCL:IFCOND(Student, LINE)
         let group = _.find(groups, (group) => { return group.name === hashedGroupName })
         //PVSCL:ELSECOND
         let group = _.find(groups, (group) => { return group.name === GroupName })
@@ -149,10 +149,10 @@ class GroupSelector {
             callback(null)
           }
         } else {
-          //PVSCL:IFCOND(Moodle)
+          //PVSCL:IFCOND(Moodle, LINE)
           // Warn user not group is defined, configure tool first
           Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start the application'}) // TODO i18n
-          //PVSCL:ELSEIFCOND(DefaultCriterias)
+          //PVSCL:ELSEIFCOND(DefaultCriterias, LINE)
           // TODO i18n
           Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
@@ -171,7 +171,7 @@ class GroupSelector {
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(GroupSelector)
+  //PVSCL:IFCOND(GroupSelector, LINE)
   reloadGroupsContainer (callback) {
     if (window.abwa.hypothesisClientManager.isLoggedIn()) {
       // Hide login/sign up form
@@ -335,7 +335,7 @@ class GroupSelector {
   //PVSCL:ENDCOND
 
   destroy (callback) {
-    //PVSCL:IFCOND(GroupSelector)
+    //PVSCL:IFCOND(GroupSelector, LINE)
     // Destroy intervals
     if (this.loggedInInterval) {
       clearInterval(this.loggedInInterval)

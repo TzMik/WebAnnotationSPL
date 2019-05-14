@@ -2,7 +2,6 @@ const $ = require('jquery')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Events = require('./Events')
-//
 
 class ModeManager {
   constructor (mode) {
@@ -12,19 +11,12 @@ class ModeManager {
   }
 
   init (callback) {
-    //
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
-      //
       this.mode = ModeManager.modes.index
-      //
-      //
       // Open sidebar
       window.abwa.sidebar.openSidebar()
     } else {
-      //
       this.mode = ModeManager.modes.highlight
-      //
-      //
     }
     this.loadSidebarToggle(() => {
       this.initEventHandlers(() => {
@@ -33,9 +25,7 @@ class ModeManager {
         }
       })
     })
-    //
   }
-  //
   loadSidebarToggle (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
     $.get(sidebarURL, (html) => {
@@ -52,30 +42,24 @@ class ModeManager {
   }
 
   setToggleStatus () {
-    //
     if (this.mode === ModeManager.modes.highlight) {
       this.setHighlightMode()
     } else {
       this.setIndexMode()
     }
-    //
   }
-  //
   setPanelText () {
     // Mode element
     let modeHeaderLabel = document.querySelector('#modeHeader label')
     modeHeaderLabel.innerText = chrome.i18n.getMessage('Mode')
     let modeLabel = document.querySelector('#modeLabel')
-    //
     if (this.mode === ModeManager.modes.highlight) {
       modeLabel.innerText = chrome.i18n.getMessage('highlight')
     } else {
       modeLabel.innerText = chrome.i18n.getMessage('index')
     }
-    //
   }
 
-  //
   setHighlightMode () {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     let modeLabel = document.querySelector('#modeLabel')
@@ -83,11 +67,8 @@ class ModeManager {
     modeLabel.innerText = chrome.i18n.getMessage('highlight')
     this.mode = ModeManager.modes.highlight
   }
-  //
 
-  //
 
-  //
   setIndexMode () {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     let modeLabel = document.querySelector('#modeLabel')
@@ -95,24 +76,16 @@ class ModeManager {
     modeLabel.innerText = chrome.i18n.getMessage('index')
     this.mode = ModeManager.modes.index
   }
-  //
 
-  //
 
-  //
 
-  //
   initEventHandlers (callback) {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     annotatorToggle.addEventListener('click', (event) => {
       if (annotatorToggle.checked) {
-        //
         this.setHighlightMode()
-        //
       } else {
-        //
         this.setIndexMode()
-        //
       }
       LanguageUtils.dispatchCustomEvent(Events.modeChanged, {mode: this.mode})
     })
@@ -120,17 +93,11 @@ class ModeManager {
       callback()
     }
   }
-  //
 }
 
 ModeManager.modes = {
-  //
   'highlight': 'highlight',
-  //
-  //
   'index': 'index'
-  //
-  //
 }
 
 module.exports = ModeManager

@@ -6,7 +6,6 @@ class ContentAnnotator {
   closeSidebar () {
     window.abwa.sidebar.closeSidebar()
   }
-  //
 }
 
 module.exports = ContentAnnotator

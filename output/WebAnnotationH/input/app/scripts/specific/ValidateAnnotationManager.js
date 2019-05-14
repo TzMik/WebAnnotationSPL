@@ -1,8 +1,8 @@
-const Events = require('../../contentScript/Events')
-const Config = require('../../Config')
+const Events = require('../contentScript/Events')
+const Config = require('../Config')
 const CommonHypersheetManager = require('./CommonHypersheetManager')
 const HyperSheetColors = require('./HyperSheetColors')
-const swal = require('sweetalert2')
+//const swal = require('sweetalert2')
 const _ = require('lodash')
 
 class ValidateAnnotationManager {

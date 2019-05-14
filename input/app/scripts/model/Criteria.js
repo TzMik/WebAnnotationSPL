@@ -5,14 +5,14 @@ const Level = require('./Level')
 const LanguageUtils = require('../utils/LanguageUtils')
 
 class Criteria extends GuideElement {
-  constructor ({ name, color/*PVSCL:IFCOND(Moodle)*/, criteriaId, rubric /*PVSCL:ELSEIFCOND(DefaultCriterias)*/, review, group = 'Other', description, custom = false /*PVSCL:ENDCOND*/}) {
-    super ({name, color, parentElement: /*PVSCL:IFCOND(Moodle)*/ rubric /*PVSCL:ELSEIFCOND(DefaultCriterias)*/ review /*PVSCL:ENDCOND*/})
+  constructor ({ name, color/*PVSCL:IFCOND(Moodle, LINE)*/, criteriaId, rubric /*PVSCL:ELSEIFCOND(DefaultCriterias, LINE)*/, review, group = 'Other', description, custom = false /*PVSCL:ENDCOND*/}) {
+    super ({name, color, parentElement: /*PVSCL:IFCOND(Moodle, LINE)*/ rubric /*PVSCL:ELSEIFCOND(DefaultCriterias, LINE)*/ review /*PVSCL:ENDCOND*/})
     this.levels = this.childElements
-    //PVSCL:IFCOND(Moodle)
+    //PVSCL:IFCOND(Moodle, LINE)
     this.criteriaId = criteriaId
     this.rubric = this.parentElement
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     this.group = group
     this.review = this.parentElement
     this.description = description
@@ -32,7 +32,7 @@ class Criteria extends GuideElement {
   }
 
   toAnnotation () {
-    //PVSCL:IFCOND(Moodle)
+    //PVSCL:IFCOND(Moodle, LINE)
     let rubric = this.getAncestor()
     return {
       group: rubric.hypothesisGroup.id,
@@ -45,7 +45,7 @@ class Criteria extends GuideElement {
       text: jsYaml.dump({criteriaId: this.criteriaId}),
       uri: rubric.hypothesisGroup.links ? rubric.hypothesisGroup.links.html : rubric.hypothesisGroup.url // Compatibility with both group representations getGroups and userProfile
     }
-    //PVSCL:ELSEIFCOND(DefaultCriterias)
+    //PVSCL:ELSEIFCOND(DefaultCriterias, LINE)
     let review = this.getAncestor()
     return {
       group: review.hypothesisGroup.id,

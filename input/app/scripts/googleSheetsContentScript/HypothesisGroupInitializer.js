@@ -1,5 +1,6 @@
 const _ = require('lodash')
-//const swal = require('sweetalert2')
+const swal = require('sweetalert2')
+const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
 const Config = require('../Config')
 
@@ -37,20 +38,20 @@ class HypothesisGroupInitializer {
         if (_.isEmpty(group)) {
           this.createHypothesisGroup((err) => {
             if (err) {
-              /*swal('Oops!', // TODO i18n
+              swal('Oops!', // TODO i18n
                 'There was a problem while creating the hypothes.is group. Please reload the page and try it again. <br/>' +
                 'If the error continues, please contact administrator.',
-                'error') // Show to the user the error*/
+                'error') // Show to the user the error
               if (_.isFunction(callback)) {
                 callback(err)
               }
             } else {
               this.createFacetsAndCodes((err) => {
                 if (err) {
-                  /*swal('Oops!', // TODO i18n
+                  swal('Oops!', // TODO i18n
                     'There was a problem while creating buttons for the sidebar. Please reload the page and try it again. <br/>' +
                     'If the error continues, please contact the administrator.',
-                    'error') // Show to the user the error*/
+                    'error') // Show to the user the error
                   // Remove created hypothesis group
                   this.removeGroup()
                   if (_.isFunction(callback)) {
@@ -59,11 +60,11 @@ class HypothesisGroupInitializer {
                 } else {
                   this.createRelationGSheetGroup((err) => {
                     if (err) {
-                      /*swal('Oops!', // TODO i18n
+                      swal('Oops!', // TODO i18n
                         'There was a problem while relating the tool with the spreadsheet. Please reload the page and try it again. <br/>' +
                         'If error continues, please contact administrator.',
                         'error') // Show to the user the error
-                      // Remove created hypothesis group*/
+                      // Remove created hypothesis group
                       this.removeGroup()
                       if (_.isFunction(callback)) {
                         callback(err)
@@ -72,9 +73,11 @@ class HypothesisGroupInitializer {
                       // Save as current group the generated one
                       ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.mappingStudy.hypothesisGroup)}, ChromeStorage.local)
                       // When window.focus
-                      /*swal('Correctly configured', // TODO i18n
-                        chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + this.mappingStudy.hypothesisGroup.url + '" target="_blank">' + this.mappingStudy.hypothesisGroup.url + '</a>',
-                        'success')*/
+                      let groupUrl = this.mappingStudy.hypothesisGroup.links.html
+                      Alerts.successAlert({
+                        title: 'Correctly configured', // TODO i18n
+                        text: chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + groupUrl + '" target="_blank">' + groupUrl + '</a>'
+                      })
                       if (_.isFunction(callback)) {
                         callback()
                       }
@@ -85,9 +88,9 @@ class HypothesisGroupInitializer {
             }
           })
         } else {
-          /*swal('The group ' + group.name + ' already exists', // TODO i18n
+          swal('The group ' + group.name + ' already exists', // TODO i18n
             chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + group.url + '" target="_blank">' + group.url + '</a>',
-            'info')*/
+            'info')
           if (_.isFunction(callback)) {
             callback()
           }
@@ -98,7 +101,7 @@ class HypothesisGroupInitializer {
   }
 
   createHypothesisGroup (callback) {
-    window.hag.hypothesisClientManager.hypothesisClient.createHypothesisGroup(this.mappingStudy.name, (err, group) => {
+    window.hag.hypothesisClientManager.hypothesisClient.createNewGroup({name: this.mappingStudy.name}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -190,7 +193,7 @@ class HypothesisGroupInitializer {
       tags: tags,
       target: [],
       text: '',
-      uri: this.mappingStudy.hypothesisGroup.url // Group url
+      uri: this.mappingStudy.hypothesisGroup.url || this.mappingStudy.hypothesisGroup.links.html // Group url
     }
   }
 
@@ -204,7 +207,7 @@ class HypothesisGroupInitializer {
       tags: [Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.spreadsheet],
       target: [],
       text: 'spreadsheetId: ' + this.mappingStudy.spreadsheetId + '\n' + 'sheetId: ' + this.mappingStudy.sheetId,
-      uri: this.mappingStudy.hypothesisGroup.url // Group url
+      uri: this.mappingStudy.hypothesisGroup.url || this.mappingStudy.hypothesisGroup.links.html // Group url
     }
   }
 

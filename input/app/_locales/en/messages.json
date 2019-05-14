@@ -7,12 +7,12 @@
     "message": "Highlight&Go",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
-  PVSCL:IFCOND(Validations)
+  PVSCL:IFCOND(Validations, LINE)
   "appDescription": {
     "message": "Highlight your primary studies and go!",
     "description": "The description of the application"
   },
-  PVSCL:ELSEIFCOND(Marks)
+  PVSCL:ELSEIFCOND(Marks, LINE)
   "appDescription": {
     "message": "Mark students' exams through highlights and go!",
     "description": "The description of the application"
@@ -35,12 +35,12 @@
     "message": "You need to give permissions to access your Google Spreadsheet.",
     "description": "Message to show when Google Sheets permission is required"
   },
-  PVSCL:IFCOND(Validations)
+  PVSCL:IFCOND(Validations, LINE)
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with the rest of the reviewers to start data extraction collaboratively.",
     "description": "Message to show when hypothesis group is created"
   },
-  PVSCL:ELSEIFCOND(Marks)
+  PVSCL:ELSEIFCOND(Marks, LINE)
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with your students to provide the feedback.",
     "description": "Message to show when hypothesis group is created"
@@ -50,31 +50,31 @@
     "message": "Mode",
     "description": "Sidebar mode header"
   },
-  PVSCL:IFCOND(HihglightMode)
+  PVSCL:IFCOND(HihglightMode, LINE)
   "Highlight": {
     "message": "Mapping",
     "description": "Sidebar highlight label"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(IndexMode)
+  PVSCL:IFCOND(IndexMode, LINE)
   "Index": {
     "message": "Checker",
     "description": "Sidebar index label"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(MarkingMode)
+  PVSCL:IFCOND(MarkingMode, LINE)
   "Marking": {
     "message": "Marking",
     "description": "Sidebar highlight label"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(EvidencingMode)
+  PVSCL:IFCOND(EvidencingMode, LINE)
   "Evidencing": {
     "message": "Evidencing",
     "description": "Sidebar evidence annotation"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(Validations)
+  PVSCL:IFCOND(Validations, LINE)
   "Dimensions": {
     "message": "Facets",
     "description": "Sidebar dimensions header"
@@ -85,19 +85,19 @@
     "description": "Sidebar dimensions header"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(Comments)
+  PVSCL:IFCOND(Comments, LINE)
   "errorUpdatingAnnotationComment": {
     "message": "Error updating annotation comment, please try it again.",
     "description": "Message when fails updating annotation comment"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(BackToMoodle)
+  PVSCL:IFCOND(BackToMoodle, LINE)
   "backToWorkspace": {
     "message": "Back to workspace",
     "description": "Text for link to return to workspace in sidebar"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(EvidencingMode)
+  PVSCL:IFCOND(EvidencingMode, LINE)
   "noEvidencesFoundForMarkingTitle": {
     "message": "No evidences found for this mark"
   },
@@ -105,7 +105,7 @@
     "message": "You haven't annotated any evidence for this mark, would you like to grade this student with $1?"
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(Moodle)
+  PVSCL:IFCOND(Moodle, LINE)
   "ErrorRelatingMoodleAndTool": {
     "message": "There was a problem while relating the tool with moodle. Please reload the page and try it again."
   },
@@ -113,12 +113,12 @@
     "message": "Something is something wrong in highlighter configuration that we cannot update moodle. Please reload the page and try it again."
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(Generator)
+  PVSCL:IFCOND(Generator, LINE)
   "GeneratingReviewReport": {
     "message": "Generating review report, please be patient."
   },
   PVSCL:ENDCOND
-  PVSCL:IFCOND(AllDeleter)
+  PVSCL:IFCOND(AllDeleter, LINE)
   "DeleteAllAnnotationsConfirmationTitle": {
     "message": "Do you want to delete all the annotations?"
   },

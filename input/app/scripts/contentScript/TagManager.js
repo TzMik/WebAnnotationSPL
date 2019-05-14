@@ -4,17 +4,17 @@ const jsYaml = require('js-yaml')
 const ModeManager = require('./ModeManager')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
-//PVSCL:IFCOND(Marks)
+//PVSCL:IFCOND(Marks, LINE)
 const AnnotationUtils = require('../utils/AnnotationUtils')
 //PVSCL:ENDCOND
 const Events = require('./Events')
 const Tag = require('./Tag')
 const TagGroup = require('./TagGroup')
 const Alerts = require('../utils/Alerts')
-//PVSCL:IFCOND(Student)
+//PVSCL:IFCOND(Student, LINE)
 const CircularJSON = require('circular-json-es6')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(DefaultCriterias)
+//PVSCL:IFCOND(DefaultCriterias, LINE)
 const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
 const DefaultCriterias = require('../specific/DefaultCriterias')
 //PVSCL:ENDCOND
@@ -28,7 +28,7 @@ class TagManager {
       config: config
     }
     this.currentTags = []
-    //PVSCL:IFCOND(Index)
+    //PVSCL:IFCOND(Index, LINE)
     this.currentIndexTags = []
     //PVSCL:ENDCOND
     this.events = {}
@@ -37,15 +37,15 @@ class TagManager {
     console.debug('Initializing TagManager')
     this.initTagsStructure(() => {
       this.initEventHandlers(() => {
-        //PVSCL:IFCOND((MarkingMode AND EvidencingMode) OR ReviewMode)
+        //PVSCL:IFCOND((MarkingMode AND EvidencingMode) OR ReviewMode, LINE)
         // Show tags container for current mode
-    	//PVSCL:IFCOND(NOT(ReviewMode))
+    	//PVSCL:IFCOND(NOT(ReviewMode), LINE)
         this.showTagsContainerForMode(window.abwa.modeManager.mode)
         //PVSCL:ENDCOND
         // Initialize all tags in each of the sidebar modes
         //PVSCL:ENDCOND
         this.initAllTags(() => {
-          //PVSCL:IFCOND(HighlightMode AND IndexMode)
+          //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
           if (window.abwa.modeManager.mode === ModeManager.modes.highlight) {
             this.showAllTagsContainer()
           } else {
@@ -60,7 +60,7 @@ class TagManager {
       })
     })
   }
-  //PVSCL:IFCOND(AllDeleter)
+  //PVSCL:IFCOND(AllDeleter, LINE)
   reloadTags (callback) {
     // Remove tags buttons for each container (evidencing, viewing)
     _.map(window.abwa.tagManager.tagsContainer).forEach((container) => { container.innerHTML = '' })
@@ -75,7 +75,7 @@ class TagManager {
   //PVSCL:ENDCOND
   getGroupAnnotations (callback) {
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
-      //PVSCL:IFCOND(GroupSelector)
+      //PVSCL:IFCOND(GroupSelector, LINE)
       url: window.abwa.groupSelector.currentGroup.url,
       //PVSCL:ELSECOND
       url: window.abwa.groupSelector.currentGroup.links.html,
@@ -89,13 +89,13 @@ class TagManager {
         annotations = _.filter(annotations, (annotation) => {
           return this.hasANamespace(annotation, this.model.namespace)
         })
-        //PVSCL:IFCOND(Spreadsheet)
+        //PVSCL:IFCOND(Spreadsheet, LINE)
         // Remove slr:spreadsheet annotation ONLY for SLR case
         annotations = _.filter(annotations, (annotation) => {
           return !this.hasATag(annotation, 'slr:spreadsheet')
         })
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Moodle)
+        //PVSCL:IFCOND(Moodle, LINE)
         // Remove tags which are not for the current assignment
         let cmid = window.abwa.contentTypeManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
@@ -125,7 +125,7 @@ class TagManager {
       return [] // No tags for current group
     }
   }
-  //PVSCL:IFCOND(NOT(DefaultCriterias))
+  //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
   static retrieveTagForAnnotation (annotation, tagList) {
     for (let i = 0; i < tagList.length; i++) {
       let difference = _.differenceWith(
@@ -142,7 +142,7 @@ class TagManager {
   //PVSCL:ENDCOND
 
   initAllTags (callback) {
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     this.getGroupAnnotations((annotations) => {
       // Check if there are tags in the group or it is needed to create the default ones
       let promise = Promise.resolve(annotations) // TODO Check if it is okay
@@ -162,14 +162,14 @@ class TagManager {
         })
       }
     //PVSCL:ENDCOND
-      //PVSCL:IFCOND(DefaultCriterias)
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       promise.then((annotations) => {
       //PVSCL:ELSECOND
       this.getGroupAnnotations((annotations) => {
       //PVSCL:ENDCOND
         // Add to model
         this.model.groupAnnotations = annotations
-        //PVSCL:IFCOND(Spreadsheet)
+        //PVSCL:IFCOND(Spreadsheet, LINE)
         // If annotations are grouped
         if (!_.isEmpty(this.model.config.grouped)) {
           this.currentTags = this.createTagsBasedOnAnnotationsGrouped(annotations, this.model.config.grouped)
@@ -181,22 +181,22 @@ class TagManager {
         // Create tags based on annotations
         this.currentTags = this.createTagsBasedOnAnnotations()
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(EvidencingMode OR ReviewMode)
+        //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
         this.createTagsButtonsForEvidencing()
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(MarkingMode)
+        //PVSCL:IFCOND(MarkingMode, LINE)
         this.createTagsButtonsForMarking()
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Student)
+        //PVSCL:IFCOND(Student, LINE)
         this.createTagsButtonsForViewing()
-        //PVSCL:ELSEIFCOND(Spreadsheet)
+        //PVSCL:ELSEIFCOND(Spreadsheet, LINE)
         this.createTagButtons()
         //PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback()
         }
       })
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     })
     //PVSCL:ENDCOND
   }
@@ -214,7 +214,7 @@ class TagManager {
   }
 
   createTagsBasedOnAnnotations () {
-	  //PVSCL:IFCOND(Spreadsheet)
+	  //PVSCL:IFCOND(Spreadsheet, LINE)
 	  let tags = []
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
       let tagAnnotation = this.model.groupAnnotations[i]
@@ -231,7 +231,7 @@ class TagManager {
         tagGroupsAnnotations[groupTag] = new TagGroup({name: groupTag, namespace: this.model.namespace, group: this.model.config.grouped.group, options: jsYaml.load(this.model.groupAnnotations[i].text) /*PVSCL:IFCOND(DefaultCriterias)*/ ,annotation: this.model.groupAnnotations[i] /*PVSCL:ENDCOND*/})
       }
     }
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     let groups = _.map(_.uniqBy(DefaultCriterias.criteria, (criteria) => { return criteria.group }), 'group')
     let listOfOtherTags = _.filter(_.values(tagGroupsAnnotations), (tagGroup) => { return tagGroup.config.options.group === 'Other' })
     let colorList = ColorUtils.getDifferentColors(groups.length - 1 + listOfOtherTags.length)
@@ -272,7 +272,7 @@ class TagManager {
 	        name: tagName,
 	        namespace: this.model.namespace,
 	        options: options || {},
-	        //PVSCL:IFCOND(DefaultCriterias)
+	        //PVSCL:IFCOND(DefaultCriterias, LINE)
 	        annotation: tagAnnotation,
 	        //PVSCL:ENDCOND
 	        tags: [
@@ -285,7 +285,7 @@ class TagManager {
 		
 	}
     tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => {
-      //PVSCL:IFCOND(DefaultCriterias)
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       // TODO Check all elements, not only tags[0]
       if (_.isArray(tagGroup.tags) && _.has(tagGroup.tags[0], 'name') && _.isNaN(_.parseInt(tagGroup.tags[0].name))) {
         tagGroup.tags = _.sortBy(tagGroup.tags, 'name')
@@ -319,7 +319,7 @@ class TagManager {
       }
       return tagGroup
     })
-    //PVSCL:IFCOND(NOT(DefaultCriterias))
+    //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
     // For groups without sub elements
     let emptyGroups = _.filter(tagGroupsAnnotations, (group) => { return group.tags.length === 0 })
     for (let j = 0; j < emptyGroups.length; j++) {
@@ -340,7 +340,7 @@ class TagManager {
     //PVSCL:ENDCOND
   }
   
-  //PVSCL:IFCOND(Spreadsheet)
+  //PVSCL:IFCOND(Spreadsheet, LINE)
   createTagsBasedOnAnnotationsGrouped () {
     let tagGroupsAnnotations = {}
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
@@ -427,7 +427,7 @@ class TagManager {
     return null
   }
   
-  //PVSCL:IFCOND(DefaultCriterias)
+  //PVSCL:IFCOND(DefaultCriterias, LINE)
   collapseExpandGroupedButtonsHandler (event) {
     let tagGroup = event.target.parentElement
     if (tagGroup.getAttribute('aria-expanded') === 'true') {
@@ -439,7 +439,7 @@ class TagManager {
   //PVSCL:ENDCOND
   
   createTagButtons (callback) {
-	//PVSCL:IFCOND(DefaultCriterias)
+	//PVSCL:IFCOND(DefaultCriterias, LINE)
 	let groups = _.map(_.uniqBy(DefaultCriterias.criteria, (criteria) => { return criteria.group }), 'group')
     for (let i = 0; i < groups.length; i++) {
       let group = groups[i]
@@ -469,7 +469,7 @@ class TagManager {
       // Insert in its corresponding group container
       this.tagsContainer.evidencing.querySelector('[title="' + tagGroup.config.options.group + '"]').nextElementSibling.append(button)
     }
-	//PVSCL:ELSEIFCOND(Moodle)
+	//PVSCL:ELSEIFCOND(Moodle, LINE)
 	let arrayOfTagGroups = _.values(this.model.currentTags)
     arrayOfTagGroups = _.orderBy(arrayOfTagGroups, 'config.options.criteriaId')
     for (let i = 0; i < arrayOfTagGroups.length; i++) {
@@ -498,7 +498,7 @@ class TagManager {
       if (LanguageUtils.isInstanceOf(this.currentTags[0], Tag)) {
         for (let i = 0; i < this.currentTags.length; i++) {
           // Append each element
-          let tagButton = Tag.currentTags[i].createButton()
+          let tagButton = this.currentTags[i].createButton()
           this.tagsContainer.annotate.append(tagButton)
         }
       } else if (LanguageUtils.isInstanceOf(this.currentTags[0], TagGroup)) {
@@ -516,7 +516,7 @@ class TagManager {
 	//PVSCL:ENDCOND
   }
   
-  //PVSCL:IFCOND(Marks)
+  //PVSCL:IFCOND(Marks, LINE)
   getCurrentMarkForCriteria (criteriaName) {
     // TODO Get mark from any document for this student, not only in the current document ¿?
     let otherAnnotationSameCriteria = _.find(window.abwa.contentAnnotator.currentAnnotations, (annotation) => {
@@ -557,7 +557,7 @@ class TagManager {
   //PVSCL:ENDCOND
   
   createTagsButtonsForEvidencing () {
-	  //PVSCL:IFCOND(ReviewMode)
+	  //PVSCL:IFCOND(ReviewMode, LINE)
     let groups = _.map(_.uniqBy(DefaultCriterias.criteria, (criteria) => { return criteria.group }), 'group')
     for (let i = 0; i < groups.length; i++) {
       let group = groups[i]
@@ -587,7 +587,7 @@ class TagManager {
       // Insert in its corresponding group container
       this.tagsContainer.evidencing.querySelector('[title="' + tagGroup.config.options.group + '"]').nextElementSibling.append(button)
     }
-    //PVSCL:ELSEIFCOND(EvidencingMode)
+    //PVSCL:ELSEIFCOND(EvidencingMode, LINE)
     let arrayOfTagGroups = _.values(this.model.currentTags)
     arrayOfTagGroups = _.orderBy(arrayOfTagGroups, 'config.options.criteriaId')
     for (let i = 0; i < arrayOfTagGroups.length; i++) {
@@ -613,7 +613,7 @@ class TagManager {
 	//PVSCL:ENDCOND
   }
   
-  //PVSCL:IFCOND(Student)
+  //PVSCL:IFCOND(Student, LINE)
   createTagsButtonsForViewing () {
     this.viewingInterval = setInterval(() => {
       // Wait until current annotations are loaded
@@ -680,7 +680,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
   
-  //PVSCL:IFCOND(NOT(Spreadsheet))
+  //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
   static createButton ({name, color = 'white', description, handler, role}) {
     let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
     let tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)
@@ -700,7 +700,7 @@ class TagManager {
     tagButton.addEventListener('click', handler)
     // Tag button background color change
     // TODO It should be better to set it as a CSS property, but currently there is not an option for that
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     tagButton.addEventListener('mouseenter', () => {
     	tagButton.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(tagButton.dataset.baseColor), 0.7)
     })
@@ -727,14 +727,14 @@ class TagManager {
     // Create the container
     let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
     let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
-    //PVSCL:IFCOND(Mark)
+    //PVSCL:IFCOND(Marks, LINE)
     tagGroup.dataset.criteria = name
     //PVSCL:ENDCOND
     let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
     let groupNameSpan = tagGroup.querySelector('.groupName')
     groupNameSpan.innerText = name
     groupNameSpan.title = name
-    //PVSCL:IFCOND(Mark)
+    //PVSCL:IFCOND(Marks)
     groupNameSpan.dataset.clickable = 'true'
     //PVSCL:ENDCOND
     // Create event handler for tag group
@@ -743,7 +743,7 @@ class TagManager {
     if (/*PVSCL:IFCOND(DefaultCriterias)*/ _.isArray(elements) && /*PVSCL:ENDCOND*/ elements.length > 0) { // Only create group containers for groups which have elements
       for (let i = 0; i < elements.length; i++) {
         let element = elements[i]
-        //PVSCL:IFCOND(Mark)
+        //PVSCL:IFCOND(Marks, LINE)
         let button = this.createButton({
         //PVSCL:ELSECOND
         let button = TagManager.createButton({
@@ -762,12 +762,12 @@ class TagManager {
   //PVSCL:ENDCOND
   
   initEventHandlers (callback) {
-	//PVSCL:IFCOND(UserFilter)
+	//PVSCL:IFCOND(UserFilter, LINE)
 	// For user filter change
 	this.events.updatedCurrentAnnotationsEvent = {element: document, event: Events.updatedCurrentAnnotations, handler: this.createUpdatedCurrentAnnotationsEventHandler()}
 	this.events.updatedCurrentAnnotationsEvent.element.addEventListener(this.events.updatedCurrentAnnotationsEvent.event, this.events.updatedCurrentAnnotationsEvent.handler, false)
 	//PVSCL:ENDCOND
-	//PVSCL:IFCOND(ModeSelector)
+	//PVSCL:IFCOND(ModeSelector, LINE)
 	// For mode change
     this.events.modeChange = {
       element: document,
@@ -776,7 +776,7 @@ class TagManager {
     }
     this.events.modeChange.element.addEventListener(this.events.modeChange.event, this.events.modeChange.handler, false)
 	//PVSCL:ENDCOND
-	//PVSCL:IFCOND(New)
+	//PVSCL:IFCOND(New, LINE)
 	// For annotation event, reload sidebar with elements chosen and not chosen ones
     this.events.annotationCreated = {
       element: document,
@@ -804,7 +804,7 @@ class TagManager {
     }
   }
   
-  //PVSCL:IFCOND(New)
+  //PVSCL:IFCOND(New, LINE)
   reloadTagsChosen () {
     // Uncheck all the tags
     let tagButtons = document.querySelectorAll('.tagButton')
@@ -833,7 +833,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
     
-  //PVSCL:IFCOND(Index)
+  //PVSCL:IFCOND(Index, LINE)
   createUpdatedCurrentAnnotationsEventHandler () {
     return (event) => {
       // Retrieve current annotations
@@ -913,7 +913,7 @@ class TagManager {
       if (LanguageUtils.isInstanceOf(this.currentIndexTags[0], Tag)) {
         for (let i = 0; i < this.currentIndexTags.length; i++) {
           // Append each element
-          let tagButton = Tag.currentIndexTags[i].createButton()
+          let tagButton = this.currentIndexTags[i].createButton()
           tagButton.setAttribute('role', Tag.roles.index) // Set index rol to tag
           this.tagsContainer.index.append(tagButton)
         }
@@ -933,7 +933,7 @@ class TagManager {
   //PVSCL:ENDCOND
   
   modeChangeHandler (event) {
-	//PVSCL:IFCOND(HighlightMode AND IndexMode)
+	//PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
 	if (event.detail.mode === ModeManager.modes.highlight) {
 	  // Show all the tags
       this.showAllTagsContainer()
@@ -941,7 +941,7 @@ class TagManager {
 	  // TODO Update index tags (it is not really required because everytime user create/delete annotation is updated)
 	  this.showIndexTagsContainer()
 	}
-	//PVSCL:ELSEIFCOND(ReviewMode)
+	//PVSCL:ELSEIFCOND(ReviewMode, LINE)
     if (event.detail.mode === ModeManager.modes.evidencing) {
         this.showEvidencingTagsContainer()
     }
@@ -959,7 +959,7 @@ class TagManager {
       this.showViewingTagsContainer()
     }
   }
-  //PVSCL:IFCOND(EvidencingMode OR ReviewMode)
+  //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
   showEvidencingTagsContainer () {
     //PVSCL:IFCOND(NOT(ReviewMode))
 	$(this.tagsContainer.viewing).attr('aria-hidden', 'true')
@@ -969,7 +969,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
   
-  //PVSCL:IFCOND(DefaultCriterias)
+  //PVSCL:IFCOND(DefaultCriterias, LINE)
   reorderNoGroupedTagContainer (order, container) {
     // Reorder marking container
     for (let i = order.length - 1; i >= 0; i--) {
@@ -980,7 +980,7 @@ class TagManager {
     }
   }
   //PVSCL:ENDCOND
-  //PVSCL:IFCOND(MarkingMode)
+  //PVSCL:IFCOND(MarkingMode, LINE)
   showMarkingTagsContainer () {
     $(this.tagsContainer.viewing).attr('aria-hidden', 'true')
     $(this.tagsContainer.marking).attr('aria-hidden', 'false')
@@ -992,7 +992,7 @@ class TagManager {
     $(this.tagsContainer.marking).attr('aria-hidden', 'true')
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'true')
   }
-  //PVSCL:IFCOND(Spreadsheet)
+  //PVSCL:IFCOND(Spreadsheet, LINE)
   showAllTagsContainer () {
     $(this.tagsContainer.index).attr('aria-hidden', 'true')
     $(this.tagsContainer.annotate).attr('aria-hidden', 'false')
@@ -1003,7 +1003,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
   
-  //PVSCL:IFCOND(Spreadsheet)
+  //PVSCL:IFCOND(Spreadsheet, LINE)
   getGroupAndSubgroup (annotation) {
     let tags = annotation.tags
     let group = null
@@ -1061,7 +1061,7 @@ class TagManager {
       return tag.includes(/*PVSCL:IFCOND(Marks)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/)
     }).replace(/*PVSCL:IFCOND(Marks)*/ 'exam:isCriteriaOf:' /*PVSCL:ELSECOND*/ 'review:isCriteriaOf:' /*PVSCL:ENDCOND*/, '')
     return _.find(window.abwa.tagManager.currentTags, (tagGroupInstance) => {
-      //PVSCL:IFCOND(Marks)
+      //PVSCL:IFCOND(Marks, LINE)
       return criteriaName === tagGroupInstance.config.name
       //PVSCL:ELSECOND
       return criteriaTag === tagGroupInstance.config.name
@@ -1071,10 +1071,10 @@ class TagManager {
 
   getCodeFromAnnotation (annotation, groupTag) {
     let markTag = _.find(annotation.tags, (tag) => {
-      return tag.includes(/*PVSCL:IFCOND(Mark)*/ 'exam:mark:' /*PVSCL:ELSECOND*/ 'review:level:' /*PVSCL:ENDCOND*/)
+      return tag.includes(/*PVSCL:IFCOND(Marks)*/ 'exam:mark:' /*PVSCL:ELSECOND*/ 'review:level:' /*PVSCL:ENDCOND*/)
     }).replace(/*PVSCL:IFCOND(Mark)*/ 'exam:mark:' /*PVSCL:ELSECOND*/'review:level:' /*PVSCL:ENDCOND*/, '')
     return _.find(groupTag.tags, (tagInstance) => {
-      //PVSCL:IFCOND(Mark)
+      //PVSCL:IFCOND(Marks, LINE)
       return markName === tagInstance.name
       //PVSCL:ELSECOND
       return markTag.includes(tagInstance.name)
@@ -1084,12 +1084,12 @@ class TagManager {
 
   hasCodeAnnotation (annotation) {
     return _.some(annotation.tags, (tag) => {
-      return tag.includes(/*PVSCL:IFCOND(Mark)*/ 'exam:mark:' /*PVSCL:ELSECOND*/ 'review:level:' /*PVSCL:ENDCOND*/)
+      return tag.includes(/*PVSCL:IFCOND(Marks)*/ 'exam:mark:' /*PVSCL:ELSECOND*/ 'review:level:' /*PVSCL:ENDCOND*/)
     })
   }
   /*PVSCL:ENDCOND*/
   initTagsStructure (callback) {
-    //PVSCL:IFCOND(Spreadsheet)
+    //PVSCL:IFCOND(Spreadsheet, LINE)
 	let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
@@ -1113,27 +1113,6 @@ class TagManager {
     })
     //PVSCL:ENDCOND
   }
-  
-  //PVSCL:IFCOND(Spreadsheet)
-  createPanel (indexRole) {
-    if (this.tags.length > 0) {
-      let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
-      let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
-      let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
-      let groupNameSpan = tagGroup.querySelector('.groupName')
-      groupNameSpan.innerText = this.config.name
-      groupNameSpan.title = this.config.name
-      for (let j = 0; j < this.tags.length; j++) {
-        let tagButton = this.tags[j].createButton()
-        if (indexRole) {
-          tagButton.setAttribute('role', Tag.roles.index)
-        }
-        tagButtonContainer.append(tagButton)
-      }
-      return tagGroup
-    }
-  }
-  //PVSCL:ENDCOND
 }
   
 module.exports = TagManager

@@ -1,10 +1,11 @@
-//PVSCL:IFCOND(ModeSelector)
+//PVSCL:IFCOND(ModeSelector, LINE)
 const LanguageUtils = require('../utils/LanguageUtils')
 //PVSCL:ENDCOND
 const ColorUtils = require('../utils/ColorUtils')
+const Events = require('./Events')
 
 class Tag {
-  constructor (config/*PVSCL:IFCOND(AutomaticSelection OR StaticGroupSelector)*/, group = null /*PVSCL:ENDCOND*/) {
+  constructor (config, group = null) {
     this.group = group
     this.name = config.name
     this.namespace = config.namespace
@@ -24,7 +25,7 @@ class Tag {
     this.options = config.options
   }
 
-  //PVSCL:IFCOND(HighlightMode AND IndexMode)
+  //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
   createButton () {
     let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
     this.tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)
@@ -68,10 +69,10 @@ class Tag {
 }
 
 Tag.roles = {
-    //PVSCL:IFCOND(HighlightMode)
-    annotation: 'annotation'/*PVSCL:ENDCOND*//*PVSCL:IFCOND(IndexMode)*/,
-    index: 'index'
-    //PVSCL:ENDCOND
+  //PVSCL:IFCOND(HighlightMode)
+  annotation: 'annotation'/*PVSCL:ENDCOND PVSCL:IFCOND(IndexMode)*/,
+  index: 'index'
+  //PVSCL:ENDCOND
 }
 
 module.exports = Tag

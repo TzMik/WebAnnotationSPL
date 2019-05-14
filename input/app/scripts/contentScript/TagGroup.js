@@ -7,7 +7,7 @@ class TagGroup {
     this.config.color = this.config.color || 'rgba(150,150,150,0.5)'
   }
 
-  //PVSCL:IFCOND(Highlight AND IndexMode)
+  //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
   createPanel (indexRole) {
     if (this.tags.length > 0) {
       let tagGroupTemplate = document.querySelector('#tagGroupTemplate')

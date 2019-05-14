@@ -1,23 +1,13 @@
 const _ = require('lodash')
-//
-//
 const Config = require('../Config')
-//
-//
 const PrimaryStudySheetManager = require('./PrimaryStudySheetManager')
 const MappingStudyManager = require('./MappingStudyManager')
 const CreateAnnotationManager = require('./CreateAnnotationManager')
 const DeleteAnnotationManager = require('./DeleteAnnotationManager')
-//
-//
-//
-//
+const ValidateAnnotationManager = require('./ValidateAnnotationManager')
 const Toolset = require('./ToolsetBar')
-//
-//
 
 class specificContentScript{
-  //
   constructor () {
     this.backToSpreadsheetLink = null
     this.spreadsheetId = null
@@ -27,13 +17,9 @@ class specificContentScript{
       code: Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.subgroup + ':'
     }
   }
-  //
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
-    
-    //
-    //
     window.abwa.specific = window.abwa.specific || {}
     // Retrieve mapping study manager
     window.abwa.specific.mappingStudyManager = new MappingStudyManager()
@@ -41,6 +27,8 @@ class specificContentScript{
       // Retrieve primary study sheet
       window.abwa.specific.primaryStudySheetManager = new PrimaryStudySheetManager()
       window.abwa.specific.primaryStudySheetManager.init(() => {
+    	window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
+        window.abwa.toolset.init()
         // Create annotation handler
         window.abwa.specific.createAnnotationManager = new CreateAnnotationManager()
         window.abwa.specific.createAnnotationManager.init()
@@ -50,30 +38,23 @@ class specificContentScript{
         // Validation handler
         window.abwa.specific.validateAnnotationManager = new ValidateAnnotationManager()
         window.abwa.specific.validateAnnotationManager.init()
-        window.abwa.toolset.show()
+        //window.abwa.toolset.show()
         if (_.isFunction(callback)) {
           callback()
         }
       })
     })
-    //
-    //
-    //
-    window.abwa.toolset.show()
-    //
+    //window.abwa.toolset.show()
   }
 
-  //
 
   destroy(){
-    //
     // TODO Destroy managers
     window.abwa.specific.mappingStudyManager.destroy()
     window.abwa.specific.primaryStudySheetManager.destroy()
     window.abwa.specific.createAnnotationManager.destroy()
     window.abwa.specific.deleteAnnotationManager.destroy()
     window.abwa.specific.validateAnnotationManager.destroy()
-    //
   }
 }
 

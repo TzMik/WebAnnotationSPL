@@ -1,11 +1,10 @@
-//
 const LanguageUtils = require('../utils/LanguageUtils')
-//
 const ColorUtils = require('../utils/ColorUtils')
+const Events = require('./Events')
 
 class Tag {
-  constructor (config/**/) {
-    //
+  constructor (config, group = null) {
+    this.group = group
     this.name = config.name
     this.namespace = config.namespace
     this.tags = config.tags || [config.namespace + ':' + config.name]
@@ -22,7 +21,6 @@ class Tag {
     this.options = config.options
   }
 
-  //
   createButton () {
     let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
     this.tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)
@@ -46,7 +44,6 @@ class Tag {
     })
     return this.tagButton
   }
-  //
 
   getColor () {
     return this.color
@@ -66,10 +63,10 @@ class Tag {
 }
 
 Tag.roles = {
-    //
-    annotation: 'annotation'/**//**/,
-    index: 'index'
-    //
+  //
+  annotation: 'annotation'/* */,
+  index: 'index'
+  //
 }
 
 module.exports = Tag

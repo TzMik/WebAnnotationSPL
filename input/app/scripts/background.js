@@ -1,5 +1,5 @@
 import 'chromereload/devonly'
-//PVSCL:IFCOND(NOT(Moodle))
+//PVSCL:IFCOND(NOT(Moodle), LINE)
 chrome.runtime.onInstalled.addListener((details) => {
   console.log('previousVersion', details.previousVersion)
 })
@@ -12,13 +12,13 @@ chrome.tabs.onCreated.addListener((tab) => {
 })
 const HypothesisManager = require('./background/HypothesisManager')
 const Popup = require('./popup/Popup')
-//PVSCL:IFCOND(Spreadsheet)
+//PVSCL:IFCOND(Spreadsheet, LINE)
 const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(DOI)
+//PVSCL:IFCOND(DOI, LINE)
 const DoiManager = require('./background/DoiManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Moodle)
+//PVSCL:IFCOND(Moodle, LINE)
 const MoodleDownloadManager = require('./background/MoodleDownloadManager')
 const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
 const TaskManager = require('./background/TaskManager')
@@ -35,17 +35,17 @@ class Background {
     // Initialize hypothesis manager
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
-    //PVSCL:IFCOND(Spreadsheet)
+    //PVSCL:IFCOND(Spreadsheet, LINE)
     // Initialize google sheets manager
     this.googleSheetsManager = new GoogleSheetsManager()
     this.googleSheetsManager.init()
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(DOI)
+    //PVSCL:IFCOND(DOI, LINE)
     // Initialize doi manager
     this.doiManager = new DoiManager()
     this.doiManager.init()
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Moodle)
+    //PVSCL:IFCOND(Moodle, LINE)
     // Initialize moodle download manager
     this.moodleDownloadManager = new MoodleDownloadManager()
     this.moodleDownloadManager.init()

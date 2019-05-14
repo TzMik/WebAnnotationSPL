@@ -58,7 +58,7 @@ class DoiManager {
         })
       }
     }, this.scienceDirect, ['requestHeaders', 'blocking'])
-    //PVSCL:IFCOND(Dropbox)
+    //PVSCL:IFCOND(Dropbox, LINE)
     // Request to dropbox
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
       let redirectUrl = _.find(responseDetails.responseHeaders, (header) => { return header.name.toLowerCase() === 'location' }).value

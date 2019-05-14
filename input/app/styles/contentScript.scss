@@ -4,25 +4,25 @@
 @import './tagWrapper';
 @import './sidebar';
 @import './textAnnotator';
-//PVSCL:IFCOND(Marks)
+//PVSCL:IFCOND(Marks, LINE)
 @import './exam';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(ModeSelector)
+//PVSCL:IFCOND(ModeSelector, LINE)
 @import './modeManager';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Toolset)
+//PVSCL:IFCOND(Toolset, LINE)
 @import './toolset';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Canvas)
+//PVSCL:IFCOND(Canvas, LINE)
 @import './reviewCanvas';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(NOT(Moodle))
+//PVSCL:IFCOND(NOT(Moodle), LINE)
 @import './locationManager';
 @import './slrDataExtraction';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(DefaultCriterias)
+//PVSCL:IFCOND(DefaultCriterias, LINE)
 @import './review';
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Citations)
+//PVSCL:IFCOND(Citations, LINE)
 @import './reviewAssistant';
 //PVSCL:ENDCOND

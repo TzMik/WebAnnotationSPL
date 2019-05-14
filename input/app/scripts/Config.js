@@ -50,7 +50,8 @@ const Config = {
         reviewed: 'reviewed'
       }
     }
-  },
+  }//PVSCL:IFCOND(StaticGroupSelection)
+  ,
   review: {
     groupName: 'ReviewAndGo',
     namespace: 'review',
@@ -62,6 +63,7 @@ const Config = {
       }
     }
   }
+  //PVSCL:ENDCOND
 }
 
 module.exports = Config

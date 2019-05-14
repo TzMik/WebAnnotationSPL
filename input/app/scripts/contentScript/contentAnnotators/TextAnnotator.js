@@ -2,6 +2,7 @@ const ContentAnnotator = require('./ContentAnnotator')
 const ContentTypeManager = require('../ContentTypeManager')
 const Tag = require('../Tag')
 const TagGroup = require('../TagGroup')
+const TagManager = require('../TagManager')
 const Events = require('../Events')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
@@ -11,10 +12,10 @@ const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const Alerts = require('../../utils/Alerts')
-//PVSCL:IFCOND(NOT(ReviewMode))
+//PVSCL:IFCOND(NOT(ReviewMode), LINE)
 const ModeManager = require('../ModeManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Student OR Teacher)
+//PVSCL:IFCOND(Student OR Teacher, LINE)
 const RolesManager = require('../RolesManager')
 //PVSCL:ENDCOND
 const Config = require('../../Config')
@@ -66,36 +67,36 @@ class TextAnnotator extends ContentAnnotator {
   initEvents (callback) {
     this.initSelectionEvents(() => {
       this.initAnnotateEvent(() => {
-    	  //PVSCL:IFCOND(NOT(ReviewMode))
+    	  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
     	  this.initModeChangeEvent(() => {
     	  //PVSCL:ENDCOND
-    		  //PVSCL:IFCOND(UserFilter)
+    		  //PVSCL:IFCOND(UserFilter, LINE)
     		  this.initUserFilterChangeEvent(() => {
     		  //PVSCL:ENDCOND
     			  this.initReloadAnnotationsEvent(() => {
-    				  //PVSCL:IFCOND(AllDeleter)
+    				  //PVSCL:IFCOND(AllDeleter, LINE)
     				  this.initDeleteAllAnnotationsEvent(() => {
     				  //PVSCL:ENDCOND
     					  this.initDocumentURLChangeEvent(() => {
-    						  //PVSCL:IFCOND(New)
+    						  //PVSCL:IFCOND(New, LINE)
     						  this.initTagsUpdatedEvent(() => {
     						  //PVSCL:ENDCOND
     							// Reload annotations periodically
     				                if (_.isFunction(callback)) {
     				                  callback()
     				                }
-    						  //PVSCL:IFCOND(New)
+    						  //PVSCL:IFCOND(New, LINE)
     						  })
     						  //PVSCL:ENDCOND
     					  })
-    				  //PVSCL:IFCOND(AllDeleter)
+    				  //PVSCL:IFCOND(AllDeleter, LINE)
     				  })
     				  //PVSCL:ENDCOND
     			  })    		  
-    		  //PVSCL:IFCOND(UserFilter)
+    		  //PVSCL:IFCOND(UserFilter, LINE)
     		  })
     		  //PVSCL:ENDCOND
-    	  //PVSCL:IFCOND(NOT(ReviewMode))
+    	  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
     	  })
     	  //PVSCL:ENDCOND
       })
@@ -110,7 +111,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
     
-  //PVSCL:IFCOND(AllDeleter)
+  //PVSCL:IFCOND(AllDeleter, LINE)
   initDeleteAllAnnotationsEvent (callback) {
     this.events.deleteAllAnnotationsEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.createDeleteAllAnnotationsEventHandler()}
     this.events.deleteAllAnnotationsEvent.element.addEventListener(this.events.deleteAllAnnotationsEvent.event, this.events.deleteAllAnnotationsEvent.handler, false)
@@ -128,7 +129,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(New)
+  //PVSCL:IFCOND(New, LINE)
   initTagsUpdatedEvent (callback) {
     this.events.tagsUpdated = {element: document, event: Events.tagsUpdated, handler: this.createtagsUpdatedEventHandler()}
     this.events.tagsUpdated.element.addEventListener(this.events.tagsUpdated.event, this.events.tagsUpdated.handler, false)
@@ -165,7 +166,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  //PVSCL:IFCOND(UserFilter)
+  //PVSCL:IFCOND(UserFilter, LINE)
   initUserFilterChangeEvent (callback) {
     this.events.userFilterChangeEvent = {element: document, event: Events.userFilterChange, handler: this.createUserFilterChangeEventHandler()}
     this.events.userFilterChangeEvent.element.addEventListener(this.events.userFilterChangeEvent.event, this.events.userFilterChangeEvent.handler, false)
@@ -187,7 +188,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(NOT(ReviewMode))
+  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
   initModeChangeEvent (callback) {
     this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
     this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
@@ -198,7 +199,7 @@ class TextAnnotator extends ContentAnnotator {
 
   createInitModeChangeEventHandler () {
     return () => {
-      //PVSCL:IFCOND(HighlightMode AND IndexMode)
+      //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
       if (window.abwa.modeManager.mode === ModeManager.modes.index) {
         // Highlight all annotations
         this.currentAnnotations = this.allAnnotations
@@ -214,7 +215,7 @@ class TextAnnotator extends ContentAnnotator {
         this.activateSelectionEvent()
       }
       //PVSCL:ENDCOND
-      //PVSCL:IFCOND(MarkingMode AND EvidencingMode)
+      //PVSCL:IFCOND(MarkingMode AND EvidencingMode, LINE)
       // If is mark or view disable the sidebar closing
       if (window.abwa.modeManager.mode === ModeManager.modes.mark || window.abwa.modeManager.mode === ModeManager.modes.view) {
         this.disableSelectionEvent()
@@ -239,7 +240,7 @@ class TextAnnotator extends ContentAnnotator {
       let selectors = []
       // If selection is empty, return null
       if (document.getSelection().toString().length === 0) {
-        //PVSCL:IFCOND(Last)
+        //PVSCL:IFCOND(Last, LINE)
         // If tag element is not checked, no navigation allowed
         if (event.detail.chosen === 'true'){
           // Navigate to the first annotation for this tag
@@ -299,7 +300,7 @@ class TextAnnotator extends ContentAnnotator {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
-          //PVSCL:IFCOND(DefaultCriterias)
+          //PVSCL:IFCOND(DefaultCriterias, LINE)
           this.allAnnotations.push(annotation)
           //PVSCL:ELSECOND
           this.currentAnnotations.push(annotation)
@@ -348,7 +349,7 @@ class TextAnnotator extends ContentAnnotator {
         }]
       }
     }
-    //PVSCL:IFCOND(DOI)
+    //PVSCL:IFCOND(DOI, LINE)
     // If doi is available, add it to the annotation
     if (!_.isEmpty(window.abwa.contentTypeManager.doi)) {
       data.document = data.document || {}
@@ -408,7 +409,7 @@ class TextAnnotator extends ContentAnnotator {
     this.observerInterval = setInterval(() => {
       console.debug('Observer interval')
       // CreateAnnotationEventHandler funtzioko baldintza berdina
-      //PVSCL:IFCOND(DefaultCriterias)
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
         if (this.allAnnotations) {
@@ -461,7 +462,7 @@ class TextAnnotator extends ContentAnnotator {
       } else {
         // Current annotations will be
         // CreateAnnotationEventHandler funtzioko baldintza berdina
-        //PVSCL:IFCOND(DefaultCriterias)
+        //PVSCL:IFCOND(DefaultCriterias, LINE)
         this.allAnnotations = this.retrieveCurrentAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         //PVSCL:ELSECOND
@@ -469,9 +470,9 @@ class TextAnnotator extends ContentAnnotator {
         LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
         //PVSCL:ENDCOND
         // Highlight annotations in the DOM
-        //PVSCL:IFCOND(Moodle)
+        //PVSCL:IFCOND(Moodle, LINE)
         this.redrawAnnotations()
-        //PVSCL:ELSEIFCOND(Spreadsheet)
+        //PVSCL:ELSEIFCOND(Spreadsheet, LINE)
         this.highlightAnnotations(this.currentAnnotations)
         //PVSCL:ELSECOND
         this.highlightAnnotations(this.allAnnotations)
@@ -496,13 +497,13 @@ class TextAnnotator extends ContentAnnotator {
           callback(err)
         }
       } else {
-        //PVSCL:IFCOND(Replys)
+        //PVSCL:IFCOND(Replys, LINE)
         // Get reply annotations
         this.replyAnnotations = _.remove(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Spreadsheet)
+        //PVSCL:IFCOND(Spreadsheet, LINE)
         // Search tagged annotations
         let tagList = window.abwa.tagManager.getTagsList()
         let taggedAnnotations = []
@@ -532,7 +533,7 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //PVSCL:IFCOND(Spreadsheet)
+  //PVSCL:IFCOND(Spreadsheet, LINE)
   getAllAnnotations (callback) {
     // Retrieve annotations for current url and group
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
@@ -565,7 +566,7 @@ class TextAnnotator extends ContentAnnotator {
   //PVSCL:ENDCOND
 
   retrieveCurrentAnnotations () {
-    //PVSCL:IFCOND(IndexMode AND HighlightMode)
+    //PVSCL:IFCOND(IndexMode AND HighlightMode, LINE)
     // Depending on the mode of the tool, we must need only
     if (window.abwa.modeManager.mode === ModeManager.modes.index) {
       return this.allAnnotations
@@ -594,18 +595,18 @@ class TextAnnotator extends ContentAnnotator {
 
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
-    //PVSCL:IFCOND(NOT(Spreadsheet))
+    //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
     // Get annotation color for an annotation
     let tagInstance = window.abwa.tagManager.findAnnotationTagInstance(annotation)
     if (tagInstance) {
     	let color = tagInstance.getColor()
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Spreadsheet)
+    //PVSCL:IFCOND(Spreadsheet, LINE)
     let tagList = window.abwa.tagManager.getTagsList()
     let tagForAnnotation = TagManager.retrieveTagForAnnotation(annotation, tagList)
     //PVSCL:ENDCOND
     try {
-    	//PVSCL:IFCOND(Spreadsheet)
+    	//PVSCL:IFCOND(Spreadsheet, LINE)
     	 // TODO Remove this case for google drive
         if (window.location.href.includes('drive.google.com')) {
           // Ensure popup exists
@@ -613,7 +614,7 @@ class TextAnnotator extends ContentAnnotator {
         //PVSCL:ENDCOND
         let highlightedElements = DOMTextUtils.highlightContent(
           annotation.target[0].selector, classNameToHighlight, annotation.id)        	  
-        //PVSCL:IFCOND(Spreadsheet)
+        //PVSCL:IFCOND(Spreadsheet, LINE)
           }
         } else {
            highlightedElements = DOMTextUtils.highlightContent(
@@ -625,7 +626,7 @@ class TextAnnotator extends ContentAnnotator {
           // If need to highlight, set the color corresponding to, in other case, maintain its original color
           $(highlightedElement).css('background-color',/*PVSCL:IFCOND(Spreadsheet)*/ tagForAnnotation.color /*PVSCL:ELSECOND*/ color /*PVSCL:ENDCOND*/)
           highlightedElement.dataset.color = /*PVSCL:IFCOND(Spreadsheet)*/tagForAnnotation.color/*PVSCL:ELSECOND*/color/*PVSCL:ENDCOND*/
-          //PVSCL:IFCOND(Spreadsheet)
+          //PVSCL:IFCOND(Spreadsheet, LINE)
           highlightedElement.dataset.tags = tagForAnnotation.tags
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           if (this.config.namespace === Config.exams.namespace) {
@@ -642,14 +643,14 @@ class TextAnnotator extends ContentAnnotator {
           if (LanguageUtils.isInstanceOf(tagInstance, TagGroup)) {
             group = tagInstance
             // Set message
-            //PVSCL:IFCOND(Moodle)
+            //PVSCL:IFCOND(Moodle, LINE)
             highlightedElement.title = 'Rubric competence: ' + group.config.name + '\nMark is pending, go to marking mode.'
             //PVSCL:ELSECOND
             highlightedElement.title = group.config.name + '\nLevel is pending, please right click to set a level.'
             //PVSCL:ENDCOND
           } else if (LanguageUtils.isInstanceOf(tagInstance, Tag)) {
             group = tagInstance.group
-            //PVSCL:IFCOND(Moodle)
+            //PVSCL:IFCOND(Moodle, LINE)
             // Get highest mark
             let highestMark = _.last(group.tags).name
             highlightedElement.title = 'Rubric competence: ' + group.config.name + '\nMark: ' + tagInstance.name + ' of ' + highestMark
@@ -658,14 +659,14 @@ class TextAnnotator extends ContentAnnotator {
             //PVSCL:ENDCOND
           }
           if (!_.isEmpty(annotation.text)) {
-        	//PVSCL:IFCOND(DefaultCriterias)
+        	//PVSCL:IFCOND(DefaultCriterias, LINE)
         	try {
               let feedback = JSON.parse(annotation.text)
               highlightedElement.title += '\nFeedback: ' + feedback.comment
             } catch (e) {
         	//PVSCL:ENDCOND
             highlightedElement.title += '\nFeedback: ' + annotation.text
-            //PVSCL:IFCOND(DefaultCriterias)
+            //PVSCL:IFCOND(DefaultCriterias, LINE)
             }
             //PVSCL:ENDCOND
           }
@@ -673,7 +674,7 @@ class TextAnnotator extends ContentAnnotator {
         })
         // Create context menu event for highlighted elements
         this.createContextMenuForAnnotation(annotation)
-        //PVSCL:IFCOND(Spreadsheet)
+        //PVSCL:IFCOND(Spreadsheet, LINE)
         this.createNextAnnotationHandler(annotation)
         //PVSCL:ELSECOND
         this.createDoubleClickEventHandler(annotation)
@@ -688,9 +689,9 @@ class TextAnnotator extends ContentAnnotator {
           callback()
         }
     }
-    //PVSCL:IFCOND(NOT(Spreadsheet))
+    //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
     }
-    //PVSCL:IFCOND(Moodle)
+    //PVSCL:IFCOND(Moodle, LINE)
     else {
         let color = 'rgba(0, 0, 0, 0.5)' // Neutral color for elements to remove
         try {
@@ -722,7 +723,7 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(IndexMode)
+  //PVSCL:IFCOND(IndexMode, LINE)
   createNextAnnotationHandler (annotation) {
     let annotationIndex = _.findIndex(
       this.currentAnnotations,
@@ -757,7 +758,7 @@ class TextAnnotator extends ContentAnnotator {
     for (let i = 0; i < highlights.length; i++) {
       let highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
-        //PVSCL:IFCOND(Student OR Teacher)
+        //PVSCL:IFCOND(Student OR Teacher, LINE)
         if (window.abwa.roleManager.role === RolesManager.roles.teacher) {
           let replies = this.getRepliesForAnnotation(annotation)
           if (replies.length > 0) {
@@ -783,27 +784,27 @@ class TextAnnotator extends ContentAnnotator {
         // Create items for context menu
         let items = {}
         // If current user is the same as author, allow to remove annotation
-        //PVSCL:IFCOND(Student OR Teacher)
+        //PVSCL:IFCOND(Student OR Teacher, LINE)
         if (window.abwa.roleManager.role === RolesManager.roles.teacher) {
           //  If a reply already exist show reply, otherwise show comment
           let replies = this.getRepliesForAnnotation(annotation)
           if (replies.length > 0) {
-        	  //PVSCL:IFCOND(Replys)
+        	  //PVSCL:IFCOND(Replys, LINE)
               items['reply'] = {name: 'Reply'}
               //PVSCL:ENDCOND
           } else {
-        	  //PVSCL:IFCOND(Comments)
+        	  //PVSCL:IFCOND(Comments, LINE)
               items['comment'] = {name: 'Comment'}
               //PVSCL:ENDCOND
           }
           items['delete'] = {name: 'Delete annotation'}
         } else if (window.abwa.roleManager.role === RolesManager.roles.student) {
-          //PVSCL:IFCOND(Replys)
+          //PVSCL:IFCOND(Replys, LINE)
           items['reply'] = {name: 'Reply'}
           //PVSCL:ENDCOND
         }
-        //PVSCL:ELSEIFCOND(ReviewMode)
-        //PVSCL:IFCOND(Comments)
+        //PVSCL:ELSEIFCOND(ReviewMode, LINE)
+        //PVSCL:IFCOND(Comments, LINE)
         items['comment'] = {name: 'Comment'}
         //PVSCL:ENDCOND
         items['delete'] = {name: 'Delete'}
@@ -811,7 +812,7 @@ class TextAnnotator extends ContentAnnotator {
         if (this.currentUserProfile.userid === annotation.user) {
           items['delete'] = {name: 'Delete annotation'}
         }
-        //PVSCL:IFCOND(IndexMode) //Index mode
+        //PVSCL:IFCOND(IndexMode, LINE) //Index mode
         if (this.config.namespace === Config.slrDataExtraction.namespace) {
           if (window.abwa.modeManager.mode === ModeManager.modes.index) {
             if (_.isObject(items['delete'])) {
@@ -826,7 +827,7 @@ class TextAnnotator extends ContentAnnotator {
         //PVSCL:ENDCOND
         return {
           callback: (key) => {
-            //PVSCL:IFCOND(Validations)
+            //PVSCL:IFCOND(Validations, LINE)
             if (key === 'validate') {
               // Validate annotation category
               LanguageUtils.dispatchCustomEvent(Events.annotationValidated, {annotation: annotation})
@@ -835,12 +836,12 @@ class TextAnnotator extends ContentAnnotator {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
             }
-            //PVSCL:IFCOND(Comments)
+            //PVSCL:IFCOND(Comments, LINE)
             if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
             }
             //PVSCL:ENDCOND
-            //PVSCL:IFCOND(Replys)
+            //PVSCL:IFCOND(Replys, LINE)
             if (key === 'reply') {
               this.replyAnnotationHandler(annotation)
             }
@@ -852,7 +853,7 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  //PVSCL:IFCOND(Replys)
+  //PVSCL:IFCOND(Replys, LINE)
   replyAnnotationHandler (annotation) {
     // Get annotations replying current annotation
     let repliesData = this.createRepliesData(annotation)
@@ -978,7 +979,7 @@ class TextAnnotator extends ContentAnnotator {
           // Alert user error happened
           Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
-          //PVSCL:IFCOND(DefaultCriterias) // NOT la baldintza de CreateAnnotationEventHandler
+          //PVSCL:IFCOND(DefaultCriterias, LINE) // NOT la baldintza de CreateAnnotationEventHandler
           // Remove annotation from data model
           _.remove(this.currentAnnotations, (currentAnnotation) => {
             return currentAnnotation.id === annotation.id
@@ -1003,7 +1004,7 @@ class TextAnnotator extends ContentAnnotator {
     // Close sidebar if opened
     let isSidebarOpened = window.abwa.sidebar.isOpened()
     this.closeSidebar()
-    //PVSCL:IFCOND(Moodle AND Comments)
+    //PVSCL:IFCOND(Moodle AND Comments, LINE)
     // Inputs
     let comment
     // Get annotation criteria
@@ -1083,7 +1084,7 @@ class TextAnnotator extends ContentAnnotator {
     let that = this
     let updateAnnotation = (textObject) => {
       annotation.text = JSON.stringify(textObject)
-      //PVSCL:IFCOND(Strengths)
+      //PVSCL:IFCOND(Strengths, LINE)
       // Assign level to annotation
       let level = textObject.level || null
       if (level != null) {
@@ -1101,7 +1102,7 @@ class TextAnnotator extends ContentAnnotator {
             Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
           } else {
             // Update current annotations
-            //PVSCL:IFCOND(DefaultCriterias) //La misma que CreateAnnotationEventHandler
+            //PVSCL:IFCOND(DefaultCriterias, LINE) //La misma que CreateAnnotationEventHandler
             let currentIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
             this.allAnnotations.splice(currentIndex, 1, annotation)
             //PVSCL:ELSECOND
@@ -1111,7 +1112,7 @@ class TextAnnotator extends ContentAnnotator {
             let allIndex = _.findIndex(this.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
             this.allAnnotations.splice(allIndex, 1, annotation)
             // Dispatch updated annotations events
-            //PVSCL:IFCOND(DefaultCriterias) //La misma que la de arriba
+            //PVSCL:IFCOND(DefaultCriterias, LINE) //La misma que la de arriba
             LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: that.allAnnotations})
             //PVSCL:ELSECOND
             LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
@@ -1125,7 +1126,7 @@ class TextAnnotator extends ContentAnnotator {
         })
     }
 
-    //PVSCL:IFCOND(Citations)
+    //PVSCL:IFCOND(Citations, LINE)
     let suggestedLiteratureHtml = (lit) => {
       let html = ''
       for (let i in lit) {
@@ -1134,7 +1135,7 @@ class TextAnnotator extends ContentAnnotator {
       return html
     }
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Strengths)
+    //PVSCL:IFCOND(Strengths, LINE)
     let hasLevel = (annotation, level) => {
       return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
     }
@@ -1162,7 +1163,7 @@ class TextAnnotator extends ContentAnnotator {
     })
     poleChoiceRadio += '</div>'
     //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Comments)
+    //PVSCL:IFCOND(Comments, LINE)
     let newComment
     let suggestedLiterature
 	let level
@@ -1189,7 +1190,7 @@ class TextAnnotator extends ContentAnnotator {
       $(this).prev('.poleRadio').prop('checked', true)
     })
     
-    //PVSCL:IFCOND(Citations)
+    //PVSCL:IFCOND(Citations, LINE)
     $('#swal-input1').autocomplete({
       source: function (request, response) {
         $.ajax({
@@ -1241,7 +1242,7 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(Moodle)
+  //PVSCL:IFCOND(Moodle, LINE)
   createPreviousAssignmentsUI (previousAssignments) {
     let previousAssignmentsContainer = document.createElement('div')
     previousAssignmentsContainer.className = 'previousAssignmentsContainer'
@@ -1274,7 +1275,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Replys)
+  //PVSCL:IFCOND(Replys, LINE)
   async retrievePreviouslyUsedComments (criteria) {
     return new Promise((resolve, reject) => {
       window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotationsSequential({
@@ -1322,13 +1323,13 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   goToFirstAnnotationOfTag (/*PVSCL:IFCOND(Spreadsheet)*/params/*PVSCL:ELSECOND*/tag/*PVSCL:ENDCOND*/) {
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     let annotation = _.find(this.allAnnotations, (annotation) => {
       return annotation.tags.includes(tag)
     })
     //PVSCL:ELSECOND
     let annotation = _.find(this.currentAnnotations, (annotation) => {
-      //PVSCL:IFCOND(Moodle)
+      //PVSCL:IFCOND(Moodle, LINE)
       return annotation.tags.includes(tag)
       //PVSCL:ELSECOND
       return _.isEqual(annotation.tags, params.tags)
@@ -1340,7 +1341,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  //PVSCL:IFCOND(Index)
+  //PVSCL:IFCOND(Index, LINE)
   goToAnnotationOfTag (tag) {
     let annotations = _.filter(this.currentAnnotations, (annotation) => {
       return annotation.tags.includes(tag)
@@ -1379,7 +1380,7 @@ class TextAnnotator extends ContentAnnotator {
             pdfjsHighlights[i].classList.remove('highlight')
           }
         }, 1000)
-        //PVSCL:IFCOND(Moodle)
+        //PVSCL:IFCOND(Moodle, LINE)
         // Redraw annotations
         this.redrawAnnotations()
         //PVSCL:ENDCOND
@@ -1426,7 +1427,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   unHighlightAllAnnotations () {
-    //PVSCL:IFCOND(DefaultCriterias)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
     //PVSCL:ELSECOND
     let highlightedElements = _.flatten(_.map(
@@ -1441,7 +1442,7 @@ class TextAnnotator extends ContentAnnotator {
     // Check if init annotation exists
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       let initAnnotation = window.abwa.annotationBasedInitializer.initAnnotation
-      //PVSCL:IFCOND(Moodle)
+      //PVSCL:IFCOND(Moodle, LINE)
       // Go to annotation
       this.goToAnnotation(initAnnotation)
       //PVSCL:ELSECOND
@@ -1501,7 +1502,7 @@ class TextAnnotator extends ContentAnnotator {
     }, 1000)
   }
 
-  //PVSCL:IFCOND(Moodle)
+  //PVSCL:IFCOND(Moodle, LINE)
   /**
    * Giving a list of old tags it changes all the annotations for the current document to the new tags
    * @param annotations
@@ -1535,7 +1536,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(DefaultCriterias)
+  //PVSCL:IFCOND(DefaultCriterias, LINE)
   /**
    * Giving a list of old tags it changes all the annotations for the current document to the new tags
    * @param oldTags
@@ -1576,7 +1577,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(NOT(Spreadsheet))
+  //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
   redrawAnnotations () {
     // Unhighlight all annotations
     this.unHighlightAllAnnotations()
@@ -1585,7 +1586,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(AllDeleter)
+  //PVSCL:IFCOND(AllDeleter, LINE)
   deleteAllAnnotations () {
     // Retrieve all the annotations
     let allAnnotations = this.allAnnotations

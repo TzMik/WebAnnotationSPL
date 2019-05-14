@@ -7,12 +7,10 @@
     "message": "Highlight&Go",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
-  
   "appDescription": {
     "message": "Highlight your primary studies and go!",
     "description": "The description of the application"
   },
-  
   "browserActionTitle": {
     "message": "Highlight&Go",
     "description": "The title of the browser action button"
@@ -25,37 +23,22 @@
     "message": "You need to give permissions to access your Google Spreadsheet.",
     "description": "Message to show when Google Sheets permission is required"
   },
-  
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with the rest of the reviewers to start data extraction collaboratively.",
     "description": "Message to show when hypothesis group is created"
   },
-  
   "Mode": {
     "message": "Mode",
     "description": "Sidebar mode header"
   },
-  
-  
   "Index": {
     "message": "Checker",
     "description": "Sidebar index label"
   },
-  
-  
-  
-  
   "Dimensions": {
     "message": "Facets",
     "description": "Sidebar dimensions header"
   },
-  
-  
-  
-  
-  
-  
-  
   "ContactAdministrator": {
     "message": "If the error continues, please <a href='https://github.com/haritzmedina/reviewandgo/issues' target='_blank'>contact to Review&Go developers</a>."
   },

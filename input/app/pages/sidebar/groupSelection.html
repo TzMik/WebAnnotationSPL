@@ -1,5 +1,6 @@
 <div id="groupSelectorContainer" aria-hidden="true">
-  <div id="loggedInGroupContainer" class="sidebarContainer" aria-hidden="true" pv:condition="GroupSelector">
+  //PVSCL:IFCOND(GroupSelector, LINE)
+  <div id="loggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
     <div id="groupHeader" class="containerHeader">
       <label>Mapping studies</label>
     </div>
@@ -8,6 +9,7 @@
       </select>
     </div>
   </div>
+  //PVSCL:ENDCOND
   <div id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
     <div id="hypothesisLogin" class="containerHeader">
       Please log in hypothesis

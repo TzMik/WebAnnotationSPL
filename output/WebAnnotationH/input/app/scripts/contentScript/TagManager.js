@@ -4,13 +4,10 @@ const jsYaml = require('js-yaml')
 const ModeManager = require('./ModeManager')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
-//
 const Events = require('./Events')
 const Tag = require('./Tag')
 const TagGroup = require('./TagGroup')
-//const Alerts = require('../utils/Alerts')
-//
-//
+const Alerts = require('../utils/Alerts')
 
 class TagManager {
   constructor (namespace, config) {
@@ -21,24 +18,19 @@ class TagManager {
       config: config
     }
     this.currentTags = []
-    //
     this.currentIndexTags = []
-    //
     this.events = {}
   }
   init (callback) {
     console.debug('Initializing TagManager')
     this.initTagsStructure(() => {
       this.initEventHandlers(() => {
-        //
         this.initAllTags(() => {
-          //
           if (window.abwa.modeManager.mode === ModeManager.modes.highlight) {
             this.showAllTagsContainer()
           } else {
             this.showIndexTagsContainer()
           }
-          //
           console.debug('Initialized TagManager')
           if (_.isFunction(callback)) {
             callback()
@@ -47,28 +39,22 @@ class TagManager {
       })
     })
   }
-  //
   getGroupAnnotations (callback) {
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
-      //
       url: window.abwa.groupSelector.currentGroup.url,
-      //
       order: 'desc'
     }, (err, annotations) => {
       if (err) {
-        //Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
+        Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
       } else {
         // Retrieve tags which has the namespace
         annotations = _.filter(annotations, (annotation) => {
           return this.hasANamespace(annotation, this.model.namespace)
         })
-        //
         // Remove slr:spreadsheet annotation ONLY for SLR case
         annotations = _.filter(annotations, (annotation) => {
           return !this.hasATag(annotation, 'slr:spreadsheet')
         })
-        //
-        //
         if (_.isFunction(callback)) {
           callback(annotations)
         }
@@ -92,7 +78,6 @@ class TagManager {
       return [] // No tags for current group
     }
   }
-  //
   static retrieveTagForAnnotation (annotation, tagList) {
     for (let i = 0; i < tagList.length; i++) {
       let difference = _.differenceWith(
@@ -106,16 +91,11 @@ class TagManager {
       }
     }
   }
-  //
 
   initAllTags (callback) {
-    //
-      //
       this.getGroupAnnotations((annotations) => {
-      //
         // Add to model
         this.model.groupAnnotations = annotations
-        //
         // If annotations are grouped
         if (!_.isEmpty(this.model.config.grouped)) {
           this.currentTags = this.createTagsBasedOnAnnotationsGrouped(annotations, this.model.config.grouped)
@@ -123,17 +103,11 @@ class TagManager {
           // Create tags based on annotations
           this.currentTags = this.createTagsBasedOnAnnotations(annotations)
         }
-        //
-        //
-        //
-        //
         this.createTagButtons()
-        //
         if (_.isFunction(callback)) {
           callback()
         }
       })
-    //
   }
 
   hasANamespace (annotation, namespace) {
@@ -149,7 +123,6 @@ class TagManager {
   }
 
   createTagsBasedOnAnnotations () {
-	  //
 	  let tags = []
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
       let tagAnnotation = this.model.groupAnnotations[i]
@@ -158,10 +131,8 @@ class TagManager {
     }
     this.model.currentTags = tags
     return tags
-	
   }
   
-  //
   createTagsBasedOnAnnotationsGrouped () {
     let tagGroupsAnnotations = {}
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
@@ -227,7 +198,6 @@ class TagManager {
     // Hash to array
     return _.sortBy(tagGroupsAnnotations, 'config.name')
   }
-  //
   
   destroy () {
 	// Remove event listeners
@@ -248,16 +218,14 @@ class TagManager {
     return null
   }
   
-  //
   
   createTagButtons (callback) {
-	//
 	// If it is an array is not grouped
     if (this.currentTags.length > 0) {
       if (LanguageUtils.isInstanceOf(this.currentTags[0], Tag)) {
         for (let i = 0; i < this.currentTags.length; i++) {
           // Append each element
-          let tagButton = Tag.currentTags[i].createButton()
+          let tagButton = this.currentTags[i].createButton()
           this.tagsContainer.annotate.append(tagButton)
         }
       } else if (LanguageUtils.isInstanceOf(this.currentTags[0], TagGroup)) {
@@ -272,22 +240,15 @@ class TagManager {
     if (_.isFunction(callback)) {
       callback()
     }
-	//
   }
   
-  //
   
   createTagsButtonsForEvidencing () {
-	  //
   }
   
-  //
   
-  //
   
   initEventHandlers (callback) {
-	//
-	//
 	// For mode change
     this.events.modeChange = {
       element: document,
@@ -295,16 +256,12 @@ class TagManager {
       handler: (event) => { this.modeChangeHandler(event) }
     }
     this.events.modeChange.element.addEventListener(this.events.modeChange.event, this.events.modeChange.handler, false)
-	//
-	//
     if (_.isFunction(callback)) {
       callback()
     }
   }
   
-  //
     
-  //
   createUpdatedCurrentAnnotationsEventHandler () {
     return (event) => {
       // Retrieve current annotations
@@ -384,7 +341,7 @@ class TagManager {
       if (LanguageUtils.isInstanceOf(this.currentIndexTags[0], Tag)) {
         for (let i = 0; i < this.currentIndexTags.length; i++) {
           // Append each element
-          let tagButton = Tag.currentIndexTags[i].createButton()
+          let tagButton = this.currentIndexTags[i].createButton()
           tagButton.setAttribute('role', Tag.roles.index) // Set index rol to tag
           this.tagsContainer.index.append(tagButton)
         }
@@ -401,10 +358,8 @@ class TagManager {
       callback()
     }
   }
-  //
   
   modeChangeHandler (event) {
-	//
 	if (event.detail.mode === ModeManager.modes.highlight) {
 	  // Show all the tags
       this.showAllTagsContainer()
@@ -412,7 +367,6 @@ class TagManager {
 	  // TODO Update index tags (it is not really required because everytime user create/delete annotation is updated)
 	  this.showIndexTagsContainer()
 	}
-	//
   }
   
   showTagsContainerForMode (mode) {
@@ -424,16 +378,12 @@ class TagManager {
       this.showViewingTagsContainer()
     }
   }
-  //
   
-  //
-  //
   showViewingTagsContainer () {
     $(this.tagsContainer.viewing).attr('aria-hidden', 'false')
     $(this.tagsContainer.marking).attr('aria-hidden', 'true')
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'true')
   }
-  //
   showAllTagsContainer () {
     $(this.tagsContainer.index).attr('aria-hidden', 'true')
     $(this.tagsContainer.annotate).attr('aria-hidden', 'false')
@@ -442,9 +392,7 @@ class TagManager {
     $(this.tagsContainer.index).attr('aria-hidden', 'false')
     $(this.tagsContainer.annotate).attr('aria-hidden', 'true')
   }
-  //
   
-  //
   getGroupAndSubgroup (annotation) {
     let tags = annotation.tags
     let group = null
@@ -462,9 +410,7 @@ class TagManager {
     }
     return {group: group, subgroup: subGroup}
   }
-  //*/
   initTagsStructure (callback) {
-    //
 	let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
@@ -477,29 +423,7 @@ class TagManager {
         callback()
       }
     })
-    //
   }
-  
-  //
-  createPanel (indexRole) {
-    if (this.tags.length > 0) {
-      let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
-      let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
-      let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
-      let groupNameSpan = tagGroup.querySelector('.groupName')
-      groupNameSpan.innerText = this.config.name
-      groupNameSpan.title = this.config.name
-      for (let j = 0; j < this.tags.length; j++) {
-        let tagButton = this.tags[j].createButton()
-        if (indexRole) {
-          tagButton.setAttribute('role', Tag.roles.index)
-        }
-        tagButtonContainer.append(tagButton)
-      }
-      return tagGroup
-    }
-  }
-  //
 }
   
 module.exports = TagManager

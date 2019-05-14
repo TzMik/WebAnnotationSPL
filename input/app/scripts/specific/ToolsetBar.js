@@ -1,8 +1,8 @@
 const Toolset = require('../contentScript/Toolset')
-//PVSCL:IFCOND(Screenshots)
+//PVSCL:IFCOND(Screenshots, LINE)
 const Screenshots = require('./Screenshots')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(BackLink)
+//PVSCL:IFCOND(BackLink, LINE)
 const BackLink = require('./BackLink')
 //PVSCL:ENDCOND
 const axios = require('axios')
@@ -11,13 +11,13 @@ const Alerts = require('../utils/Alerts')
 const LanguageUtils = require('../utils/LanguageUtils')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
-//PVSCL:IFCOND(Strengths)
+//PVSCL:IFCOND(Strengths, LINE)
 const {Review, Mark, MajorConcern, MinorConcern, Strength, Annotation} = require('../exporter/reviewModel.js')
 //PVSCL:ENDCOND
 const Config = require('../Config')
 const FileSaver = require('file-saver')
 const Events = require('../contentScript/Events')
-//PVSCL:IFCOND(DefaultCriterias)
+//PVSCL:IFCOND(DefaultCriterias, LINE)
 const DefaultCriterias = require('./DefaultCriterias')
 //PVSCL:ENDCOND
 
@@ -30,7 +30,7 @@ class ToolsetBar extends Toolset{
       this.toolsetHeader.innerText = 'Toolset'
       let toolsetButtonTemplate = document.querySelector('#toolsetButtonTemplate')
 
-      //PVSCL:IFCOND(Report)
+      //PVSCL:IFCOND(Report, LINE)
       let generatorImageURL = chrome.extension.getURL('/images/generator.png')
       this.generatorImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.generatorImage.src = generatorImageURL
@@ -42,7 +42,7 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
       
-      //PVSCL:IFCOND(Screenshots)
+      //PVSCL:IFCOND(Screenshots, LINE)
       let screenshotsImageURL = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.screenshotsImage.src = screenshotsImageURL
@@ -53,7 +53,7 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
 
-      //PVSCL:IFCOND(AllDeleter)
+      //PVSCL:IFCOND(AllDeleter, LINE)
       // Set delete annotations image and event
       let deleteAnnotationsImageURL = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteAnnotationsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -65,7 +65,7 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
 
-      //PVSCL:IFCOND(Canvas)
+      //PVSCL:IFCOND(Canvas, LINE)
       // Set create canvas image and event
       let overviewImageURL = chrome.extension.getURL('/images/overview.png')
       this.overviewImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -77,7 +77,7 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
 
-      //PVSCL:IFCOND(Last)
+      //PVSCL:IFCOND(Last, LINE)
       // Set resume image and event
       let resumeImageURL = chrome.extension.getURL('/images/resume.png')
       this.resumeImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -89,22 +89,22 @@ class ToolsetBar extends Toolset{
       })
       //PVSCL:ENDCOND
 
-      //PVSCL:IFCOND(BackLink)
+      //PVSCL:IFCOND(BackLink, LINE)
       // Set back link icon
-      //PVSCL:IFCOND(BackToMoodle)
+      //PVSCL:IFCOND(BackToMoodle, LINE)
       let imageUrl = chrome.extension.getURL('/images/moodle.svg')
       //PVSCL:ELSECOND
       let imageUrl = chrome.extension.getURL('/images/spreadsheet.svg')
       //PVSCL:ENDCOND
       this.image = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.image.src = imageUrl
-      //PVSCL:IFCOND(BackToMoodle)
+      //PVSCL:IFCOND(BackToMoodle, LINE)
       this.image.title = 'Back to moodle' // TODO i18n
       //PVSCL:ELSECOND
       this.image.title = 'Back to spreadsheet' // TODO i18n
       //PVSCL:ENDCOND
       this.toolsetBody.appendChild(this.image)
-      //PVSCL:IFCOND(BackToMoodle)
+      //PVSCL:IFCOND(BackToMoodle, LINE)
       BackLink.createWorkspaceLink().then((link) => {
         this.moodleLink = link
         this.moodleLink.appendChild(this.image)
@@ -121,47 +121,13 @@ class ToolsetBar extends Toolset{
     })
   }
 
-/*  //PVSCL:IFCOND(Generator)
-  generateReviewButtonHandler () {
-    // Create context menu
-    $.contextMenu({
-      selector: '#reviewGeneratorButton',
-      trigger: 'left',
-      build: () => {
-        // Create items for context menu
-        let items = {}
-        //PVSCL:IFCOND(Report)
-        items['report'] = {name: 'Generate report'}
-        //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Screenshots)
-        items['screenshot'] = {name: 'Generate annotated PDF'}
-        //PVSCL:ENDCOND
-        return {
-          callback: (key, opt) => {
-            if (key === 'report') {
-              //PVSCL:IFCOND(Report)
-              this.generateReview()
-              //PVSCL:ENDCOND
-            } else if (key === 'screenshot') {
-              //PVSCL:IFCOND(Screenshots)
-              this.generateScreenshot()
-              //PVSCL:ENDCOND
-            }
-          },
-          items: items
-        }
-      }
-    })
-  }
-  //PVSCL:ENDCOND*/
-
-  //PVSCL:IFCOND(Screenshots)
+  //PVSCL:IFCOND(Screenshots, LINE)
   generateScreenshot () {
     Screenshots.takeScreenshot()
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Report)
+  //PVSCL:IFCOND(Report, LINE)
   generateReview () {
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
@@ -175,7 +141,7 @@ class ToolsetBar extends Toolset{
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(AllDeleter)
+  //PVSCL:IFCOND(AllDeleter, LINE)
   deleteAnnotations () {
     // Ask user if they are sure to delete it
     Alerts.confirmAlert({
@@ -197,7 +163,7 @@ class ToolsetBar extends Toolset{
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Canvas)
+  //PVSCL:IFCOND(Canvas, LINE)
   generateCanvas () {
     window.abwa.sidebar.closeSidebar()
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
@@ -358,13 +324,13 @@ class ToolsetBar extends Toolset{
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Last)
+  //PVSCL:IFCOND(Last, LINE)
   resume (){
     if(window.abwa.contentAnnotator.allAnnotations.length>0) window.abwa.contentAnnotator.goToAnnotation(window.abwa.contentAnnotator.allAnnotations.reduce((max,a) => new Date(a.updated) > new Date(max.updated) ? a : max))
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Canvas OR Report)
+  //PVSCL:IFCOND(Canvas OR Report, LINE)
   parseAnnotations (annotations){
     const criterionTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':'
     const levelTag = Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':'

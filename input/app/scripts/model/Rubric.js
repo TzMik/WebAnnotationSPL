@@ -38,14 +38,14 @@ class Rubric extends AnnotationGuide {
       text: jsYaml.dump({
         moodleEndpoint: this.moodleEndpoint,
         assignmentId: this.assignmentId,
-        courseId: this.courseId /*PVSCL:IFCOND(Moodle)*/,
+        courseId: this.courseId /*PVSCL:IFCOND(Moodle, LINE)*/,
         assignmentName: this.name /*PVSCL:ENDCOND*/
       }),
       uri: this.hypothesisGroup.links ? this.hypothesisGroup.links.html : this.hypothesisGroup.url // Compatibility with both group representations getGroups and userProfile
     }
   }
 
-  //PVSCL:IFCOND(Student)
+  //PVSCL:IFCOND(Student, LINE)
   getUrlToStudentAssignmentForTeacher (studentId) {
     if (studentId && this.moodleEndpoint && this.cmid) {
       return this.moodleEndpoint + 'mod/assign/view.php?id=' + this.cmid + '&rownum=0&action=grader&userid=' + studentId
@@ -115,7 +115,7 @@ class Rubric extends AnnotationGuide {
     if (_.isString(cmidTag)) {
       config.cmid = cmidTag.replace('exam:cmid:', '')
     }
-    config.assignmentName = /*PVSCL:IFCOND(Moodle)*/ config.assignmentName || /*PVSCL:ENDCOND*/  window.abwa.groupSelector.currentGroup.name
+    config.assignmentName = /*PVSCL:IFCOND(Moodle, LINE)*/ config.assignmentName || /*PVSCL:ENDCOND*/  window.abwa.groupSelector.currentGroup.name
     config.hypothesisGroup = window.abwa.groupSelector.currentGroup
     return new Rubric(config)
   }

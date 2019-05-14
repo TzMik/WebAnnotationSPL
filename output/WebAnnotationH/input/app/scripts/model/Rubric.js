@@ -38,13 +38,11 @@ class Rubric extends AnnotationGuide {
       text: jsYaml.dump({
         moodleEndpoint: this.moodleEndpoint,
         assignmentId: this.assignmentId,
-        courseId: this.courseId /**/
       }),
       uri: this.hypothesisGroup.links ? this.hypothesisGroup.links.html : this.hypothesisGroup.url // Compatibility with both group representations getGroups and userProfile
     }
   }
 
-  //
 
   static fromAnnotations (annotations) {
     let rubricAnnotation = _.remove(annotations, (annotation) => {
@@ -98,7 +96,6 @@ class Rubric extends AnnotationGuide {
     if (_.isString(cmidTag)) {
       config.cmid = cmidTag.replace('exam:cmid:', '')
     }
-    config.assignmentName = /**/  window.abwa.groupSelector.currentGroup.name
     config.hypothesisGroup = window.abwa.groupSelector.currentGroup
     return new Rubric(config)
   }

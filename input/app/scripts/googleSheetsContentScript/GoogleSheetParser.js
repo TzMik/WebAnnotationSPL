@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const $ = require('jquery')
-//const swal = require('sweetalert2')
+const swal = require('sweetalert2')
+const Alerts = require('../utils/Alerts')
 const URLUtils = require('../utils/URLUtils')
 
 const Facet = require('../model/Facet')
@@ -65,7 +65,28 @@ class GoogleSheetParser {
   }
 
   getSpreadsheet (token, callback) {
-    $.ajax({
+    chrome.runtime.sendMessage({
+      scope: 'googleSheets',
+      cmd: 'getSpreadsheet',
+      data: JSON.stringify({
+        spreadsheetId: this.mappingStudy.spreadsheetId
+      })
+    }, (response) => {
+      if (response.error) {
+        Alerts.errorAlert({
+          text: 'You don\'t have permission to access the spreadsheet! Are you using the same Google account for the spreadsheet and for Google Chrome?<br/>If you don\'t know how to solve this problem: Please create on top right: "Share -> Get shareable link", and give edit permission.' // TODO i18n
+        })
+        callback(new Error('Unable to retrieve spreadsheet data. Permission denied.'))
+      } else {
+        try {
+          let spreadsheet = JSON.parse(response.spreadsheet)
+          callback(null, spreadsheet)
+        } catch (e) {
+          callback(e)
+        }
+      }
+    })
+    /* $.ajax({
       method: 'GET',
       url: 'https://sheets.googleapis.com/v4/spreadsheets/' + this.mappingStudy.spreadsheetId,
       data: {
@@ -74,14 +95,18 @@ class GoogleSheetParser {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    }).done((spreadsheet) => {
-      callback(null, spreadsheet)
     }).fail(() => {
-      /*swal('Oops!', // TODO i18n
+      swal('Oops!', // TODO i18n
         'You don\'t have permission to access the spreadsheet! Are you using the same Google account for the spreadsheet and for Google Chrome?<br/>If you don\'t know how to solve this problem: Please create on top right: "Share -> Get shareable link", and give edit permission.',
-        'error') // Notify error to user*/
+        'error') // Notify error to user
       callback(new Error('Unable to retrieve spreadsheet data. Permission denied.'))
-    })
+    }).done((spreadsheet) => {
+      if (_.isEmpty(spreadsheet)) {
+        callback(new Error('Unable to retrieve spreadsheet data.'))
+      } else {
+        callback(null, spreadsheet)
+      }
+    }) */
   }
 
   getFacetsAndCodes (spreadsheet) {
@@ -132,21 +157,21 @@ class GoogleSheetParser {
           }
           return facets
         } else {
-          /*swal('Oops!', // TODO i18n
+          swal('Oops!', // TODO i18n
             'The spreadsheet hasn\'t the correct structure, you have not defined any facet.',
-            'error') // Notify error to user*/
+            'error') // Notify error to user
           return new Error('No facet defined')
         }
       } else {
-        /*swal('Oops!', // TODO i18n
+        swal('Oops!', // TODO i18n
           'The spreadsheet hasn\'t the correct structure, "author" column is missing.',
-          'error') // Notify error to user*/
+          'error') // Notify error to user
         return new Error('No author found')
       }
     } else {
-      /*swal('Oops!', // TODO i18n
+      swal('Oops!', // TODO i18n
         'The spreadsheet hasn\'t the correct structure. The ROW #1 must contain the facets names for your review.',
-        'error') // Notify error to user*/
+        'error') // Notify error to user
       return new Error('Row 1 facet names')
     }
   }

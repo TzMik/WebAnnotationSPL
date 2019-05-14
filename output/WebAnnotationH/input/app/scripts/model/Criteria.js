@@ -5,11 +5,7 @@ const Level = require('./Level')
 const LanguageUtils = require('../utils/LanguageUtils')
 
 class Criteria extends GuideElement {
-  constructor ({ name, color/**/}) {
-    super ({name, color, parentElement: /**/})
     this.levels = this.childElements
-    //
-    //
   }
 
   toAnnotations () {
@@ -24,7 +20,6 @@ class Criteria extends GuideElement {
   }
 
   toAnnotation () {
-    //
   }
 
   static fromAnnotations (annotations) {

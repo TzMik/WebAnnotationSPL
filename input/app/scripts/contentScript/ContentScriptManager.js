@@ -1,30 +1,30 @@
 const _ = require('lodash')
 
 const ContentTypeManager = require('./ContentTypeManager')
-//PVSCL:IFCOND(NOT(ReviewMode))
+//PVSCL:IFCOND(NOT(ReviewMode), LINE)
 const ModeManager = require('./ModeManager')
 //PVSCL:ENDCOND
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
-//PVSCL:IFCOND(Student AND Teacher)
+//PVSCL:IFCOND(Student AND Teacher, LINE)
 const RolesManager = require('./RolesManager')
 //PVSCL:ENDCOND
 const GroupSelector = require('./GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//PVSCL:IFCOND(NOT(Spreadsheet))
+//PVSCL:IFCOND(NOT(Spreadsheet), LINE)
 const Config = require('../Config')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(UserFilter)
+//PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('./UserFilter')
 //PVSCL:ENDCOND
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
-//PVSCL:IFCOND(Moodel)
+//PVSCL:IFCOND(Moodel, LINE)
 const RubricManager = require('./RubricManager')
 //PVSCL:ENDCOND
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
 const Toolset = require('../specific/ToolsetBar')
-//PVSCL:IFCOND(Spreadsheet)
+//PVSCL:IFCOND(Spreadsheet, LINE)
 const ConfigDecisionHelper = require('./ConfigDecisionHelper')
 //PVSCL:ENDCOND
 
@@ -54,15 +54,15 @@ class ContentScriptManager {
             window.abwa.annotationBasedInitializer.init(() => {
               window.abwa.groupSelector = new GroupSelector()
               window.abwa.groupSelector.init(() => {
-                //PVSCL:IFCOND(Student AND Teacher)
+                //PVSCL:IFCOND(Student AND Teacher, LINE)
                 window.abwa.roleManager = new RolesManager()
                 window.abwa.roleManager.init(() => {
                 //PVSCL:ENDCOND
-                //PVSCL:IFCOND(NOT(ReviewMode))
+                //PVSCL:IFCOND(NOT(ReviewMode), LINE)
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
                 //PVSCL:ENDCOND
-                  //PVSCL:IFCOND(DefaultCriterias)
+                  //PVSCL:IFCOND(DefaultCriterias, LINE)
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
@@ -70,7 +70,7 @@ class ContentScriptManager {
                       window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
                   //PVSCL:ENDCOND
-                        //PVSCL:IFCOND(GroupSelector)
+                        //PVSCL:IFCOND(GroupSelector, LINE)
                         // Reload for first time the content by group
                         this.reloadContentByGroup()
                         // Initialize listener for group change to reload the content
@@ -83,10 +83,10 @@ class ContentScriptManager {
                     })
                   })
                   //PVSCL:ENDCOND
-                //PVSCL:IFCOND(NOT(ReviewMode))
+                //PVSCL:IFCOND(NOT(ReviewMode), LINE)
                 })
                 //PVSCL:ENDCOND
-                //PVSCL:IFCOND(Student AND Teacher)
+                //PVSCL:IFCOND(Student AND Teacher, LINE)
                 })
                 //PVSCL:ENDCOND
               })
@@ -97,7 +97,7 @@ class ContentScriptManager {
     })
   }
 
-  //PVSCL:IFCOND(GroupSelector)
+  //PVSCL:IFCOND(GroupSelector, LINE)
   initListenerForGroupChange () {
     this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
     document.addEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent, false)
@@ -111,7 +111,7 @@ class ContentScriptManager {
   //PVSCL:ENDCOND
 
   reloadContentByGroup (callback) {
-    //PVSCL:IFCOND(GroupSelector)
+    //PVSCL:IFCOND(GroupSelector, LINE)
 	  ConfigDecisionHelper.decideWhichConfigApplyToTheGroup(window.abwa.groupSelector.currentGroup, (config) => {
       // If not configuration is found
       if (_.isEmpty(config)) {
@@ -119,23 +119,23 @@ class ContentScriptManager {
           console.debug('No supported configuration found for this group')
           this.destroyAugmentationOperations()
           this.destroyTagsManager()
-          //PVSCL:IFCOND(UserFilter)
+          //PVSCL:IFCOND(UserFilter, LINE)
           this.destroyUserFilter()
           //PVSCL:ENDCOND
           this.destroyContentAnnotator()
           this.destroySpecificContentManager()
       } else {
     //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Marks)
+        //PVSCL:IFCOND(Marks, LINE)
         let config = Config.exams // Configuration for this tool is exams
         //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Student AND Teacher)
+        //PVSCL:IFCOND(Student AND Teacher, LINE)
         this.reloadRolesManager(config, () => {
         //PVSCL:ENDCOND
-          //PVSCL:IFCOND(Moodle)
+          //PVSCL:IFCOND(Moodle, LINE)
           this.reloadRubricManager(config, () => {
           //PVSCL:ENDCOND
-            //PVSCL:IFCOND(Toolset)
+            //PVSCL:IFCOND(Toolset AND Moodle, LINE)
             // Initialize sidebar toolset
             this.initToolset()
             //PVSCL:ENDCOND
@@ -151,19 +151,19 @@ class ContentScriptManager {
                 }
               })
             })
-          //PVSCL:IFCOND(Moodle)
+          //PVSCL:IFCOND(Moodle, LINE)
           })
           //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Student AND Teacher)
+        //PVSCL:IFCOND(Student AND Teacher, LINE)
         })
         //PVSCL:ENDCOND
-    //PVSCL:IFCOND(GroupSelector)
+    //PVSCL:IFCOND(GroupSelector, LINE)
       }
 	  })
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(NOT(DefaultCriterias))
+  //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
   reloadContentAnnotator (config, callback) {
     // Destroy current content annotator
     this.destroyContentAnnotator()
@@ -198,14 +198,14 @@ class ContentScriptManager {
     }
   }
   //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Toolset)
+  //PVSCL:IFCOND(Toolset AND Moodle, LINE)
   initToolset () {
       window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
       window.abwa.toolset.init()
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Moodle)
+  //PVSCL:IFCOND(Moodle, LINE)
   reloadRubricManager (config, callback) {
     this.destroyRubricManager()
     window.abwa.rubricManager = new RubricManager(config)
@@ -219,7 +219,7 @@ class ContentScriptManager {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(Student AND Teacher)
+  //PVSCL:IFCOND(Student AND Teacher, LINE)
   reloadRolesManager (config, callback) {
     // Destroy current role manager
     this.destroyRolesManager()
@@ -258,7 +258,7 @@ class ContentScriptManager {
     }
   }
 
-  //PVSCL:IFCOND(UserFilter)
+  //PVSCL:IFCOND(UserFilter, LINE)
   reloadUserFilter (config, callback) {
     // Destroy user filter
     this.destroyUserFilter()
@@ -281,7 +281,7 @@ class ContentScriptManager {
       this.destroyAugmentationOperations()
       this.destroyTagsManager()
       this.destroyContentAnnotator()
-      //PVSCL:IFCOND(UserFilter)
+      //PVSCL:IFCOND(UserFilter, LINE)
       this.destroyUserFilter()
       //PVSCL:ENDCOND
       window.abwa.groupSelector.destroy(() => {
@@ -293,7 +293,7 @@ class ContentScriptManager {
           })
         })
       })
-      //PVSCL:IFCOND(GroupSelector)
+      //PVSCL:IFCOND(GroupSelector, LINE)
       document.removeEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent)
       //PVSCL:ENDCOND
     })

@@ -1,24 +1,16 @@
 const _ = require('lodash')
 
 const ContentTypeManager = require('./ContentTypeManager')
-//
 const ModeManager = require('./ModeManager')
-//
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
-//
 const GroupSelector = require('./GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//
-//
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
-//
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
 const Toolset = require('../specific/ToolsetBar')
-//
 const ConfigDecisionHelper = require('./ConfigDecisionHelper')
-//
 
 class ContentScriptManager {
   constructor () {
@@ -46,25 +38,16 @@ class ContentScriptManager {
             window.abwa.annotationBasedInitializer.init(() => {
               window.abwa.groupSelector = new GroupSelector()
               window.abwa.groupSelector.init(() => {
-                //
-                //
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
-                //
-                  //
-                        //
                         // Reload for first time the content by group
                         this.reloadContentByGroup()
                         // Initialize listener for group change to reload the content
                         this.initListenerForGroupChange()
-                        // 
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
                   //
-                //
                 })
-                //
-                //
               })
             })
           })
@@ -73,7 +56,6 @@ class ContentScriptManager {
     })
   }
 
-  //
   initListenerForGroupChange () {
     this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
     document.addEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent, false)
@@ -84,10 +66,8 @@ class ContentScriptManager {
       this.reloadContentByGroup()
     }
   }
-  //
 
   reloadContentByGroup (callback) {
-    //
 	  ConfigDecisionHelper.decideWhichConfigApplyToTheGroup(window.abwa.groupSelector.currentGroup, (config) => {
       // If not configuration is found
       if (_.isEmpty(config)) {
@@ -95,18 +75,9 @@ class ContentScriptManager {
           console.debug('No supported configuration found for this group')
           this.destroyAugmentationOperations()
           this.destroyTagsManager()
-          //
           this.destroyContentAnnotator()
           this.destroySpecificContentManager()
       } else {
-    //
-        //
-        //
-          //
-            //
-            // Initialize sidebar toolset
-            this.initToolset()
-            //
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
             this.reloadTagsManager(config, () => {
               this.reloadContentAnnotator(config, () => {
@@ -119,15 +90,10 @@ class ContentScriptManager {
                 }
               })
             })
-          //
-        //
-    //
       }
 	  })
-    //
   }
 
-  //
   reloadContentAnnotator (config, callback) {
     // Destroy current content annotator
     this.destroyContentAnnotator()
@@ -161,17 +127,8 @@ class ContentScriptManager {
       window.abwa.specificContentManager.destroy()
     }
   }
-  //
-  //
-  initToolset () {
-      window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
-      window.abwa.toolset.init()
-  }
-  //
 
-  //
 
-  //
 
   destroyContentAnnotator () {
     // Destroy current content annotator
@@ -193,7 +150,6 @@ class ContentScriptManager {
     }
   }
 
-  //
 
   destroy (callback) {
     console.log('Destroying content script manager')
@@ -201,7 +157,6 @@ class ContentScriptManager {
       this.destroyAugmentationOperations()
       this.destroyTagsManager()
       this.destroyContentAnnotator()
-      //
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           window.abwa.hypothesisClientManager.destroy(() => {
@@ -211,9 +166,7 @@ class ContentScriptManager {
           })
         })
       })
-      //
       document.removeEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent)
-      //
     })
   }
 

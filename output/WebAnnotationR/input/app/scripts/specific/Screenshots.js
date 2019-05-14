@@ -71,7 +71,7 @@ class Screenshots {
             callback()
           }
         })
-      }, 3000)
+      }, 5000)
     } else {
       promise = new Promise((resolve) => {
         html2canvas(document.body).then((canvas) => {

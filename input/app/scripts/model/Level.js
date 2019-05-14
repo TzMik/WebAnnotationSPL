@@ -23,13 +23,13 @@ class Level extends GuideElement {
         read: ['group:' + rubric.hypothesisGroup.id]
       },
       references: [],
-      //PVSCL:IFCOND(Moodle)
+      //PVSCL:IFCOND(Moodle, LINE)
       tags: ['exam:isCriteriaOf:' + LanguageUtils.normalizeString(this.criteria.name), 'exam:mark:' + this.name, 'exam:cmid:' + rubric.cmid],
-      //PVSCL:ELSEIFCOND(DefaultCriterias)
+      //PVSCL:ELSEIFCOND(DefaultCriterias, LINE)
       tags: ['review:isCriteriaOf:' + LanguageUtils.normalizeString(this.criteria.name), 'review:level:' + this.name],
       //PVSCL:ENDCOND
       target: [],
-      text: jsYaml.dump({/*PVSCL:IFCOND(Moodle)*/ levelId: this.levelId, criteriaId: this.criteria.criteriaId, /*PVSCL:ENDCOND*/ description: this.description}),
+      text: jsYaml.dump({/*PVSCL:IFCOND(Moodle, LINE)*/ levelId: this.levelId, criteriaId: this.criteria.criteriaId, /*PVSCL:ENDCOND*/ description: this.description}),
       uri: rubric.hypothesisGroup.links ? rubric.hypothesisGroup.links.html : rubric.hypothesisGroup.url // Compatibility with both group representations getGroups and userProfile
     }
   }
