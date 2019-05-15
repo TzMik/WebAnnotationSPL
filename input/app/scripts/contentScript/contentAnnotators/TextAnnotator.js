@@ -101,6 +101,9 @@ class TextAnnotator extends ContentAnnotator {
     	  //PVSCL:ENDCOND
       })
     })
+    //PVSCL:IFCOND(Spreadsheet, LINE)
+    this.initRemoveOverlaysInPDFs()
+    //PVSCL:ENDCOND
   }
 
   initDocumentURLChangeEvent (callback) {
@@ -172,6 +175,21 @@ class TextAnnotator extends ContentAnnotator {
     this.events.userFilterChangeEvent.element.addEventListener(this.events.userFilterChangeEvent.event, this.events.userFilterChangeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
+    }
+  }
+  
+  createUserFilterChangeEventHandler () {
+    return (event) => {
+     // This is only allowed in mode index
+      if (window.abwa.modeManager.mode === ModeManager.modes.index) {
+        let filteredUsers = event.detail.filteredUsers
+        // Unhighlight all annotations
+        this.unHighlightAllAnnotations()
+        // Retrieve annotations for filtered users
+        this.currentAnnotations = this.retrieveAnnotationsForUsers(filteredUsers)
+        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+        this.highlightAnnotations(this.currentAnnotations)
+      }
     }
   }
   /**
@@ -261,12 +279,16 @@ class TextAnnotator extends ContentAnnotator {
       let range = document.getSelection().getRangeAt(0)
       // Create FragmentSelector
       if (_.findIndex(window.abwa.contentTypeManager.documentType.selectors, (elem) => { return elem === 'FragmentSelector' }) !== -1) {
+    	//PVSCL:IFCOND(Spreadsheet, LINE)
+    	let fragmentSelector = DOMTextUtils.getFragmentSelector(range)
+    	//PVSCL:ELSECOND
         let fragmentSelector = null
         if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
           fragmentSelector = PDFTextUtils.getFragmentSelector(range)
         } else {
           fragmentSelector = DOMTextUtils.getFragmentSelector(range)
         }
+        //PVSCL:ENDCOND
         if (fragmentSelector) {
           selectors.push(fragmentSelector)
         }
@@ -305,6 +327,7 @@ class TextAnnotator extends ContentAnnotator {
           //PVSCL:ELSECOND
           this.currentAnnotations.push(annotation)
           LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+          this.allAnnotations.push(annotation)
           //PVSCL:ENDCOND
           LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
           // Send event annotation is created
@@ -320,12 +343,14 @@ class TextAnnotator extends ContentAnnotator {
 
   static constructAnnotation(selectors, tags){
     // Check if selectors exist, if then create a target for annotation, in other case the annotation will be a page annotation
-    let target = []
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
+	let target = []
     if (_.isObject(selectors)) {
       target.push({
         selector: selectors
       })
     }
+	//PVSCL:ENDCOND
     let data = {
       group: window.abwa.groupSelector.currentGroup.id,
       permissions: {
@@ -333,13 +358,20 @@ class TextAnnotator extends ContentAnnotator {
       },
       references: [],
       tags: tags,
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       target: target,
+      //PVSCL:ELSECOND
+      target: [{
+        selector: selectors
+      }],
+      //PVSCL:ENDCOND
       text: '',
       uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
     }
     
     if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
       let pdfFingerprint = window.abwa.contentTypeManager.pdfFingerprint
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       data.document = {
         documentFingerprint: window.abwa.contentTypeManager.documentFingerprint,
         link: [{
@@ -348,8 +380,17 @@ class TextAnnotator extends ContentAnnotator {
           href: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
         }]
       }
+      //PVSCL:ELSECOND
+      data.document = {
+        documentFingerprint: pdfFingerprint,
+        link: [{
+          href: 'urn:x-pdf:' + pdfFingerprint
+        }, {
+          href: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
+        }]
+      }
+      //PVSCL:ENDCOND
     }
-    //PVSCL:IFCOND(DOI, LINE)
     // If doi is available, add it to the annotation
     if (!_.isEmpty(window.abwa.contentTypeManager.doi)) {
       data.document = data.document || {}
@@ -359,7 +400,6 @@ class TextAnnotator extends ContentAnnotator {
       data.document.link = data.document.link || []
       data.document.link.push({href: 'doi:' + doi})
     }
-    //PVSCL:ENDCOND
     // If citation pdf is found
     if (!_.isEmpty(window.abwa.contentTypeManager.citationPdf)) {
       let pdfUrl = window.abwa.contentTypeManager.doi
@@ -607,13 +647,16 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
     try {
     	//PVSCL:IFCOND(Spreadsheet, LINE)
+    	let highlightedElements = []
     	 // TODO Remove this case for google drive
         if (window.location.href.includes('drive.google.com')) {
           // Ensure popup exists
           if (document.querySelector('.a-b-r-x')) {
+        	  highlightedElements = DOMTextUtils.highlightContent(annotation.target[0].selector, classNameToHighlight, annotation.id)
+        //PVSCL:ELSECOND
+          let highlightedElements = DOMTextUtils.highlightContent(
+            annotation.target[0].selector, classNameToHighlight, annotation.id)
         //PVSCL:ENDCOND
-        let highlightedElements = DOMTextUtils.highlightContent(
-          annotation.target[0].selector, classNameToHighlight, annotation.id)        	  
         //PVSCL:IFCOND(Spreadsheet, LINE)
           }
         } else {
@@ -680,14 +723,11 @@ class TextAnnotator extends ContentAnnotator {
         this.createDoubleClickEventHandler(annotation)
         //PVSCL:ENDCOND
     } catch (e) {
-        // TODO Handle error (maybe send in callback the error ¿?)
-        if (_.isFunction(callback)) {
-          callback(new Error('Element not found'))
-        }
+      callback(new Error('Element not found'))
     } finally {
-        if (_.isFunction(callback)) {
-          callback()
-        }
+      if (_.isFunction(callback)) {
+        callback()
+      }
     }
     //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
     }
@@ -803,16 +843,14 @@ class TextAnnotator extends ContentAnnotator {
           items['reply'] = {name: 'Reply'}
           //PVSCL:ENDCOND
         }
-        //PVSCL:ELSEIFCOND(ReviewMode, LINE)
+        //PVSCL:ENDCOND
         //PVSCL:IFCOND(Comments, LINE)
         items['comment'] = {name: 'Comment'}
         //PVSCL:ENDCOND
         items['delete'] = {name: 'Delete'}
-        //PVSCL:ELSECOND
         if (this.currentUserProfile.userid === annotation.user) {
           items['delete'] = {name: 'Delete annotation'}
         }
-        //PVSCL:IFCOND(IndexMode, LINE) //Index mode
         if (this.config.namespace === Config.slrDataExtraction.namespace) {
           if (window.abwa.modeManager.mode === ModeManager.modes.index) {
             if (_.isObject(items['delete'])) {
@@ -823,8 +861,6 @@ class TextAnnotator extends ContentAnnotator {
             //PVSCL:ENDCOND
           }
         }
-        //PVSCL:ENDCOND
-        //PVSCL:ENDCOND
         return {
           callback: (key) => {
             //PVSCL:IFCOND(Validations, LINE)
@@ -979,13 +1015,11 @@ class TextAnnotator extends ContentAnnotator {
           // Alert user error happened
           Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
         } else {
-          //PVSCL:IFCOND(DefaultCriterias, LINE) // NOT la baldintza de CreateAnnotationEventHandler
           // Remove annotation from data model
           _.remove(this.currentAnnotations, (currentAnnotation) => {
             return currentAnnotation.id === annotation.id
           })
           LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
-          //PVSCL:ENDCOND
           _.remove(this.allAnnotations, (currentAnnotation) => {
             return currentAnnotation.id === annotation.id
           })
@@ -1080,13 +1114,13 @@ class TextAnnotator extends ContentAnnotator {
         }
       }
     
-    //PVSCL:ELSECOND
+    //PVSCL:ELSEIFCOND(Comments OR Strengths)
     let that = this
     let updateAnnotation = (textObject) => {
       annotation.text = JSON.stringify(textObject)
       //PVSCL:IFCOND(Strengths, LINE)
       // Assign level to annotation
-      let level = textObject.level || null
+      //let level = textObject.level || null
       if (level != null) {
         let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
         let pole = tagGroup.tags.find((e) => { return e.name === level })
@@ -1168,18 +1202,25 @@ class TextAnnotator extends ContentAnnotator {
     let suggestedLiterature
 	let level
 	let textObject = {}
+    //PVSCL:IFCOND(Spreadsheet, LINE)
+    let criterionName = annotation.tags[1].replace('slr:code:','') || ''
+    //PVSCL:ENDCOND
 	if (annotation.text !== "") textObject = JSON.parse(annotation.text)
 	let comment = textObject.comment || ''
 	Alerts.multipleInputAlert({
 	  title: criterionName,
+	  //PVSCL:IFCOND(Strengths, LINE)
 	  html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  //PVSCL:ELSECOND
+	  html: '<h3 class="criterionName">Insert your comment</h3><textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  //PVSCL:ENDCOND
 	  preConfirm: () => {
 	    newComment = $('#swal-textarea').val()
 	    suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
 	    level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
 	  },
 	  callback: (err, result) => {
-	    updateAnnotation({comment: newComment/*PVSCL:IFCOND(Citations)*/, suggestedLiterature: suggestedLiterature/*PVSCL:ENDCOND*/})
+	    updateAnnotation({comment: newComment/*PVSCL:IFCOND(Citations)*/, suggestedLiterature: suggestedLiterature/*PVSCL:ENDCOND*/}/*PVSCL:IFCOND(Strengths)*/, level/*PVSCL:ENDCOND*/)
 	    if (isSidebarOpened) {
 	      this.openSidebar()
 	    }
@@ -1336,9 +1377,13 @@ class TextAnnotator extends ContentAnnotator {
       //PVSCL:ENDCOND
     })
     //PVSCL:ENDCOND
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     if (annotation) {
+    //PVSCL:ENDCOND
       this.goToAnnotation(annotation)
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     }
+    //PVSCL:ENDCOND
   }
 
   //PVSCL:IFCOND(Index, LINE)
@@ -1364,6 +1409,7 @@ class TextAnnotator extends ContentAnnotator {
     if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
       let queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
       if (queryTextSelector && queryTextSelector.exact) {
+    	//PVSCL:IFCOND(DefaultCriterias, LINE)
         // Get page for the annotation
         let fragmentSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'FragmentSelector' })
         if (fragmentSelector && fragmentSelector.page) {
@@ -1372,6 +1418,7 @@ class TextAnnotator extends ContentAnnotator {
             window.PDFViewerApplication.page = fragmentSelector.page
           }
         }
+        //PVSCL:ENDCOND
         window.PDFViewerApplication.findController.executeCommand('find', {query: queryTextSelector.exact, phraseSearch: true})
         // Timeout to remove highlight used by PDF.js
         setTimeout(() => {
@@ -1380,7 +1427,7 @@ class TextAnnotator extends ContentAnnotator {
             pdfjsHighlights[i].classList.remove('highlight')
           }
         }, 1000)
-        //PVSCL:IFCOND(Moodle, LINE)
+        //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
         // Redraw annotations
         this.redrawAnnotations()
         //PVSCL:ENDCOND
@@ -1577,14 +1624,20 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(NOT(Spreadsheet), LINE)
   redrawAnnotations () {
+	//PVSCL:IFCOND(DefaultCriterias, LINE)
     // Unhighlight all annotations
     this.unHighlightAllAnnotations()
     // Highlight all annotations
     this.highlightAnnotations(this.allAnnotations)
+    //PVSCL:ELSECOND
+    // Unhighlight current annotations
+    this.unHighlightAllAnnotations()
+    // Highlight current annotations
+    this.highlightAnnotations(this.currentAnnotations)
+    //PVSCL:ENDCOND
   }
-  //PVSCL:ENDCOND
+
 
   //PVSCL:IFCOND(AllDeleter, LINE)
   deleteAllAnnotations () {

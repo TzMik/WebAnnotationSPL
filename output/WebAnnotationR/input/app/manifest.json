@@ -11,13 +11,8 @@
         ]
     },
     "content_scripts": [
-        
-        
-        
-        
         {
             "matches": ["*://*/*", "file:///*/*"],
-            
             "js": ["scripts/contentScript.js"],
             "css": ["styles/contentScript.css"],
             "run_at": "document_start",
@@ -44,9 +39,8 @@
         "identity",
         "contextMenus",
         "downloads",        
-        
-        
         "file://*/*"
     ],
-    "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]
+    
+    "web_accessible_resources": ["pages/*.html", "content/*", "images/*"] 
 }

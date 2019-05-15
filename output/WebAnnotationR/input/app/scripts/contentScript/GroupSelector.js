@@ -1,25 +1,17 @@
 const _ = require('lodash')
 const $ = require('jquery')
-//
 const Alerts = require('../utils/Alerts')
-//
 const Config = require('../Config')
-//
 const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
-//
-//
 const GroupName = Config.review.groupName
-//
 
 class GroupSelector {
   constructor () {
-    //
     this.currentGroup = null
     this.user = {}
   }
 
   init (callback) {
-    //
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {
@@ -42,21 +34,15 @@ class GroupSelector {
         })
       }
     })
-    //
   }
 
-  //
 
   defineCurrentGroup (callback) {
-    //
-    //
     // Load all the groups belonged to current user
     this.retrieveHypothesisGroups((err, groups) => {
       if (err) {
       } else {
-        //
         let group = _.find(groups, (group) => { return group.name === GroupName })
-        //
         if (_.isObject(group)) {
           // Current group will be that group
           this.currentGroup = group
@@ -64,7 +50,6 @@ class GroupSelector {
             callback(null)
           }
         } else {
-          //
           // TODO i18n
           Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the application. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
@@ -76,14 +61,11 @@ class GroupSelector {
               callback(null)
             }
           })
-          //
         }
       }
     })
-    //
   }
 
-  //
   checkIsLoggedIn (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
@@ -140,10 +122,8 @@ class GroupSelector {
       }
     })
   }
-  //
 
   destroy (callback) {
-    //
     if (_.isFunction(callback)) {
       callback()
     }

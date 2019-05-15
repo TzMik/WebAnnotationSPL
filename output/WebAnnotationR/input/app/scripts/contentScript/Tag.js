@@ -1,10 +1,9 @@
-//
 const LanguageUtils = require('../utils/LanguageUtils')
-//
 const ColorUtils = require('../utils/ColorUtils')
+const Events = require('./Events')
 
 class Tag {
-  constructor (config/**/, group = null /**/) {
+  constructor (config, group = null) {
     this.group = group
     this.name = config.name
     this.namespace = config.namespace
@@ -24,7 +23,6 @@ class Tag {
     this.options = config.options
   }
 
-  //
 
   getColor () {
     return this.color
@@ -44,7 +42,7 @@ class Tag {
 }
 
 Tag.roles = {
-    //*//*
+  // 
 }
 
 module.exports = Tag

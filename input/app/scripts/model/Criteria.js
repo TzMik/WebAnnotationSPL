@@ -5,8 +5,8 @@ const Level = require('./Level')
 const LanguageUtils = require('../utils/LanguageUtils')
 
 class Criteria extends GuideElement {
-  constructor ({ name, color/*PVSCL:IFCOND(Moodle, LINE)*/, criteriaId, rubric /*PVSCL:ELSEIFCOND(DefaultCriterias, LINE)*/, review, group = 'Other', description, custom = false /*PVSCL:ENDCOND*/}) {
-    super ({name, color, parentElement: /*PVSCL:IFCOND(Moodle, LINE)*/ rubric /*PVSCL:ELSEIFCOND(DefaultCriterias, LINE)*/ review /*PVSCL:ENDCOND*/})
+  constructor ({ name, color/*PVSCL:IFCOND(Moodle)*/, criteriaId, rubric /*PVSCL:ELSEIFCOND(DefaultCriterias)*/, review, group = 'Other', description, custom = false /*PVSCL:ENDCOND*/}) {
+    super ({name, color, parentElement: /*PVSCL:IFCOND(Moodle)*/ rubric /*PVSCL:ELSEIFCOND(DefaultCriterias)*/ review /*PVSCL:ENDCOND*/})
     this.levels = this.childElements
     //PVSCL:IFCOND(Moodle, LINE)
     this.criteriaId = criteriaId

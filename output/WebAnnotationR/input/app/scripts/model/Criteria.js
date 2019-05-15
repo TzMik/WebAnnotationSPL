@@ -8,13 +8,10 @@ class Criteria extends GuideElement {
   constructor ({ name, color/**/, review, group = 'Other', description, custom = false /**/}) {
     super ({name, color, parentElement: /**/ review /**/})
     this.levels = this.childElements
-    //
-    //
     this.group = group
     this.review = this.parentElement
     this.description = description
     this.custom = custom
-    //
   }
 
   toAnnotations () {
@@ -29,7 +26,6 @@ class Criteria extends GuideElement {
   }
 
   toAnnotation () {
-    //
     let review = this.getAncestor()
     return {
       group: review.hypothesisGroup.id,
@@ -46,7 +42,6 @@ class Criteria extends GuideElement {
       }),
       uri: review.hypothesisGroup.links ? review.hypothesisGroup.links.html : review.hypothesisGroup.url // Compatibility with both group representations getGroups and userProfile
     }
-    //
   }
 
   static fromAnnotations (annotations) {

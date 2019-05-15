@@ -1,23 +1,16 @@
 const Toolset = require('../contentScript/Toolset')
-//
 const Screenshots = require('./Screenshots')
-//
-//
 const axios = require('axios')
 const _ = require('lodash')
 const Alerts = require('../utils/Alerts')
 const LanguageUtils = require('../utils/LanguageUtils')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
-//
 const {Review, Mark, MajorConcern, MinorConcern, Strength, Annotation} = require('../exporter/reviewModel.js')
-//
 const Config = require('../Config')
 const FileSaver = require('file-saver')
 const Events = require('../contentScript/Events')
-//
 const DefaultCriterias = require('./DefaultCriterias')
-//
 
 //let swal = require('sweetalert2')
 
@@ -28,7 +21,6 @@ class ToolsetBar extends Toolset{
       this.toolsetHeader.innerText = 'Toolset'
       let toolsetButtonTemplate = document.querySelector('#toolsetButtonTemplate')
 
-      //
       let generatorImageURL = chrome.extension.getURL('/images/generator.png')
       this.generatorImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.generatorImage.src = generatorImageURL
@@ -38,9 +30,7 @@ class ToolsetBar extends Toolset{
       this.generatorImage.addEventListener('click', () => {
     	  this.generateReview()
       })
-      //
       
-      //
       let screenshotsImageURL = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.screenshotsImage.src = screenshotsImageURL
@@ -49,9 +39,7 @@ class ToolsetBar extends Toolset{
       this.screenshotsImage.addEventListener('click', () => {
     	  this.generateScreenshot()
       })
-      //
 
-      //
       // Set delete annotations image and event
       let deleteAnnotationsImageURL = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteAnnotationsImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -61,9 +49,7 @@ class ToolsetBar extends Toolset{
       this.deleteAnnotationsImage.addEventListener('click', () => {
         this.deleteAnnotations()
       })
-      //
 
-      //
       // Set create canvas image and event
       let overviewImageURL = chrome.extension.getURL('/images/overview.png')
       this.overviewImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -73,9 +59,7 @@ class ToolsetBar extends Toolset{
       this.overviewImage.addEventListener('click', () => {
         this.generateCanvas()
       })
-      //
 
-      //
       // Set resume image and event
       let resumeImageURL = chrome.extension.getURL('/images/resume.png')
       this.resumeImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -85,53 +69,14 @@ class ToolsetBar extends Toolset{
       this.resumeImage.addEventListener('click', () => {
         this.resume()
       })
-      //
 
-      //
     })
   }
 
-/*  //
-  generateReviewButtonHandler () {
-    // Create context menu
-    $.contextMenu({
-      selector: '#reviewGeneratorButton',
-      trigger: 'left',
-      build: () => {
-        // Create items for context menu
-        let items = {}
-        //
-        items['report'] = {name: 'Generate report'}
-        //
-        //
-        items['screenshot'] = {name: 'Generate annotated PDF'}
-        //
-        return {
-          callback: (key, opt) => {
-            if (key === 'report') {
-              //
-              this.generateReview()
-              //
-            } else if (key === 'screenshot') {
-              //
-              this.generateScreenshot()
-              //
-            }
-          },
-          items: items
-        }
-      }
-    })
-  }
-  //*/
-
-  //
   generateScreenshot () {
     Screenshots.takeScreenshot()
   }
-  //
 
-  //
   generateReview () {
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
@@ -143,9 +88,7 @@ class ToolsetBar extends Toolset{
     FileSaver.saveAs(blob, docTitle+'.txt')
     Alerts.closeAlert()
   }
-  //
 
-  //
   deleteAnnotations () {
     // Ask user if they are sure to delete it
     Alerts.confirmAlert({
@@ -165,9 +108,7 @@ class ToolsetBar extends Toolset{
       }
     })
   }
-  //
 
-  //
   generateCanvas () {
     window.abwa.sidebar.closeSidebar()
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
@@ -326,15 +267,11 @@ class ToolsetBar extends Toolset{
       Alerts.closeAlert()
     })
   }
-  //
 
-  //
   resume (){
     if(window.abwa.contentAnnotator.allAnnotations.length>0) window.abwa.contentAnnotator.goToAnnotation(window.abwa.contentAnnotator.allAnnotations.reduce((max,a) => new Date(a.updated) > new Date(max.updated) ? a : max))
   }
-  //
 
-  //
   parseAnnotations (annotations){
     const criterionTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':'
     const levelTag = Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':'
@@ -370,7 +307,6 @@ class ToolsetBar extends Toolset{
     }
     return r
   }
-  //
 
   show () {
     super.show()

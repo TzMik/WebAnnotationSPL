@@ -46,9 +46,7 @@ class AnnotationBasedInitializer {
     let decodedUri = decodeURIComponent(window.location.href)
     let params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && /* */_.has(params, Config.exams.urlParamName/**/)) {
-      // 
       return params[Config.exams.urlParamName]
-      //
     } else {
       return false
     }

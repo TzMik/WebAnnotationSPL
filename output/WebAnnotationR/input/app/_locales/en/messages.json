@@ -7,12 +7,10 @@
     "message": "Highlight&Go",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
-  
   "appDescription": {
     "message": "Review papers using highlights and go!",
     "description": "The description of the application"
   },
-  
   "browserActionTitle": {
     "message": "Highlight&Go",
     "description": "The title of the browser action button"
@@ -25,36 +23,21 @@
     "message": "You need to give permissions to access your Google Spreadsheet.",
     "description": "Message to show when Google Sheets permission is required"
   },
-  
   "Mode": {
     "message": "Mode",
     "description": "Sidebar mode header"
   },
-  
-  
-  
-  
-  
   "Dimensions": {
     "message": "Criteria",
     "description": "Sidebar dimensions header"
   },
-  
-  
   "errorUpdatingAnnotationComment": {
     "message": "Error updating annotation comment, please try it again.",
     "description": "Message when fails updating annotation comment"
   },
-  
-  
-  
-  
-  
   "GeneratingReviewReport": {
     "message": "Generating review report, please be patient."
   },
-  
-  
   "DeleteAllAnnotationsConfirmationTitle": {
     "message": "Do you want to delete all the annotations?"
   },
@@ -67,7 +50,6 @@
   "DeleteCriteriaConfirmationMessage": {
     "message": "You are going to delete this criteria. This will also delete all the annotations done in all the documents with this criteria. Are you sure that do you want to delete them? You cannot undo this action."
   },
-  
   "ContactAdministrator": {
     "message": "If the error continues, please <a href='https://github.com/haritzmedina/reviewandgo/issues' target='_blank'>contact to Review&Go developers</a>."
   },

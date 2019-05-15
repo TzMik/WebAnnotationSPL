@@ -1,9 +1,7 @@
 import 'chromereload/devonly'
-//
 chrome.runtime.onInstalled.addListener((details) => {
   console.log('previousVersion', details.previousVersion)
 })
-//
 chrome.tabs.onUpdated.addListener((tabId/**/, changeInfo, tab/**/) => {
   chrome.pageAction.show(tabId)
 })
@@ -12,9 +10,6 @@ chrome.tabs.onCreated.addListener((tab) => {
 })
 const HypothesisManager = require('./background/HypothesisManager')
 const Popup = require('./popup/Popup')
-//
-//
-//
 
 const _ = require('lodash')
 
@@ -27,9 +22,6 @@ class Background {
     // Initialize hypothesis manager
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
-    //
-    //
-    //
     // Initialize page_action event handler
     chrome.pageAction.onClicked.addListener((tab) => {
       if (this.tabs[tab.id]) {

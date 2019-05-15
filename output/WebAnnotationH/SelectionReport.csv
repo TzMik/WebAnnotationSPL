@@ -5,10 +5,10 @@ WebAnnotationFeatures
 Views;true
 SpreadsheetView;true
 MoodleView;false
-WebTools;false
-DOI;false
+WebTools;true
+DOI;true
 Dropbox;false
-ACM;false
+ACM;true
 Configuration;true
 Spreadsheet;true
 Moodle;false
@@ -17,7 +17,7 @@ Sidebar;true
 Tag;true
 Index;true
 New;false
-UserFilter;false
+UserFilter;true
 Toolset;true
 Canvas;false
 Generator;false

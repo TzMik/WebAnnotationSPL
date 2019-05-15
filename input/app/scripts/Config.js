@@ -50,7 +50,7 @@ const Config = {
         reviewed: 'reviewed'
       }
     }
-  }//PVSCL:IFCOND(StaticGroupSelection)
+  }//PVSCL:IFCOND(StaticGroupSelector)
   ,
   review: {
     groupName: 'ReviewAndGo',

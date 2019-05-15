@@ -111,11 +111,26 @@ class ToolsetBar extends Toolset{
         this.toolsetBody.appendChild(this.moodleLink)
       })
       //PVSCL:ELSECOND
-      BackLink.createSpreadsheetLink().then((link) =>{
-        this.spreadsheetLink = link
+      window.abwa.specific.primaryStudySheetManager.retrievePrimaryStudyRow((err, primaryStudyRow) => {
+        let rowInSheet
+	    if (err || primaryStudyRow === 0) {
+	      console.log('Error')
+	      rowInSheet = 1
+	    }
+	    else {
+	      rowInSheet = primaryStudyRow + 1 
+	    }
+	    let spreadsheetId = window.abwa.specific.mappingStudyManager.mappingStudy.spreadsheetId
+        let sheetId = window.abwa.specific.mappingStudyManager.mappingStudy.sheetId
+        // Construct link to spreadsheet
+        this.linkToSLR = document.createElement('a')
+        this.linkToSLR.href = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId + '/edit#gid=' + sheetId + '&range=A' + rowInSheet
+        //this.linkToSLR.innerText = 'Back to spreadsheet' // TODO i18n
+        this.linkToSLR.target = '_blank'
+        this.spreadsheetLink = this.linkToSLR
         this.spreadsheetLink.appendChild(this.image)
         this.toolsetBody.appendChild(this.spreadsheetLink)
-      })
+	  },false)
       //PVSCL:ENDCOND
       //PVSCL:ENDCOND
     })

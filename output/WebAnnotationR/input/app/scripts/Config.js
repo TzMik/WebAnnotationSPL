@@ -50,7 +50,8 @@ const Config = {
         reviewed: 'reviewed'
       }
     }
-  },
+  }//
+  ,
   review: {
     groupName: 'ReviewAndGo',
     namespace: 'review',
@@ -62,6 +63,7 @@ const Config = {
       }
     }
   }
+  //
 }
 
 module.exports = Config

@@ -1,4 +1,5 @@
 const ColorUtils = require('../utils/ColorUtils')
+const Tag = require('./Tag')
 
 class TagGroup {
   constructor (config, tags) {

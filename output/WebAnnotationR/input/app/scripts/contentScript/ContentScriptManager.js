@@ -1,22 +1,15 @@
 const _ = require('lodash')
 
 const ContentTypeManager = require('./ContentTypeManager')
-//
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
-//
 const GroupSelector = require('./GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//
 const Config = require('../Config')
-//
-//
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
-//
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
 const Toolset = require('../specific/ToolsetBar')
-//
 
 class ContentScriptManager {
   constructor () {
@@ -44,17 +37,12 @@ class ContentScriptManager {
             window.abwa.annotationBasedInitializer.init(() => {
               window.abwa.groupSelector = new GroupSelector()
               window.abwa.groupSelector.init(() => {
-                //
-                //
-                  //
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
                     window.abwa.contentAnnotator.init(() => {
                       window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
-                  //
-                        //
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
                   //
@@ -62,8 +50,6 @@ class ContentScriptManager {
                     })
                   })
                   //
-                //
-                //
               })
             })
           })
@@ -72,17 +58,8 @@ class ContentScriptManager {
     })
   }
 
-  //
 
   reloadContentByGroup (callback) {
-    //
-        //
-        //
-          //
-            //
-            // Initialize sidebar toolset
-            this.initToolset()
-            //
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
             this.reloadTagsManager(config, () => {
               this.reloadContentAnnotator(config, () => {
@@ -95,22 +72,10 @@ class ContentScriptManager {
                 }
               })
             })
-          //
-        //
-    //
   }
 
-  //
-  //
-  initToolset () {
-      window.abwa.toolset = new Toolset() // Esto hay que cambiarlo
-      window.abwa.toolset.init()
-  }
-  //
 
-  //
 
-  //
 
   destroyContentAnnotator () {
     // Destroy current content annotator
@@ -132,7 +97,6 @@ class ContentScriptManager {
     }
   }
 
-  //
 
   destroy (callback) {
     console.log('Destroying content script manager')
@@ -140,7 +104,6 @@ class ContentScriptManager {
       this.destroyAugmentationOperations()
       this.destroyTagsManager()
       this.destroyContentAnnotator()
-      //
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           window.abwa.hypothesisClientManager.destroy(() => {
@@ -150,7 +113,6 @@ class ContentScriptManager {
           })
         })
       })
-      //
     })
   }
 

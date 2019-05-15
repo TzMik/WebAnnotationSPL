@@ -81,7 +81,6 @@ class GroupSelector {
   defineCurrentGroup (callback) {
     //PVSCL:IFCOND(GroupSelector, LINE)
     // If initialization annotation is set
-	debugger
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
       // Load group of annotation
