@@ -144,15 +144,42 @@ class ToolsetBar extends Toolset{
 
   //PVSCL:IFCOND(Report, LINE)
   generateReview () {
+	//PVSCL:IFCOND(Strengths, LINE)
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let report = review.toString()
+    console.log('All annotations: ' + review)
     let blob = new Blob([report], {type: 'text/plain;charset=utf-8'})
     let title = window.PDFViewerApplication.baseUrl !== null ? window.PDFViewerApplication.baseUrl.split("/")[window.PDFViewerApplication.baseUrl.split("/").length-1].replace(/\.pdf/i,"") : ""
     let docTitle = 'Review report'
     if(title!=='') docTitle += ' for '+title
     FileSaver.saveAs(blob, docTitle+'.txt')
     Alerts.closeAlert()
+    //PVSCL:ELSEIFCOND(Validations)
+    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    let allAnnotations = window.abwa.contentAnnotator.allAnnotations
+    debugger
+    let t = 'TEXT REPORT \n\n'
+    for (let i = 0, len = allAnnotations.length; i < len; i++) {
+      let facetTag = _.find(allAnnotations[i].tags, (tag) => {
+    	return tag.includes(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':')
+      })
+      if (facetTag) {
+    	let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':', '')
+        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+        if (facet.multivalued || facet.monovalued) t += '(Validated) '
+      } else {
+    	let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.validated, '')
+        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+        if (facet) t += '(Validated) '
+      }
+      t += allAnnotations[i].tags[1].replace('slr:code:', '') + ': ' + allAnnotations[i].target[0].selector[3].exact + '\n\n'
+    }
+    let blob = new Blob([t], {type: 'text/plain;charset=utf-8'})
+    let docTitle = 'Review report'
+    FileSaver.saveAs(blob, docTitle+'.txt')
+    Alerts.closeAlert()
+    //PVSCL:ENDCOND
   }
   //PVSCL:ENDCOND
 

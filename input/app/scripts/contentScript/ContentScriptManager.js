@@ -142,13 +142,17 @@ class ContentScriptManager {
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
             this.reloadTagsManager(config, () => {
               this.reloadContentAnnotator(config, () => {
+            	//PVSCL:IFCOND(UserFilter, LINE)
                 if (config.userFilter) {
                   this.reloadUserFilter(config, () => {
                     this.reloadSpecificContentManager(config)
                   })
                 } else {
+                //PVSCL:ENDCOND
                   this.reloadSpecificContentManager(config)
+                //PVSCL:IFCOND(UserFilter, LINE)
                 }
+                //PVSCL:ENDCOND
               })
             })
           //PVSCL:IFCOND(Moodle, LINE)

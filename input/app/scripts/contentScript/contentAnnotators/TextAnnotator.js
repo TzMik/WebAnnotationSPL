@@ -1474,14 +1474,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   unHighlightAllAnnotations () {
-    //PVSCL:IFCOND(DefaultCriterias, LINE)
     let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
-    //PVSCL:ELSECOND
-    let highlightedElements = _.flatten(_.map(
-      this.allAnnotations,
-      (annotation) => { return [...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')] })
-    )
-    //PVSCL:ENDCOND
     DOMTextUtils.unHighlightElements(highlightedElements)
   }
 
@@ -1661,8 +1654,14 @@ class TextAnnotator extends ContentAnnotator {
     Promise.all(promises).catch(() => {
       Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
+      //PVSCL:IFCOND(AllDeleter AND NOT(DefaultCriterias), LINE)	
+      LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {allAnnotations: this.allAnnotations})
+      //PVSCL:ENDCOND
       // Update annotation variables
       this.allAnnotations = []
+      //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
+      this.currentAnnotations = []
+      //PVSCL:ENDCOND
       // Dispatch event and redraw annotations
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       this.redrawAnnotations()
