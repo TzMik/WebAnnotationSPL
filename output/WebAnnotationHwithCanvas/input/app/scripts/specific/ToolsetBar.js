@@ -185,13 +185,17 @@ class ToolsetBar extends Toolset{
 
       for (let i = 0, len = criteriaList.length; i < len; i++) {
           let clusterElement = clusterTemplate.content.cloneNode(true)
-          //clusterElement.querySelector(".propertyCluster").style.height = getGroupHeight(criteriaList[i])+'%'
-          clusterElement.querySelector(".clusterLabel span").innerText = criteriaList[i]
+          let percentage = 100 / criteriaList.length
+          clusterElement.querySelector(".propertyCluster").style.height = percentage + '%'
+          if (criteriaList[i].length > 11){
+        	  clusterElement.querySelector(".clusterLabel span").innerText = criteriaList[i].substring(0,10) + '...'
+          } else {
+        	  clusterElement.querySelector(".clusterLabel span").innerText = criteriaList[i]
+          }
           let clusterContainer = clusterElement.querySelector('.clusterContainer')
           let currentColumn = null
-          debugger
           for (let j = 0, len = canvasClusters[criteriaList[i]].length; j < len; j++) {
-        	  //if (j % 2 == 0 || canvasClusters[criteriaList[i]].length == 2) {
+        	  /*/if (j % 2 == 0 || canvasClusters[criteriaList[i]].length == 2) {
         		  currentColumn = columnTemplate.content.cloneNode(true)
         		  if (canvasClusters[criteriaList[i]].length == 1) {
         			  //currentColumn.querySelector('.clusterContainer').style.width = "100%"
@@ -202,37 +206,52 @@ class ToolsetBar extends Toolset{
         			  //else columnWidth = getColumnWidth([canvasClusters[criteriaList[i]][j]], criteriaList[i])
         			  //currentColumn.querySelector('.clusterColumn').style.width = columnWidth+'%'
         		  }
-        	  //}
+        	  }*/
+        	  currentColumn = columnTemplate.content.cloneNode(true)
+        	  percentage = 100 / canvasClusters[criteriaList[i]].length
+        	  currentColumn.querySelector('.clusterColumn').style.width = percentage + '%'
               let clusterProperty = propertyTemplate.content.cloneNode(true)
               clusterProperty.querySelector(".propertyLabel").innerText = canvasClusters[criteriaList[i]][j]
-              let propertyHeight = 100
+              let propertyHeight = 100 / canvasClusters.facet.length
               //if(canvasClusters[criteriaList[i]].length==2) propertyHeight = getPropertyHeight(canvasClusters[criteriaList[i]][j],[canvasClusters[criteriaList[i]][j]])
               //else if(i % 2 == 0 && i < canvasClusters[criteriaList[i]].length-1) propertyHeight = getPropertyHeight(canvasClusters[criteriaList[i]][j],[canvasClusters[criteriaList[i]][j],canvasClusters[criteriaList[i]][j+1]])
               //else if(i % 2 == 1) propertyHeight = getPropertyHeight(canvasClusters[criteriaList[i]][j],[canvasClusters[criteriaList[i]][j],canvasClusters[criteriaList[i]][j-1]])
-              //clusterProperty.querySelector(".clusterProperty").style.height = propertyHeight+'%'
-              //clusterProperty.querySelector(".clusterProperty").style.width = "100%";
+              clusterProperty.querySelector(".clusterProperty").style.height = '100%'
+              clusterProperty.querySelector(".clusterProperty").style.width = "100%";
               let criterionAnnotations = allAnnotations.filter((e) => {return e.tags[1].replace('slr:code:', '') === canvasClusters[criteriaList[i]][j]})
               if(criterionAnnotations.length == 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
             	  
               let annotationWidth = 100.0/criterionAnnotations.length
-              for(let j=0;j<criterionAnnotations.length;j++){
+              for(let k=0; k<criterionAnnotations.length; k++){
+            	 debugger
                  let annotationElement = annotationTemplate.content.cloneNode(true)
-                 //annotationElement.querySelector('.canvasAnnotation').style.width = annotationWidth+'%'
-                 //if(criterionAnnotations[j].highlightText!=null) annotationElement.querySelector('.canvasAnnotation').innerText = '"'+criterionAnnotations[j].highlightText+'"'
-                 //if(criterionAnnotations[j].level!=null) annotationElement.querySelector('.canvasAnnotation').className += ' '+criterionAnnotations[j].level.replace(/\s/g,'')
-                 //else annotationElement.querySelector('.canvasAnnotation').className += ' unsorted'
-                 annotationElement.querySelector('.canvasAnnotation').addEventListener('click',function(){
-                   displayAnnotation(criterionAnnotations[j])
+                 annotationElement.querySelector('.canvasAnnotation').style.width = annotationWidth+'%'
+                 annotationElement.querySelector('.canvasAnnotation').innerText = '"'+criterionAnnotations[j].target[0].selector[3].exact+'"'
+                 let facetTag = _.find(criterionAnnotations[k].tags, (tag) => {
+               	  return tag.includes(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':')
                  })
+                 if (facetTag) {
+                	 let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':', '')
+                     let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+                     if (facet.multivalued || facet.monovalued)	 annotationElement.querySelector('.canvasAnnotation').className += ' Strength'
+                     else annotationElement.querySelector('.canvasAnnotation').className += ' unsorted'
+                 } else {
+                	 let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.validated, '')
+                     let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+                     if (facet) annotationElement.querySelector('.canvasAnnotation').className += ' Strength'
+                     else annotationElement.querySelector('.canvasAnnotation').className += ' unsorted'
+                 }
+                 /*annotationElement.querySelector('.canvasAnnotation').addEventListener('click',function(){
+                   displayAnnotation(criterionAnnotations[k])
+                 })*/
                  clusterProperty.querySelector('.propertyAnnotations').appendChild(annotationElement)
               }
 
-              let prueba = currentColumn.querySelector('.clusterColumn')
-              if (prueba != null) prueba.appendChild(clusterProperty)
-              if(i%2==1||i==canvasClusters[criteriaList[i]].length-1||canvasClusters[criteriaList[i]].length==2) clusterContainer.appendChild(currentColumn)
+              currentColumn.querySelector('.clusterColumn').appendChild(clusterProperty)
+              /*if(i%2==1||i==canvasClusters[criteriaList[i]].length-1||canvasClusters[criteriaList[i]].length==2)*/ clusterContainer.appendChild(currentColumn)
             }
             canvasContainer.appendChild(clusterElement)
-          
+    	  
       }
       /*for(let key in canvasClusters){
         let clusterElement = clusterTemplate.content.cloneNode(true)
