@@ -24,7 +24,7 @@ const RubricManager = require('./RubricManager')
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
 const Toolset = require('../specific/ToolsetBar')
-//PVSCL:IFCOND(Spreadsheet, LINE)
+//PVSCL:IFCOND(GroupSelector, LINE)
 const ConfigDecisionHelper = require('./ConfigDecisionHelper')
 //PVSCL:ENDCOND
 
@@ -62,6 +62,7 @@ class ContentScriptManager {
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
                 //PVSCL:ENDCOND
+                  //PVSCL:IFCOND(StaticGroupSelector, LINE)
                   //PVSCL:IFCOND(DefaultCriterias, LINE)
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
@@ -69,6 +70,14 @@ class ContentScriptManager {
                     window.abwa.contentAnnotator.init(() => {
                       window.abwa.specificContentManager = new specificContentScript(Config.review)
                       window.abwa.specificContentManager.init(() => {
+                  //PVSCL:ELSEIFCOND(Spreadsheet, LINE)
+                  window.abwa.tagManager = new TagManager(Config.slrDataExtraction.namespace, Config.slrDataExtraction.tags)
+                  window.abwa.tagManager.init(() => {
+                   	window.abwa.contentAnnotator = new TextAnnotator(Config.slrDataExtraction)
+                    window.abwa.contentAnnotator.init(() => {
+                      window.abwa.specificContentManager = new specificContentScript(Config.slrDataExtraction)
+                      window.abwa.specificContentManager.init(() => {
+                  //PVSCL:ENDCOND
                   //PVSCL:ENDCOND
                         //PVSCL:IFCOND(GroupSelector, LINE)
                         // Reload for first time the content by group
@@ -78,7 +87,7 @@ class ContentScriptManager {
                         // PVSCL:ENDCOND
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
-                  //PVSCL:IFCOND(DefaultCriterias)
+                  //PVSCL:IFCOND(StaticGroupSelector, LINE)
                       })
                     })
                   })

@@ -12,6 +12,9 @@ const Config = {
     namespace: 'slr', // Namespace for the annotations
     urlParamName: 'hag', // Name to activate the extension if the url contains this hash param
     sidebar: {},
+    //PVSCL:IFCOND(StaticGroupSelection, LINE)
+    groupName: 'WebAnnotationH',
+    //PVSCL:ENDCOND
     location: true, // Location mode
     userFilter: true,
     tags: { // Defined tags for the domain
@@ -50,7 +53,7 @@ const Config = {
         reviewed: 'reviewed'
       }
     }
-  }//PVSCL:IFCOND(StaticGroupSelector)
+  }//PVSCL:IFCOND(DefaultCriterias)
   ,
   review: {
     groupName: 'ReviewAndGo',
