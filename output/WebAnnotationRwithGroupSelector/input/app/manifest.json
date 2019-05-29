@@ -1,0 +1,55 @@
+{
+    "name": "__MSG_appName__",
+    "short_name": "__MSG_appShortName__",
+    "description": "__MSG_appDescription__",
+    "version": "0.1.0",
+    "manifest_version": 2,
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "scripts/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+              "https://hypothes.is/groups/*/*"
+            ],
+            "js": [
+              "scripts/hypothesisGroupContentScript.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["*://*/*", "file:///*/*"],
+            "js": ["scripts/contentScript.js"],
+            "css": ["styles/contentScript.css"],
+            "run_at": "document_start",
+            "all_frames": false
+        }
+    ],
+    "page_action": {
+        "default_icon": "images/icon-38-bw.png",
+        "default_title": "__MSG_browserActionTitle__"
+    },
+    "options_page": "pages/options.html",
+    "options_ui": {
+        "page": "pages/options.html",
+        "chrome_style": false,
+        "open_in_tab": true
+    },
+    "permissions": [
+        "https://hypothes.is/",
+        "storage",
+        "tabs",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "identity",
+        "contextMenus",
+        "downloads",        
+        "file://*/*"
+    ],
+    
+    "web_accessible_resources": ["pages/*.html", "content/*", "images/*"] 
+}

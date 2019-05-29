@@ -81,6 +81,7 @@ class ToolsetBar extends Toolset{
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let report = review.toString()
+    console.log('All annotations: ' + review)
     let blob = new Blob([report], {type: 'text/plain;charset=utf-8'})
     let title = window.PDFViewerApplication.baseUrl !== null ? window.PDFViewerApplication.baseUrl.split("/")[window.PDFViewerApplication.baseUrl.split("/").length-1].replace(/\.pdf/i,"") : ""
     let docTitle = 'Review report'
@@ -143,20 +144,20 @@ class ToolsetBar extends Toolset{
         if(canvasClusters[e.config.options.group]==null) canvasClusters[e.config.options.group] = [e.config.name]
         else canvasClusters[e.config.options.group].push(e.config.name)
       })
-
+      
       review.annotations.forEach((e) => {
         if(e.criterion=="Typos"||criteriaList.indexOf(e.criterion)!=-1) return
         if(canvasClusters["Other"]==null) canvasClusters["Other"] = [e.criterion]
         else canvasClusters["Other"].push(e.criterion)
         criteriaList.push(e.criterion)
       })
-
+      
       let clusterTemplate = document.querySelector("#propertyClusterTemplate")
       let columnTemplate = document.querySelector("#clusterColumnTemplate")
       let propertyTemplate = document.querySelector("#clusterPropertyTemplate")
       let annotationTemplate = document.querySelector("#annotationTemplate")
       //let clusterHeight = 100.0/Object.keys(canvasClusters).length
-
+      
       let getCriterionLevel = (annotations) => {
         if(annotations.length===0) return 'emptyCluster'
         if(annotations[0].level==null||annotations[0].level=='') return 'unsorted'
@@ -167,7 +168,7 @@ class ToolsetBar extends Toolset{
         }
         return criterionLevel.replace(/\s/g,'')
       }
-
+      
       let displayAnnotation = (annotation) => {
         //let swalContent = '';
         //if(annotation.highlightText!=null&&annotation.highlightText!='') //swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"'+annotation.highlightText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'"</div>'
@@ -209,8 +210,9 @@ class ToolsetBar extends Toolset{
         if(getColumnAnnotationCount(properties)==0&&properties.length==2) return 50
         return 15.0+review.annotations.filter((e)=>{return e.criterion===property}).length*(100.0-15*2)/getColumnAnnotationCount(properties)
       }
-
+    
       for(let key in canvasClusters){
+    	
         let clusterElement = clusterTemplate.content.cloneNode(true)
         //clusterElement.querySelector(".propertyCluster").style.height = clusterHeight+'%'
         clusterElement.querySelector(".propertyCluster").style.height = getGroupHeight(key)+'%'
@@ -264,6 +266,7 @@ class ToolsetBar extends Toolset{
         }
         canvasContainer.appendChild(clusterElement)
       }
+      
       Alerts.closeAlert()
     })
   }

@@ -280,9 +280,7 @@ class TagManager {
     // Retrieve group annotations
     let groupAnnotations = this.model.groupAnnotations
     let groupTags = {}
-    debugger
     for (let i = 0; i < groupAnnotations.length; i++) {
-      debugger
       let groupTag = this.retrieveTagNameByPrefix(groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.group))
       if (groupTag) {
         groupTags[groupTag] = new TagGroup({name: groupTag, namespace: this.model.namespace, group: this.model.config.grouped.group})

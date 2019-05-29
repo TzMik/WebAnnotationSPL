@@ -731,8 +731,8 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   unHighlightAllAnnotations () {
-	  let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
-	  DOMTextUtils.unHighlightElements(highlightedElements)
+    let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
+    DOMTextUtils.unHighlightElements(highlightedElements)
   }
 
   initAnnotatorByAnnotation (callback) {
@@ -825,8 +825,8 @@ class TextAnnotator extends ContentAnnotator {
     Promise.all(promises).catch(() => {
       Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
-      // Update annotation variables
       LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {allAnnotations: this.allAnnotations})
+      // Update annotation variables
       this.allAnnotations = []
       this.currentAnnotations = []
       // Dispatch event and redraw annotations

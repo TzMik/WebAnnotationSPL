@@ -833,7 +833,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
     
-  //PVSCL:IFCOND(Index, LINE)
+  //PVSCL:IFCOND(Index OR UserFilter, LINE)
   createUpdatedCurrentAnnotationsEventHandler () {
     return (event) => {
       // Retrieve current annotations
@@ -933,15 +933,19 @@ class TagManager {
   //PVSCL:ENDCOND
   
   modeChangeHandler (event) {
-	//PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
+	//PVSCL:IFCOND(HighlightMode, LINE)
 	if (event.detail.mode === ModeManager.modes.highlight) {
 	  // Show all the tags
       this.showAllTagsContainer()
-	} else if (event.detail.mode === ModeManager.modes.index) {
+	}
+	//PVSCL:ENDCOND
+	//PVSCL:IFCOND(IndexMode, LINE)
+	if (event.detail.mode === ModeManager.modes.index) {
 	  // TODO Update index tags (it is not really required because everytime user create/delete annotation is updated)
 	  this.showIndexTagsContainer()
 	}
-	//PVSCL:ELSEIFCOND(ReviewMode, LINE)
+	//PVSCL:ENDCOND
+	//PVSCL:IFCOND(ReviewMode, LINE)
     if (event.detail.mode === ModeManager.modes.evidencing) {
         this.showEvidencingTagsContainer()
     }
@@ -961,10 +965,8 @@ class TagManager {
   }
   //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
   showEvidencingTagsContainer () {
-    //PVSCL:IFCOND(NOT(ReviewMode))
 	$(this.tagsContainer.viewing).attr('aria-hidden', 'true')
     $(this.tagsContainer.marking).attr('aria-hidden', 'true')
-    //PVSCL:ENDCOND
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
   }
   //PVSCL:ENDCOND
@@ -1003,7 +1005,7 @@ class TagManager {
   }
   //PVSCL:ENDCOND
   
-  //PVSCL:IFCOND(Spreadsheet, LINE)
+  //PVSCL:IFCOND(UserFilter, LINE)
   getGroupAndSubgroup (annotation) {
     let tags = annotation.tags
     let group = null
@@ -1021,7 +1023,8 @@ class TagManager {
     }
     return {group: group, subgroup: subGroup}
   }
-  //PVSCL:ELSECOND
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(NOT(Spreadsheet))
   reorderGroupedTagContainer (order, container) {
     // Reorder marking container
     for (let i = order.length - 1; i >= 0; i--) {
@@ -1043,7 +1046,7 @@ class TagManager {
 
   findAnnotationTagInstance (annotation) {
     let groupTag = this.getGroupFromAnnotation(annotation)
-    if (/*PVSCL:IFCOND(DefaultCriteria)*/ annotation.tags.length > 1 /*PVSCL:ELSECOND*/ _.isObject(groupTag) /*PVSCL:ENDCOND*/) {
+    if (/*PVSCL:IFCOND(DefaultCriterias)*/ annotation.tags.length > 1 /*PVSCL:ELSECOND*/ _.isObject(groupTag) /*PVSCL:ENDCOND*/) {
       // Check if has code defined, because other tags can be presented (like exam:studentId:X)
       if (this.hasCodeAnnotation(annotation)) {
         return this.getCodeFromAnnotation(annotation, groupTag)
@@ -1106,7 +1109,7 @@ class TagManager {
     let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      this.tagsContainer = {evidencing: document.querySelector('#tagsEvidencing')}
+      this.tagsContainer = {evidencing: document.querySelector('#tagsEvidencing')/*PVSCL:IFCOND(IndexMode)*/, index: document.querySelector('#tagsIndex')/*PVSCL:ENDCOND*/}
       if (_.isFunction(callback)) {
         callback()
       }

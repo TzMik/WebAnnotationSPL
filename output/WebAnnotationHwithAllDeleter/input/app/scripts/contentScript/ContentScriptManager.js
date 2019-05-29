@@ -47,7 +47,6 @@ class ContentScriptManager {
                         this.initListenerForGroupChange()
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
-                  //
                 })
               })
             })

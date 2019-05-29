@@ -1,0 +1,70 @@
+{
+    "name": "__MSG_appName__",
+    "short_name": "__MSG_appShortName__",
+    "description": "__MSG_appDescription__",
+    "version": "0.1.0",
+    "manifest_version": 2,
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "scripts/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"],
+            "js": ["scripts/googleSheetsContentScript.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["*://dl.acm.org/citation.cfm?*"],
+            "js": ["scripts/acmContentScript.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["*://*/*", "file:///*/*"],
+            "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*", "https://hypothes.is/login"],
+            "js": ["scripts/contentScript.js"],
+            "css": ["styles/contentScript.css"],
+            "run_at": "document_start",
+            "all_frames": false
+        }
+    ],
+    "page_action": {
+        "default_icon": "images/icon-38-bw.png",
+        "default_title": "__MSG_browserActionTitle__"
+    },
+    "options_page": "pages/options.html",
+    "options_ui": {
+        "page": "pages/options.html",
+        "chrome_style": false,
+        "open_in_tab": true
+    },
+    "permissions": [
+        "https://hypothes.is/",
+        "storage",
+        "tabs",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "identity",
+        "contextMenus",
+        "downloads",        
+        "*://doi.org/*",
+        "*://dx.doi.org/*",
+        "*://www.dropbox.com/s/",
+        "*://*.dropboxusercontent.com/*",
+        "file://*/*"
+    ],
+    
+    "oauth2": {
+      "client_id": "1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/spreadsheets"
+      ]
+    },
+    
+    "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]  ,
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoQgtyvjHN1xpYMWig50Bx7iL4d8oSum8aVhiTCLpdSK93YAA6JubzTxeJKWj0n/zx4X6jiByuAGaAd7V0/s+mrJfP2J8hiMFu5BnxT6+2iekiLNV4Nc1RlX9wuaOq2Res0l9E2+2DpMTCli4aS1DyEBd9zpfwaNWPMqbmToZOLO0afibAklS/VAIEfcH/2lbDLrdq3UACEZdW7/hlmICj0yItYFQ2mXEI3spetnJH3VG9Q5Sj5RsSLnyuescQLSeT0vl1uovsPnKCpD/aS/iRzNyEtRNtAy727Ju334bj4xyOA8VIsueWWwYiKPatvhQ+gcNqq77UNOmw5Ido5fHMQIDAQAB"
+    
+}

@@ -158,9 +158,9 @@ class ToolsetBar extends Toolset{
     //PVSCL:ELSEIFCOND(Validations)
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let allAnnotations = window.abwa.contentAnnotator.allAnnotations
-    debugger
     let t = 'TEXT REPORT \n\n'
     for (let i = 0, len = allAnnotations.length; i < len; i++) {
+      /*
       let facetTag = _.find(allAnnotations[i].tags, (tag) => {
     	return tag.includes(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':')
       })
@@ -172,7 +172,7 @@ class ToolsetBar extends Toolset{
     	let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.validated, '')
         let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
         if (facet) t += '(Validated) '
-      }
+      }*/
       t += allAnnotations[i].tags[1].replace('slr:code:', '') + ': ' + allAnnotations[i].target[0].selector[3].exact + '\n\n'
     }
     let blob = new Blob([t], {type: 'text/plain;charset=utf-8'})
@@ -209,7 +209,11 @@ class ToolsetBar extends Toolset{
   generateCanvas () {
     window.abwa.sidebar.closeSidebar()
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
+    //PVSCL:IFCOND(DefaultCriterias, LINE)
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
+    //PVSCL:ELSEIFCOND(Spreadsheet)
+    let allAnnotations = window.abwa.contentAnnotator.allAnnotations
+    //PVSCL:ENDCOND
     let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.lastChild.insertAdjacentHTML('afterend', response.data)
@@ -234,26 +238,43 @@ class ToolsetBar extends Toolset{
 
       let canvasClusters = {}
       let criteriaList = []
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       abwa.tagManager.currentTags.forEach((e) => {
         if(e.config.name=="Typos") return
         criteriaList.push(e.config.name)
         if(canvasClusters[e.config.options.group]==null) canvasClusters[e.config.options.group] = [e.config.name]
         else canvasClusters[e.config.options.group].push(e.config.name)
       })
-
+      
       review.annotations.forEach((e) => {
         if(e.criterion=="Typos"||criteriaList.indexOf(e.criterion)!=-1) return
         if(canvasClusters["Other"]==null) canvasClusters["Other"] = [e.criterion]
         else canvasClusters["Other"].push(e.criterion)
         criteriaList.push(e.criterion)
       })
-
+      //PVSCL:ELSEIFCOND(Spreadsheet)
+      abwa.tagManager.currentTags.forEach((e) => {
+    	criteriaList.push(e.config.name)
+    	if (canvasClusters[e.config.group] == null) canvasClusters[e.config.group] = [e.config.name]
+    	else canvasClusters[e.config.group].push(e.config.name)
+      })
+      
+      abwa.tagManager.currentTags.forEach((e) => {
+    	let tags = []
+    	e.tags.forEach((t) => {
+    	 tags.push(t.name)
+    	})
+    	canvasClusters[e.config.name] = tags
+      })
+      //PVSCL:ENDCOND
+      
       let clusterTemplate = document.querySelector("#propertyClusterTemplate")
       let columnTemplate = document.querySelector("#clusterColumnTemplate")
       let propertyTemplate = document.querySelector("#clusterPropertyTemplate")
       let annotationTemplate = document.querySelector("#annotationTemplate")
       //let clusterHeight = 100.0/Object.keys(canvasClusters).length
-
+      
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       let getCriterionLevel = (annotations) => {
         if(annotations.length===0) return 'emptyCluster'
         if(annotations[0].level==null||annotations[0].level=='') return 'unsorted'
@@ -264,7 +285,8 @@ class ToolsetBar extends Toolset{
         }
         return criterionLevel.replace(/\s/g,'')
       }
-
+      //PVSCL:ENDCOND
+      
       let displayAnnotation = (annotation) => {
         //let swalContent = '';
         //if(annotation.highlightText!=null&&annotation.highlightText!='') //swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"'+annotation.highlightText.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'"</div>'
@@ -282,6 +304,7 @@ class ToolsetBar extends Toolset{
         })*/
       }
 
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       let getGroupAnnotationCount = (group) => {
         let i = 0
         canvasClusters[group].forEach((e) => {i += review.annotations.filter((a) => {return a.criterion===e}).length})
@@ -306,8 +329,11 @@ class ToolsetBar extends Toolset{
         if(getColumnAnnotationCount(properties)==0&&properties.length==2) return 50
         return 15.0+review.annotations.filter((e)=>{return e.criterion===property}).length*(100.0-15*2)/getColumnAnnotationCount(properties)
       }
-
+      //PVSCL:ENDCOND
+    
+      //PVSCL:IFCOND(DefaultCriterias, LINE)
       for(let key in canvasClusters){
+    	
         let clusterElement = clusterTemplate.content.cloneNode(true)
         //clusterElement.querySelector(".propertyCluster").style.height = clusterHeight+'%'
         clusterElement.querySelector(".propertyCluster").style.height = getGroupHeight(key)+'%'
@@ -361,6 +387,45 @@ class ToolsetBar extends Toolset{
         }
         canvasContainer.appendChild(clusterElement)
       }
+        //PVSCL:ELSEIFCOND(Spreadsheet)
+      for (let i = 0, len = criteriaList.length; i < len; i++){
+        let clusterElement = clusterTemplate.content.cloneNode(true)
+        let percentage = 100 / criteriaList.length
+        clusterElement.querySelector(".propertyCluster").style.height = percentage + '%'
+        if (criteriaList[i].length > 11){
+      	  clusterElement.querySelector(".clusterLabel span").innerText = criteriaList[i].substring(0,10) + '...'
+        } else {
+      	  clusterElement.querySelector(".clusterLabel span").innerText = criteriaList[i]
+        }
+        let clusterContainer = clusterElement.querySelector('.clusterContainer')
+        let currentColumn = null
+        for (let j = 0, len = canvasClusters[criteriaList[i]].length; j < len; j++) {
+          currentColumn = columnTemplate.content.cloneNode(true)
+      	  percentage = 100 / canvasClusters[criteriaList[i]].length
+      	  currentColumn.querySelector('.clusterColumn').style.width = percentage + '%'
+          let clusterProperty = propertyTemplate.content.cloneNode(true)
+          clusterProperty.querySelector(".propertyLabel").innerText = canvasClusters[criteriaList[i]][j]
+          let propertyHeight = 100 / canvasClusters.facet.length
+          clusterProperty.querySelector(".clusterProperty").style.height = '100%'
+          clusterProperty.querySelector(".clusterProperty").style.width = "100%";
+          let criterionAnnotations = allAnnotations.filter((e) => {return e.tags[1].replace('slr:code:', '') === canvasClusters[criteriaList[i]][j]})
+          if(criterionAnnotations.length == 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
+          	  
+          let annotationWidth = 100.0/criterionAnnotations.length
+          for(let k=0; k<criterionAnnotations.length; k++){
+        	let annotationElement = annotationTemplate.content.cloneNode(true)
+            annotationElement.querySelector('.canvasAnnotation').style.width = annotationWidth+'%'
+            annotationElement.querySelector('.canvasAnnotation').innerText = '"'+criterionAnnotations[k].target[0].selector[3].exact+'"'
+            annotationElement.querySelector('.canvasAnnotation').className += ' unsorted'
+            clusterProperty.querySelector('.propertyAnnotations').appendChild(annotationElement)
+          }
+          currentColumn.querySelector('.clusterColumn').appendChild(clusterProperty)
+          clusterContainer.appendChild(currentColumn)
+        }
+        canvasContainer.appendChild(clusterElement)
+      }
+        //PVSCL:ENDCOND
+      
       Alerts.closeAlert()
     })
   }

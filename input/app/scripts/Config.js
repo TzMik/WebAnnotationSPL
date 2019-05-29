@@ -12,7 +12,7 @@ const Config = {
     namespace: 'slr', // Namespace for the annotations
     urlParamName: 'hag', // Name to activate the extension if the url contains this hash param
     sidebar: {},
-    //PVSCL:IFCOND(StaticGroupSelection, LINE)
+    //PVSCL:IFCOND(StaticGroupSelector, LINE)
     groupName: 'WebAnnotationH',
     //PVSCL:ENDCOND
     location: true, // Location mode

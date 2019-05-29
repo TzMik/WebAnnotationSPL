@@ -25,7 +25,7 @@ class Tag {
     this.options = config.options
   }
 
-  //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
+  //PVSCL:IFCOND((HighlightMode OR ReviewMode) AND IndexMode, LINE)
   createButton () {
     let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
     this.tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)

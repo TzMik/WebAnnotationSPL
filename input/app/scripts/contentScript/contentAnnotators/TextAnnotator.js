@@ -12,7 +12,7 @@ const _ = require('lodash')
 require('components-jqueryui')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const Alerts = require('../../utils/Alerts')
-//PVSCL:IFCOND(NOT(ReviewMode), LINE)
+//PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
 const ModeManager = require('../ModeManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Student OR Teacher, LINE)
@@ -67,7 +67,7 @@ class TextAnnotator extends ContentAnnotator {
   initEvents (callback) {
     this.initSelectionEvents(() => {
       this.initAnnotateEvent(() => {
-    	  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+    	  //PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
     	  this.initModeChangeEvent(() => {
     	  //PVSCL:ENDCOND
     		  //PVSCL:IFCOND(UserFilter, LINE)
@@ -96,7 +96,7 @@ class TextAnnotator extends ContentAnnotator {
     		  //PVSCL:IFCOND(UserFilter, LINE)
     		  })
     		  //PVSCL:ENDCOND
-    	  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+    	  //PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
     	  })
     	  //PVSCL:ENDCOND
       })
@@ -206,7 +206,7 @@ class TextAnnotator extends ContentAnnotator {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+  //PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
   initModeChangeEvent (callback) {
     this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
     this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
@@ -217,7 +217,7 @@ class TextAnnotator extends ContentAnnotator {
 
   createInitModeChangeEventHandler () {
     return () => {
-      //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
+      //PVSCL:IFCOND((HighlightMode OR ReviewMode) AND IndexMode, LINE)
       if (window.abwa.modeManager.mode === ModeManager.modes.index) {
         // Highlight all annotations
         this.currentAnnotations = this.allAnnotations
@@ -717,7 +717,7 @@ class TextAnnotator extends ContentAnnotator {
         })
         // Create context menu event for highlighted elements
         this.createContextMenuForAnnotation(annotation)
-        //PVSCL:IFCOND(Spreadsheet, LINE)
+        //PVSCL:IFCOND(IndexMode, LINE)
         this.createNextAnnotationHandler(annotation)
         //PVSCL:ELSECOND
         this.createDoubleClickEventHandler(annotation)

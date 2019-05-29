@@ -653,7 +653,7 @@ class TextAnnotator extends ContentAnnotator {
 	    level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
 	  },
 	  callback: (err, result) => {
-	    updateAnnotation({comment: newComment/**/})
+	    updateAnnotation({comment: newComment/**/}/**/)
 	    if (isSidebarOpened) {
 	      this.openSidebar()
 	    }
@@ -772,10 +772,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   unHighlightAllAnnotations () {
-    let highlightedElements = _.flatten(_.map(
-      this.allAnnotations,
-      (annotation) => { return [...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')] })
-    )
+    let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
     DOMTextUtils.unHighlightElements(highlightedElements)
   }
 

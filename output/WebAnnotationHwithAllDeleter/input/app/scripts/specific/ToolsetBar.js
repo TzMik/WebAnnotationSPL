@@ -48,7 +48,6 @@ class ToolsetBar extends Toolset{
         if (err) {
           // Nothing to do
         } else {
-          debugger
           // Dispatch delete all annotations event
           LanguageUtils.dispatchCustomEvent(Events.deleteAllAnnotations)
           // TODO Check if it is better to maintain the sidebar opened or not

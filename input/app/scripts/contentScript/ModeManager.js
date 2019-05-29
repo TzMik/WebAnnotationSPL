@@ -30,7 +30,7 @@ class ModeManager {
       //PVSCL:IFCOND(HighlightMode, LINE)
       this.mode = ModeManager.modes.highlight
       //PVSCL:ENDCOND
-      //PVSCL:IFCOND(EvidencingMode, LINE)
+      //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
       this.mode = ModeManager.modes.evidencing
       //PVSCL:ENDCOND
     }
@@ -50,7 +50,7 @@ class ModeManager {
     }
     //PVSCL:ENDCOND
   }
-  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+  //PVSCL:IFCOND((ReviewMode AND IndexMode) OR (HighlightMode AND IndexMode), LINE)
   loadSidebarToggle (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
     $.get(sidebarURL, (html) => {
@@ -80,6 +80,13 @@ class ModeManager {
       this.setMarkingMode()
     }
     //PVSCL:ENDCOND
+    //PVSCL:IFCOND(ReviewMode AND IndexMode, LINE)
+    if (this.mode === ModeManager.modes.evidencing) {
+      this.setEvidencingMode()
+    } else {
+      this.setIndexMode()
+    }
+    //PVSCL:ENDCOND
   }
   //PVSCL:ENDCOND
   setPanelText () {
@@ -87,9 +94,13 @@ class ModeManager {
     let modeHeaderLabel = document.querySelector('#modeHeader label')
     modeHeaderLabel.innerText = chrome.i18n.getMessage('Mode')
     let modeLabel = document.querySelector('#modeLabel')
-    //PVSCL:IFCOND(HighlightMode AND IndexMode, LINE)
+    //PVSCL:IFCOND((HighlightMode OR ReviewMode) AND IndexMode, LINE)
     if (this.mode === ModeManager.modes.highlight) {
+      //PVSCL:IFCOND(HighlightMode, LINE)
       modeLabel.innerText = chrome.i18n.getMessage('highlight')
+      //PVSCL:ELSEIFCOND(ReviewMode)
+      modeLabel.innerText = chrome.i18n.getMessage('Evidencing')
+      //PVSCL:ENDCOND
     } else {
       modeLabel.innerText = chrome.i18n.getMessage('index')
     }
@@ -112,7 +123,7 @@ class ModeManager {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(EvidencingMode, LINE)
+  //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
   setEvidencingMode () {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     let modeLabel = document.querySelector('#modeLabel')
@@ -148,7 +159,7 @@ class ModeManager {
   }
   //PVSCL:ENDCOND
 
-  //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+  //PVSCL:IFCOND(NOT(ReviewMode) OR ((ReviewMode OR HighlightMode) AND IndexMode), LINE)
   initEventHandlers (callback) {
     let annotatorToggle = document.querySelector('#annotatorToggle')
     annotatorToggle.addEventListener('click', (event) => {
@@ -157,6 +168,8 @@ class ModeManager {
         this.setHighlightMode()
         //PVSCL:ELSEIFCOND(MarkingMode, LINE)
         this.setMarkingMode()
+        //PVSCL:ELSEIFCOND(ReviewMode)
+        this.setEvidencingMode()
         //PVSCL:ENDCOND
       } else {
         //PVSCL:IFCOND(IndexMode, LINE)
@@ -178,14 +191,14 @@ ModeManager.modes = {
   //PVSCL:IFCOND(HighlightMode, LINE)
   'highlight': 'highlight',
   //PVSCL:ENDCOND
-  //PVSCL:IFCOND(IndexMode, LINE)
-  'index': 'index'
-  //PVSCL:ENDCOND
   //PVSCL:IFCOND(MarkingMode, LINE)
   'mark': 'mark',
   //PVSCL:ENDCOND
-  //PVSCL:IFCOND(EvidencingMode, LINE)
+  //PVSCL:IFCOND(EvidencingMode OR ReviewMode, LINE)
   'evidencing': 'evidencing',
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(IndexMode, LINE)
+  'index': 'index'
   //PVSCL:ENDCOND
   //PVSCL:IFCOND(Student, LINE)
   'view': 'view'

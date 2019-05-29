@@ -19,8 +19,10 @@ class DeleteAnnotationManager {
     // Create event for annotation delete
     this.events.annotationDeleted = {element: document, event: Events.annotationDeleted, handler: this.createAnnotationDeletedEventHandler()}
     this.events.annotationDeleted.element.addEventListener(this.events.annotationDeleted.event, this.events.annotationDeleted.handler, false)
+    //PVSCL:IFCOND(AllDeleter, LINE)
     this.events.deletedAllAnnotations = {element: document, event: Events.deletedAllAnnotations, handler: this.createAnnotationsDeletedEventHandler()}
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
+    //PVSCL:ENDCOND
     if (_.isFunction(callback)) {
       callback()
     }
@@ -44,19 +46,93 @@ class DeleteAnnotationManager {
       })
     }
   }
-  
-  createAnnotationsDeletedEventHandler () {
-	  return (event) => {
-		  this.deleteClassificationsFromHypersheet(event.detail.allAnnotations, (err) => {
-			  if (err) {
-				  console.error(err)
-			  } else {
-				  console.debug('Correctly updated google sheet with deleted annotations')
-			  }
-		  })
-	  }
-  }
 
+  //PVSCL:IFCOND(AllDeleter, LINE)
+  createAnnotationsDeletedEventHandler () {
+    return (event) => {
+	  this.deleteClassificationsFromHypersheet(event.detail.allAnnotations, (err) => {
+		if (err) {
+		  console.error(err)
+		} else {
+		  console.debug('Correctly updated google sheet with deleted annotations')
+		}
+	  })
+	}
+  }
+  
+  deleteClassificationsFromHypersheet (annotations, callback) {
+	for (let i = 0, len = annotations.length; i < len; i++) {
+      // Retrieve annotation facet (non-inductive)
+      let facetTag = _.find(annotations[i].tags, (tag) => {
+        return tag.includes(this.tags.isCodeOf)
+      })
+      if (facetTag) { // Non-inductive annotation
+        let facetName = facetTag.replace(this.tags.isCodeOf, '')
+        // Retrieve current facet
+        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+        if (!_.isEmpty(facet)) {
+          let codeTag = _.find(annotations[i].tags, (tag) => {
+            return tag.includes(this.tags.code)
+          })
+          if (_.isString(codeTag)) {
+            let codeName = codeTag.replace(this.tags.code, '')
+            // Retrieve current code
+            let code = _.find(facet.codes, (code) => { return code.name === codeName })
+            if (!_.isEmpty(code)) {
+              // Multivalues and monovalues are treated in different ways
+              if (facet.multivalued) {
+                this.deleteClassificationFromHypersheetMultivalued(code, annotations[i], (err) => {
+                  if (err) {
+                    callback(err)
+                  } else {
+                    callback(null)
+                  }
+                })
+              } else {
+                this.deleteClassificationFromHypersheetMonovalued(code, annotations[i], (err) => {
+                  if (err) {
+                    callback(err)
+                  } else {
+                    callback(null)
+                  }
+                })
+              }
+            } else {
+              callback(new Error('No code found for current annotation'))
+            }
+          } else {
+            callback(new Error('No code tag found in annotation'))
+          }
+        } else {
+          callback(new Error('No facet found for current annotation'))
+        }
+      } else {
+        // Retrieve annotation facet (inductive)
+        facetTag = _.find(annotations[i].tags, (tag) => {
+          return tag.includes(this.tags.facet)
+        })
+        if (_.isString(facetTag)) {
+          let facetName = facetTag.replace(this.tags.facet, '')
+          let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+          if (facet) {
+            this.deleteClassificationFromHypersheetInductive(facet, annotations[i], (err) => {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null)
+              }
+            })
+          } else {
+            callback(new Error('No facet found for current annotation'))
+	      }
+	    } else {
+	      callback(new Error('Annotation is not for mapping study'))
+	    }
+	  }
+    }
+  }
+  //PVSCL:ENDCOND
+  
   destroy (callback) {
     // Remove the event listeners
     let events = _.values(this.events)
@@ -66,81 +142,6 @@ class DeleteAnnotationManager {
     if (_.isFunction(callback)) {
       callback()
     }
-  }
-
-  deleteClassificationsFromHypersheet (annotations, callback) {
-	  let prueba = annotations
-	  for (let i = 0, len = annotations.length; i < len; i++) {
-		// Retrieve annotation facet (non-inductive)
-		    let facetTag = _.find(annotations[i].tags, (tag) => {
-		      debugger
-		      return tag.includes(this.tags.isCodeOf)
-		    })
-		    if (facetTag) { // Non-inductive annotation
-		      let facetName = facetTag.replace(this.tags.isCodeOf, '')
-		      // Retrieve current facet
-		      let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
-		      if (!_.isEmpty(facet)) {
-		        let codeTag = _.find(annotations[i].tags, (tag) => {
-		          return tag.includes(this.tags.code)
-		        })
-		        if (_.isString(codeTag)) {
-		          let codeName = codeTag.replace(this.tags.code, '')
-		          // Retrieve current code
-		          let code = _.find(facet.codes, (code) => { return code.name === codeName })
-		          if (!_.isEmpty(code)) {
-		            // Multivalues and monovalues are treated in different ways
-		            if (facet.multivalued) {
-		              this.deleteClassificationFromHypersheetMultivalued(code, annotations[i], (err) => {
-		                if (err) {
-		                  callback(err)
-		                } else {
-		                  callback(null)
-		                }
-		              })
-		            } else {
-		              this.deleteClassificationFromHypersheetMonovalued(code, annotations[i], (err) => {
-		                if (err) {
-		                  callback(err)
-		                } else {
-		                  callback(null)
-		                }
-		              })
-		            }
-		          } else {
-		            callback(new Error('No code found for current annotation'))
-		          }
-		        } else {
-		          callback(new Error('No code tag found in annotation'))
-		        }
-		      } else {
-		        callback(new Error('No facet found for current annotation'))
-		      }
-		    } else {
-		      // Retrieve annotation facet (inductive)
-		      facetTag = _.find(annotations[i].tags, (tag) => {
-		        return tag.includes(this.tags.facet)
-		      })
-		      if (_.isString(facetTag)) {
-		        let facetName = facetTag.replace(this.tags.facet, '')
-		        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
-		        if (facet) {
-		          this.deleteClassificationFromHypersheetInductive(facet, annotations[i], (err) => {
-		            if (err) {
-		              callback(err)
-		            } else {
-		              callback(null)
-		            }
-		          })
-		        } else {
-		          callback(new Error('No facet found for current annotation'))
-		        }
-		      } else {
-		        callback(new Error('Annotation is not for mapping study'))
-		      }
-		    }
-	  }
-	  debugger
   }
   
   deleteClassificationFromHypersheet (annotation, callback) {

@@ -39,20 +39,19 @@ class ToolsetBar extends Toolset{
   generateReview () {
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let allAnnotations = window.abwa.contentAnnotator.allAnnotations
-    debugger
     let t = 'TEXT REPORT \n\n'
     for (let i = 0, len = allAnnotations.length; i < len; i++) {
       let facetTag = _.find(allAnnotations[i].tags, (tag) => {
-    	  return tag.includes(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':')
+    	return tag.includes(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':')
       })
       if (facetTag) {
-    	  let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':', '')
-          let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
-          if (facet.multivalued || facet.monovalued) t += '(Validated) '
+    	let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.grouped.relation + ':', '')
+        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+        if (facet.multivalued || facet.monovalued) t += '(Validated) '
       } else {
-    	  let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.validated, '')
-          let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
-          if (facet) t += '(Validated) '
+    	let facetName = facetTag.replace(Config.slrDataExtraction.namespace + ':' + Config.slrDataExtraction.tags.statics.validated, '')
+        let facet = _.find(window.abwa.specific.mappingStudyManager.mappingStudy.facets, (facet) => { return facet.name === facetName })
+        if (facet) t += '(Validated) '
       }
       t += allAnnotations[i].tags[1].replace('slr:code:', '') + ': ' + allAnnotations[i].target[0].selector[3].exact + '\n\n'
     }
@@ -66,6 +65,11 @@ class ToolsetBar extends Toolset{
 
 
   parseAnnotations (annotations){
+    const criterionTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':'
+    const levelTag = Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':'
+    const majorConcernLevel = 'Major weakness'
+    const minorConcernLevel = 'Minor weakness'
+    const strengthLevel = 'Strength'
     let r = new Review()
 
     for (let a in annotations) {

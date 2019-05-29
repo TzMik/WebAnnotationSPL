@@ -46,7 +46,6 @@ class ContentScriptManager {
                         this.initListenerForGroupChange()
                         this.status = ContentScriptManager.status.initialized
                         console.log('Initialized content script manager')
-                  //
                 })
               })
             })
@@ -81,9 +80,7 @@ class ContentScriptManager {
             // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
             this.reloadTagsManager(config, () => {
               this.reloadContentAnnotator(config, () => {
-                
                   this.reloadSpecificContentManager(config)
-                
               })
             })
       }

@@ -532,10 +532,9 @@ class TextAnnotator extends ContentAnnotator {
     let isSidebarOpened = window.abwa.sidebar.isOpened()
     this.closeSidebar()
     let that = this
-    let updateAnnotation = (textObject, level) => {
+    let updateAnnotation = (textObject) => {
       annotation.text = JSON.stringify(textObject)
       // Assign level to annotation
-      debugger
       //let level = textObject.level || null
       if (level != null) {
         let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
@@ -613,7 +612,7 @@ class TextAnnotator extends ContentAnnotator {
 	    level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
 	  },
 	  callback: (err, result) => {
-	    updateAnnotation({comment: newComment/**/, suggestedLiterature: suggestedLiterature/**/}, level)
+	    updateAnnotation({comment: newComment/**/, suggestedLiterature: suggestedLiterature/**/}/**/, level/**/)
 	    if (isSidebarOpened) {
 	      this.openSidebar()
 	    }

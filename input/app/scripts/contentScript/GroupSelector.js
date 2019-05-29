@@ -16,7 +16,11 @@ const Config = require('../Config')
 const DefaultHighlighterGenerator = require('../specific/DefaultHighlighterGenerator')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(StaticGroupSelector, LINE)
+//PVSCL:IFCOND(DefaultCriterias, LINE)
 const GroupName = Config.review.groupName
+//PVSCL:ELSEIFCOND(Spreadsheet)
+const GroupName = Config.slrDataExtraction.groupName
+//PVSCL:ENDCOND
 //PVSCL:ENDCOND
 
 class GroupSelector {

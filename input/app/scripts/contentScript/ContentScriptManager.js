@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 const ContentTypeManager = require('./ContentTypeManager')
-//PVSCL:IFCOND(NOT(ReviewMode), LINE)
+//PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
 const ModeManager = require('./ModeManager')
 //PVSCL:ENDCOND
 const Sidebar = require('./Sidebar')
@@ -11,7 +11,7 @@ const RolesManager = require('./RolesManager')
 //PVSCL:ENDCOND
 const GroupSelector = require('./GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-//PVSCL:IFCOND(NOT(Spreadsheet), LINE)
+//PVSCL:IFCOND(StaticGroupSelector, LINE)
 const Config = require('../Config')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(UserFilter, LINE)
@@ -23,7 +23,9 @@ const RubricManager = require('./RubricManager')
 //PVSCL:ENDCOND
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const specificContentScript = require('../specific/specificContentScript')
+//PVSCL:IFCOND(Toolset, LINE)
 const Toolset = require('../specific/ToolsetBar')
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(GroupSelector, LINE)
 const ConfigDecisionHelper = require('./ConfigDecisionHelper')
 //PVSCL:ENDCOND
@@ -58,7 +60,7 @@ class ContentScriptManager {
                 window.abwa.roleManager = new RolesManager()
                 window.abwa.roleManager.init(() => {
                 //PVSCL:ENDCOND
-                //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+                //PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
                 //PVSCL:ENDCOND
@@ -92,7 +94,7 @@ class ContentScriptManager {
                     })
                   })
                   //PVSCL:ENDCOND
-                //PVSCL:IFCOND(NOT(ReviewMode), LINE)
+                //PVSCL:IFCOND((ReviewMode OR HighlightMode) AND IndexMode, LINE)
                 })
                 //PVSCL:ENDCOND
                 //PVSCL:IFCOND(Student AND Teacher, LINE)
@@ -176,7 +178,7 @@ class ContentScriptManager {
     //PVSCL:ENDCOND
   }
 
-  //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)
+  //PVSCL:IFCOND(GroupSelector, LINE)
   reloadContentAnnotator (config, callback) {
     // Destroy current content annotator
     this.destroyContentAnnotator()
