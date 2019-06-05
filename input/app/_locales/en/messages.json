@@ -1,10 +1,22 @@
 {
   "appName": {
-    "message": "Highlight&Go",
+    PVSCL:IFCOND(Validations, LINE)
+    "message": "WebAnnotationH",
+    PVSCL:ELSEIFCOND(Strengths)
+    "message": "WebAnnotationR",
+    PVSCL:ELSECOND
+    "message": "WebAnnotationM",
+    PVSCL:ENDCOND
     "description": "The name of the application"
   },
   "appShortName": {
-    "message": "Highlight&Go",
+    PVSCL:IFCOND(Validations, LINE)
+    "message": "WebAnnotationH",
+    PVSCL:ELSEIFCOND(Strengths)
+    "message": "WebAnnotationR",
+    PVSCL:ELSECOND
+    "message": "WebAnnotationM",
+    PVSCL:ENDCOND
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
   PVSCL:IFCOND(Validations, LINE)
@@ -24,7 +36,13 @@
   },
   PVSCL:ENDCOND
   "browserActionTitle": {
-    "message": "Highlight&Go",
+    PVSCL:IFCOND(Validations, LINE)
+    "message": "WebAnnotationH",
+    PVSCL:ELSEIFCOND(Strengths)
+    "message": "WebAnnotationR",
+    PVSCL:ELSECOND
+    "message": "WebAnnotationM",
+    PVSCL:ENDCOND
     "description": "The title of the browser action button"
   },
   "HypothesisLoginRequired": {

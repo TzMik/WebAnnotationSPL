@@ -1199,7 +1199,6 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
     //PVSCL:IFCOND(Comments, LINE)
     let newComment
-    let suggestedLiterature
 	let level
 	let textObject = {}
     //PVSCL:IFCOND(Spreadsheet, LINE)
@@ -1207,12 +1206,15 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
 	if (annotation.text !== "") textObject = JSON.parse(annotation.text)
 	let comment = textObject.comment || ''
+	//PVSCL:IFCOND(Citations, LINE)
+	let suggestedLiterature = textObject.suggestedLiterature || ''
+	//PVSCL:ENDCOND
 	Alerts.multipleInputAlert({
 	  title: criterionName,
 	  //PVSCL:IFCOND(Strengths, LINE)
-	  html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>'/*PVSCL:IFCOND(Citations)*/ + '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiterature + '</ul>'/*PVSCL:ENDCOND*/,
 	  //PVSCL:ELSECOND
-	  html: '<h3 class="criterionName">Insert your comment</h3><textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  html: '<h3 class="criterionName">Insert your comment</h3><textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>'/*PVSCL:IFCOND(Citations)*/ + '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiterature + '</ul>'/*PVSCL:ENDCOND*/,
 	  //PVSCL:ENDCOND
 	  preConfirm: () => {
 	    newComment = $('#swal-textarea').val()

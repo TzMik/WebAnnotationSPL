@@ -363,6 +363,9 @@ class TagManager {
   }
   
   initEventHandlers (callback) {
+	// For user filter change
+	this.events.updatedCurrentAnnotationsEvent = {element: document, event: Events.updatedCurrentAnnotations, handler: this.createUpdatedCurrentAnnotationsEventHandler()}
+	this.events.updatedCurrentAnnotationsEvent.element.addEventListener(this.events.updatedCurrentAnnotationsEvent.event, this.events.updatedCurrentAnnotationsEvent.handler, false)
 	// For mode change
     this.events.modeChange = {
       element: document,
@@ -536,7 +539,8 @@ class TagManager {
     }
   }
   showEvidencingTagsContainer () {
-    //
+	$(this.tagsContainer.viewing).attr('aria-hidden', 'true')
+    $(this.tagsContainer.marking).attr('aria-hidden', 'true')
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
   }
   
@@ -555,6 +559,24 @@ class TagManager {
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'true')
   }
   
+  getGroupAndSubgroup (annotation) {
+    let tags = annotation.tags
+    let group = null
+    let subGroup = null
+    let groupOf = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.relation + ':') })
+    if (groupOf) {
+      subGroup = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.subgroup + ':') })
+        .replace(this.model.namespace + ':' + this.model.config.grouped.subgroup + ':', '')
+      group = groupOf.replace(this.model.namespace + ':' + this.model.config.grouped.relation + ':', '')
+    } else {
+      let groupTag = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.group + ':') })
+      if (groupTag) {
+        group = groupTag.replace(this.model.namespace + ':' + this.model.config.grouped.group + ':', '')
+      }
+    }
+    return {group: group, subgroup: subGroup}
+  }
+  //
   reorderGroupedTagContainer (order, container) {
     // Reorder marking container
     for (let i = order.length - 1; i >= 0; i--) {
@@ -576,7 +598,7 @@ class TagManager {
 
   findAnnotationTagInstance (annotation) {
     let groupTag = this.getGroupFromAnnotation(annotation)
-    if (/**/ _.isObject(groupTag) /**/) {
+    if (/**/ annotation.tags.length > 1 /**/) {
       // Check if has code defined, because other tags can be presented (like exam:studentId:X)
       if (this.hasCodeAnnotation(annotation)) {
         return this.getCodeFromAnnotation(annotation, groupTag)
@@ -612,11 +634,12 @@ class TagManager {
       return tag.includes(/**/ 'review:level:' /**/)
     })
   }
+  /**/
   initTagsStructure (callback) {
     let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      this.tagsContainer = {evidencing: document.querySelector('#tagsEvidencing')}
+      this.tagsContainer = {evidencing: document.querySelector('#tagsEvidencing')/**/}
       if (_.isFunction(callback)) {
         callback()
       }

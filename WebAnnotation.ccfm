@@ -196,6 +196,88 @@
         <cm:script cm:id="ip-o6tQQa0-Dlw7Va" cm:language="ps:pvscl" cm:type="ps:boolean">GroupSelector</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iGnJatKKhwwGu1a7O">
+      <cm:restriction cm:id="i-Dsqe3Ej_-MVZr6z">
+        <cm:script cm:id="i1sUYYjHM5TrnL4ki" cm:language="ps:pvscl" cm:type="ps:boolean">AllDeleter</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="i4iYF5MUsnMAFv66J">
+      <cm:restriction cm:id="iZRBISaBDSmC7Ac4M">
+        <cm:script cm:id="iI2u8CvrUTVGj656W" cm:language="ps:pvscl" cm:type="ps:boolean">Report</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="ikidyAxdFPIzEpnh_">
+      <cm:restriction cm:id="i1xzVa82fUuI_FMM-">
+        <cm:script cm:id="i96xr6Mtvcv7LAA4R" cm:language="ps:pvscl" cm:type="ps:boolean">Strengths</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="i5K7J8A2gWNvikNB2">
+      <cm:restriction cm:id="i4KVI4wloaK99hb9O">
+        <cm:script cm:id="ipfEgmA382k27YHC3" cm:language="ps:pvscl" cm:type="ps:boolean">Strengths</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="i_ramnvWRstsl9G9I">
+      <cm:restriction cm:id="iSME7zX7ojVewNa-e">
+        <cm:script cm:id="i11FP2tL53WssdSpc" cm:language="ps:pvscl" cm:type="ps:boolean">BackToMoodle</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="i0xzumetMpXMvGUjj">
+      <cm:restriction cm:id="iKf6HVJKV0yHVJ5RJ">
+        <cm:script cm:id="iEOAKIc9-tsTsFxUM" cm:language="ps:pvscl" cm:type="ps:boolean">Canvas
+</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iZdnzd6wYQNKQVUQ3">
+      <cm:restriction cm:id="ivSNKRCMR6UgbtrI4">
+        <cm:script cm:id="i9ze43lslCd_44VVn" cm:language="ps:pvscl" cm:type="ps:boolean">Last</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iBg1YzIdVN2YFrdef">
+      <cm:restriction cm:id="iFb4ROs5gETYGi1Eo">
+        <cm:script cm:id="iM9NoffP3fb4zdd9Z" cm:language="ps:pvscl" cm:type="ps:boolean">Screenshots</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iqH2FqUuvdfljQ-Q5">
+      <cm:restriction cm:id="icaw9lsbVQ7VpJiKH">
+        <cm:script cm:id="iGqtmMVJKAmS1edxd" cm:language="ps:pvscl" cm:type="ps:boolean">BackToSpreadsheet</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iEhhDCteZE4i_RadM">
+      <cm:restriction cm:id="iArKxhn8upkf8c-Gr">
+        <cm:script cm:id="i6smz4wNY3gbjrjpT" cm:language="ps:pvscl" cm:type="ps:boolean">Strengths</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="isM1rIBmvCO6NvJS4">
+      <cm:restriction cm:id="iFryqq33DxB9P9PGE">
+        <cm:script cm:id="i7ppRMmMA7FId8BfN" cm:language="ps:pvscl" cm:type="ps:boolean">Validations</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="isO83uk-vjileNsiK">
+      <cm:restriction cm:id="iCkZQh0iqwdzU6gPl">
+        <cm:script cm:id="ixeJ_tIxiqJWc5XOu" cm:language="ps:pvscl" cm:type="ps:boolean">Toolset</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="ipa9SGQ6pml5VkyHb">
+      <cm:restriction cm:id="iFHg4uAi11Sot_Qle">
+        <cm:script cm:id="iX7g32rv8Izs7ZvZH" cm:language="ps:pvscl" cm:type="ps:boolean">UserFilter
+</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iG72gYhih1XibySj3">
+      <cm:restriction cm:id="iij6ycrJslZyKuZon">
+        <cm:script cm:id="iW4bPCoXjwBvKdaen" cm:language="ps:pvscl" cm:type="ps:boolean">Canvas</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iHUERvm5bDgVibQgR">
+      <cm:restriction cm:id="icMy7UBxvbjY5wZIN">
+        <cm:script cm:id="iyaEqs5KiXPTZFImX" cm:language="ps:pvscl" cm:type="ps:boolean">Screenshots</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="ixdvewsnOtEE0Wf6Y">
+      <cm:restriction cm:id="iQuzN2Hba47o64qBK">
+        <cm:script cm:id="iUxxZKRo_kJJaGw1_" cm:language="ps:pvscl" cm:type="ps:boolean">Student</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iR0LaPubxPFzI0N_UrSVZGgEZGgk">
     <cm:element cm:id="iR0LaPubxPFzI0N_UrSVZGgEZGgk" cm:name="WebAnnotation" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -17207,6 +17289,18 @@
         <cm:property cm:id="ih7-nNALCsorZi05GDk336pPxHQe" cm:type="ps:directory" cm:inheritable="true" cm:fixed="true" cm:name="dir">
           <cm:constant cm:id="i5P0In74RODipBoz5ry5I5XS4Qao" cm:type="ps:directory">input/app/images</cm:constant>
         </cm:property>
+        <cm:property cm:id="iNqmioWKlDpJK44dO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i1_QHt5cUhLICpGD6" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZlLKzZ9A-uniG4hg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="icjENybd6XelFHENj" cm:type="ps:datetime">2019-05-31T13:22:21.767Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTbKSy0C3jKUAlEhY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ikeFQj24ZpqlV-BK9" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6VijbkKHBvPYmABv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="idXrGXT-QJ7jvL7cU" cm:type="ps:datetime">2019-05-31T13:22:21.767Z</cm:constant>
+        </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="icM_Mu-eB4qy4CXsZ" cm:mimetype="text/plain" cm:encoding="utf-8">images</cm:mimedesc>
@@ -17434,7 +17528,7 @@
         <cm:mimedesc cm:id="iAvDLniJJBHE2g8bD" cm:mimetype="text/plain" cm:encoding="utf-8">arrowUp.svg</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="icWBpgau-fGDSwrDWeK9sQ73l_vh" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="icWBpgau-fGDSwrDWeK9sQ73l_vh" cm:restriction="iGnJatKKhwwGu1a7O" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="icWBpgau-fGDSwrDWeK9sQ73l_vhdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="intrKmZO6ndF3Hy7oaq5EJ4r0kY9FG4G4Qk9F5oUR" cm:class="ps:parents">
@@ -17447,6 +17541,20 @@
           <cm:target cm:id="iBMNPbG8_IOXSZ8ru3T9_5oNzaqT7nthrLzKzodsK">./iqxNJ_OdLPdAMjAfuGQmjhB56o9b</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ixd8ITqQZTF38wM4-" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iSuG61FVHJQB_hVQq" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixSmdOksnSvhN-p5Z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iFMFYgjww3sdcbKAL" cm:type="ps:datetime">2019-05-31T11:14:14.059Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iiBCM44_4x-tnLYQO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iktvS_oX2aGfn2r5S" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDhV2MHwBMsnQ-zg8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ifPJaJzEtQl4N_fwl" cm:type="ps:datetime">2019-05-31T11:14:14.059Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-pIQFcwx6ojbbXrW" cm:mimetype="text/plain" cm:encoding="utf-8">deleteAnnotations</cm:mimedesc>
       </cm:vname>
@@ -17471,7 +17579,7 @@
         <cm:mimedesc cm:id="i4uE-JZ-_g1WUNk6i" cm:mimetype="text/plain" cm:encoding="utf-8">deleteAnnotations.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iy5Z5VJP1W0d1GhQp2WM_8w3-iTi" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iy5Z5VJP1W0d1GhQp2WM_8w3-iTi" cm:restriction="i4iYF5MUsnMAFv66J" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iy5Z5VJP1W0d1GhQp2WM_8w3-iTidependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ir0CNotaaXSGySRv1qe3naasu-p2TzgMPHyCNMz0D" cm:class="ps:parents">
@@ -17484,6 +17592,20 @@
           <cm:target cm:id="iteBMt0w1291n9paqJ4M5GOcWGir05-bqX8Pkwfzg">./i24E79YDIM2UCCehsGwdPHfjWoyk</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iLaL6ueRoIEKWKTHL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iOawS2K4SF6hYmICa" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPXS0M3BgDMsCm1wW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iBQH3KByD0xL0tZMu" cm:type="ps:datetime">2019-05-31T11:14:31.696Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ilElS5rltvKQvTu1L" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iCY2hImKR3M0pVXBr" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i35Zjm4Uk-DXl4xfH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iqiRSgdKEAwoXBQhp" cm:type="ps:datetime">2019-05-31T11:14:31.696Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i5M8i39CChHYOq_w3" cm:mimetype="text/plain" cm:encoding="utf-8">generator</cm:mimedesc>
       </cm:vname>
@@ -17669,6 +17791,20 @@
           <cm:target cm:id="iebhrBw0DFxquSlAMy2JyHi__Wmy2ZCV7z2LjhrAM">./ioQqO_tl5Tu8xja0soJFSGAviBPc</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iaQIgZ_Mds42ACwho" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ilHTLO-WbOjazL-It" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iawyeRmuJCuN2sWVI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iaR6YB9UtofST1m5l" cm:type="ps:datetime">2019-05-31T11:47:33.978Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifUJ-Q01ifDlfD76J" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iea-9gch62j0Xi1nQ" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izn5_F5pnwoE9zeGt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i9Eo4p49nzgIJtqC0" cm:type="ps:datetime">2019-05-31T13:22:35.763Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iJbtWoROtunH2yK_N" cm:mimetype="text/plain" cm:encoding="utf-8">icon-256</cm:mimedesc>
       </cm:vname>
@@ -17706,6 +17842,20 @@
           <cm:target cm:id="iS7cWaWO6MjbWYCY85oIiN5A2cGbaotEhksvfHO8V">./iUrhdjcKFexovt8ymvYLaYHS3unf</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ix44rf1uQFY0qujnB" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iseR_DN3SDlKqJZQo" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iu5ytqTpJK5mQdFuF" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i6sLaiMg26EHYqxRL" cm:type="ps:datetime">2019-05-31T12:00:24.068Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijuaWk1SQrtkI67nU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iBNDPZEMqWXtsUICU" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="imPRXuh0ZBXoPkmIo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="isjaAuGezF2VBQrE4" cm:type="ps:datetime">2019-05-31T13:22:39.776Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVE6JdErgIhmmQWwx" cm:mimetype="text/plain" cm:encoding="utf-8">icon-256-bw</cm:mimedesc>
       </cm:vname>
@@ -17743,6 +17893,20 @@
           <cm:target cm:id="iYC9FRQTlqK4ocG0D3Tgbuv7ozgoJEN1DjcKz1nvL">./iq6SeRVsFih_MZJ3poF6EFEt7yFo</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ivS6_4kJcihYolu_l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ibowx6dwnXe2LHR4P" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iVEyJCWrBgRuo070p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iyDqDX_JblhwwtgXT" cm:type="ps:datetime">2019-05-31T12:01:23.696Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izOgI8-ynTMcIdurb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iWgcJAolC9WGVHBmj" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwsZtvCcx0noDk_GA" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iiPSyIPYovYagkKyH" cm:type="ps:datetime">2019-05-31T13:22:44.279Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iuEdVfOwywr2oaYjM" cm:mimetype="text/plain" cm:encoding="utf-8">icon-38</cm:mimedesc>
       </cm:vname>
@@ -17780,6 +17944,20 @@
           <cm:target cm:id="iYSygfXw1ExaW0nZm_FChjIYS2TkIIyruer09QkMj">./i-cRamJmaX8NVR2pHzqE4mvF7vAh</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iGm804-681B8dkM55" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iTQcstxOHCIb_kvAf" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFMrvZ9O3IhUUqy2o" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i-vxVw7OaASR1-qfG" cm:type="ps:datetime">2019-05-31T12:02:17.042Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itwkfrPpOnKurBG_P" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iuACLUlKpIul-OfzG" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGf_OAmykDRn4NXwO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iv39btMzvdOOo3kh9" cm:type="ps:datetime">2019-05-31T13:22:48.773Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iOql8ei9QM77H6hQX" cm:mimetype="text/plain" cm:encoding="utf-8">icon-38-bw</cm:mimedesc>
       </cm:vname>
@@ -17817,6 +17995,20 @@
           <cm:target cm:id="iTlRQkI9pfHY8RAvLN5jYF3WSnJB2Z8D3dq8FVBI4">./i8p67oByDArqgMTxmygfFPfHrsgg</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ii56z06oji3c5Ao6v" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="icxPlCg5Kbs2mmSN5" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iH5npg_Xz9vGk9uPa" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iIfaOeIdBqKPgJPIy" cm:type="ps:datetime">2019-05-31T12:03:30.212Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-8WWOPK1hJbxkszu" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ib2AeD8H-9I389qRQ" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iA79wuSzujMomIOIR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iozlHyc3t8_flAeBT" cm:type="ps:datetime">2019-05-31T13:22:54.072Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="idcwJj_IB1U5ReU-K" cm:mimetype="text/plain" cm:encoding="utf-8">icon-512</cm:mimedesc>
       </cm:vname>
@@ -17878,7 +18070,7 @@
         <cm:mimedesc cm:id="iNChZj7z9cofZXBlR" cm:mimetype="text/plain" cm:encoding="utf-8">icon-512-bw.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i1miJLqra-qKinaTeEg9M-JX0GLb" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i1miJLqra-qKinaTeEg9M-JX0GLb" cm:restriction="ikidyAxdFPIzEpnh_" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i1miJLqra-qKinaTeEg9M-JX0GLbdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iaGLztK5-KjdGiIerC3VRtK7-9VR6ksGybqeb0D8V" cm:class="ps:parents">
@@ -17891,6 +18083,20 @@
           <cm:target cm:id="igHAwwfT7teBMRQG4QQbWH4hbENpZLzExodiYywzg">./itJiXMzLeTSGuMQgJKgi_B1VcnTg</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iRKOYFKLn_6TF1uJW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ib4JQprYwwpTDDOsS" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iIR5UDKEjOPysavNN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iqaJbAvZr6rdREJFi" cm:type="ps:datetime">2019-05-31T11:14:52.801Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihqBad1MW_0rFl9di" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iuFlbMoivBI3o8dD6" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iqn9Knb8DwsSHEKbl" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iQWCSD63BD36zRUXN" cm:type="ps:datetime">2019-05-31T11:14:52.801Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iQWPG3jzbcguQ4x9a" cm:mimetype="text/plain" cm:encoding="utf-8">majorConcern</cm:mimedesc>
       </cm:vname>
@@ -17915,7 +18121,7 @@
         <cm:mimedesc cm:id="i7R7X8xUG-q2VLLUn" cm:mimetype="text/plain" cm:encoding="utf-8">majorConcern.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ioak-IZbYtOTGGZrojb10OybkFyb" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="ioak-IZbYtOTGGZrojb10OybkFyb" cm:restriction="i5K7J8A2gWNvikNB2" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="ioak-IZbYtOTGGZrojb10OybkFybdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iiYHi8_fXAMhHAgNjJyL5ufmJhbA27Us0gbZSIiV7" cm:class="ps:parents">
@@ -17928,6 +18134,20 @@
           <cm:target cm:id="i4UFhVBzwdq4oA2_F7ofXoZsend4UY8TRAMPkL5NP">./icZpGa3Jk0YAps1tqHSdpYWqbGJd</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iayR81f1fnNpX-N6u" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iOwfHn0lCRvXra5Iz" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJcuT7ufNSmgHZl7T" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ipALoFfNwbRgrBSFa" cm:type="ps:datetime">2019-05-31T11:15:04.095Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ia9Oq3YRm5M3W80yU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iDC6Bf6V_H51tHRNu" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iypxSUddOioCG_M4d" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iWhMFpIiV7KhGNZS1" cm:type="ps:datetime">2019-05-31T11:15:04.095Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i7q-XB-T_LpjSBu78" cm:mimetype="text/plain" cm:encoding="utf-8">minorConcern</cm:mimedesc>
       </cm:vname>
@@ -17952,7 +18172,7 @@
         <cm:mimedesc cm:id="iAXAzMKQFu6E0Ozao" cm:mimetype="text/plain" cm:encoding="utf-8">minorConcern.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iZuX8Q8FmABVRtSsz9xFIxV0Wsjn" cm:type="ex:svg" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iZuX8Q8FmABVRtSsz9xFIxV0Wsjn" cm:restriction="i_ramnvWRstsl9G9I" cm:type="ex:svg" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iZuX8Q8FmABVRtSsz9xFIxV0Wsjndependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iqK8psuAwodHybaq0-_qeJ4uLK5DNAgT7U7Fx8Vru" cm:class="ps:parents">
@@ -17965,6 +18185,20 @@
           <cm:target cm:id="iptjI3naGhXoJfHuv5ECNjcS7J4X8tKjYFNisteA2">./ia8JHPaQaO-g9reeSwmtWhDP25mj</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i8WK9nY52mLyYwPTm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iRZEE8lT6YsqF5lmH" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMCWurER6dxx4onrH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ipG6Vdo-w6JLU6FUD" cm:type="ps:datetime">2019-05-31T11:15:17.093Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iqo3pH0Kh_nauqULT" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iPyftRLjw7NREPn2N" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izQB75owcr11UKQCQ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ixW4-uu_R25fL5l_y" cm:type="ps:datetime">2019-05-31T11:15:17.093Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ioqodMVti8HpfujQv" cm:mimetype="text/plain" cm:encoding="utf-8">moodle</cm:mimedesc>
       </cm:vname>
@@ -17989,7 +18223,7 @@
         <cm:mimedesc cm:id="i9kZv0XL7JplUTSfD" cm:mimetype="text/plain" cm:encoding="utf-8">moodle.svg</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iKs2Z0NSEg2ojk0dbte1sIl_3fPd" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iKs2Z0NSEg2ojk0dbte1sIl_3fPd" cm:restriction="i0xzumetMpXMvGUjj" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iKs2Z0NSEg2ojk0dbte1sIl_3fPddependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ijcL5GOSlMjerExH4dWCxywIiTlOAW8vvntWmdGN5" cm:class="ps:parents">
@@ -18002,6 +18236,20 @@
           <cm:target cm:id="iw1vf3nPAuvodebNPMPgXiI_V0nfbB2oZMjK5VBca">./i1yt8s_SJOEhgFU4qWji74_bDUef</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="imt-Q7umSsJzlpAD_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iQxnS0Kg8Ftlhkjbt" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iX-LrvDtS9-hgREfI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="imdbZE_dgxMs9ghdn" cm:type="ps:datetime">2019-05-31T11:15:30.246Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iU5yyrx-9wnvgGLtD" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i3DiuRtxB3CIt0oDl" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="imAnDGzkstNu6Ad7O" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ie_Lrrabd0ZZucd5L" cm:type="ps:datetime">2019-05-31T11:15:30.246Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ikjs-Mz3ErxxyJG6R" cm:mimetype="text/plain" cm:encoding="utf-8">overview</cm:mimedesc>
       </cm:vname>
@@ -18063,7 +18311,7 @@
         <cm:mimedesc cm:id="ilkbl_CeVOSzYn119" cm:mimetype="text/plain" cm:encoding="utf-8">pin.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iZQky_dGm5GA-PiXEAlRtP0w_PMj" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iZQky_dGm5GA-PiXEAlRtP0w_PMj" cm:restriction="iZdnzd6wYQNKQVUQ3" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iZQky_dGm5GA-PiXEAlRtP0w_PMjdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="icG29TR0TnJ2D8_z24opd2n5E3DzM2nJ4O6jsN5sK" cm:class="ps:parents">
@@ -18076,6 +18324,20 @@
           <cm:target cm:id="iba5EgrJ4KjPkmtSlw1URfb5EkcNj7EWm8FWSptAw">./iB5xnBzZoOTIa-xdc3MHR7Rx-Aml</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="imH8DglHBn_t_t4jx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iY4EKESPBZQff7vjg" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iM5oU3FlUCVj88OO7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i4m5CL6RjgXr93arv" cm:type="ps:datetime">2019-05-31T11:15:41.056Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itCLi-hIv0rAs53Nj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iJ8eKqHeeXLiJzQgP" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-Qj_X6Z6HZB_e96Q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iBxti7xcL9bG8nodS" cm:type="ps:datetime">2019-05-31T11:15:41.056Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ieKWIJdBLi897M7iq" cm:mimetype="text/plain" cm:encoding="utf-8">resume</cm:mimedesc>
       </cm:vname>
@@ -18100,7 +18362,7 @@
         <cm:mimedesc cm:id="imVyFuapmS8eN6-eH" cm:mimetype="text/plain" cm:encoding="utf-8">resume.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iZFneYXe_-ntWqxXnlte5E1gACWb" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iZFneYXe_-ntWqxXnlte5E1gACWb" cm:restriction="iBg1YzIdVN2YFrdef" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iZFneYXe_-ntWqxXnlte5E1gACWbdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="i_FcaU7ks__ufVlAgqus0Q6BwfHWScGB2QApttKw1" cm:class="ps:parents">
@@ -18113,6 +18375,20 @@
           <cm:target cm:id="i7EnZVBXmY8oJ_puL4-9FrKCN19JOygufkcsevfgr">./idqigya3MjZ7f9SEVNHJATnXIiHb</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="it5yLLE4CcLvUVzuX" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iruEMnD4zrM9vUQYn" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCoLBAK5tfHuRtk-T" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iozERBgXd5nAl0ctB" cm:type="ps:datetime">2019-05-31T11:15:50.679Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSLz25RN7eRE6IQ3Q" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="irAMhq2qoSe0LRT7t" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iC7we_U1iwTMFJN-F" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iBfn7JBGLvz9bg149" cm:type="ps:datetime">2019-05-31T11:15:50.679Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ii7pzt_zmhLu7wf4V" cm:mimetype="text/plain" cm:encoding="utf-8">screenshot</cm:mimedesc>
       </cm:vname>
@@ -18137,7 +18413,7 @@
         <cm:mimedesc cm:id="ixJnE6VDs4uDiz991" cm:mimetype="text/plain" cm:encoding="utf-8">screenshot.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ih6KloGaEImiqACfZ_88nz-FMPQe" cm:type="ex:svg" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="ih6KloGaEImiqACfZ_88nz-FMPQe" cm:restriction="iqH2FqUuvdfljQ-Q5" cm:type="ex:svg" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="ih6KloGaEImiqACfZ_88nz-FMPQedependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iC3uf7-9pZ86o19WSBMW8q0w1EN-FKjJOJyO6FxEx" cm:class="ps:parents">
@@ -18150,6 +18426,20 @@
           <cm:target cm:id="iI4dGtKHOzMrKHOLPq0qKDNlsSRvv2DVBlYBwbWKz">./iFwpiQBbbXPFW_NPzoyVYMspRE9j</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="idjs9CsXI8zaqtmj9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iv17wEhSlrNDGg4yZ" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iqx3LoR-Y0Xw9q0ao" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i6DdwU6X_R_F1s9pe" cm:type="ps:datetime">2019-05-31T11:16:01.457Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izEmipnuoZ9uldEIW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iAbgy2hkmW6DxKxRq" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-K1IUwR51gEAYWmp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i0lKkkTt74n48ExZA" cm:type="ps:datetime">2019-05-31T11:16:01.457Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ixl2MCBd0pcibfpJU" cm:mimetype="text/plain" cm:encoding="utf-8">spreadsheet</cm:mimedesc>
       </cm:vname>
@@ -18174,7 +18464,7 @@
         <cm:mimedesc cm:id="iu_lD9jWXHeMoaUTS" cm:mimetype="text/plain" cm:encoding="utf-8">spreadsheet.svg</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iXH3-knOShfse04Cjt10xO6OCRrl" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iXH3-knOShfse04Cjt10xO6OCRrl" cm:restriction="iEhhDCteZE4i_RadM" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iXH3-knOShfse04Cjt10xO6OCRrldependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iPkVBZmJ48VmJz2J4B25UpdjIaa3DbqZS0nJOtKPk" cm:class="ps:parents">
@@ -18187,6 +18477,20 @@
           <cm:target cm:id="iQAsuzwXSdGDN2TiciIt0odR6uf190njczgjcW8gb">./iCeARUlq4JlgXt2zpGREGMKJvNmb</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ibZhPnbk7OlCETRVN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ixqzzfqvmluW4cNIT" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNSwetJLaoxjb_bFc" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iuFoMirHJsoknIFJj" cm:type="ps:datetime">2019-05-31T11:16:12.142Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZLWVPUX87Yd-WuvY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i0wMJgQbEgfTHgK7C" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iuTrsRiqvSQlNTATb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="imsSH8DX6KmEYH1bp" cm:type="ps:datetime">2019-05-31T11:16:12.142Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ipnruNvi2PiRdMkS6" cm:mimetype="text/plain" cm:encoding="utf-8">strength</cm:mimedesc>
       </cm:vname>
@@ -18211,7 +18515,7 @@
         <cm:mimedesc cm:id="iikKDcgZzTH6jq5Tp" cm:mimetype="text/plain" cm:encoding="utf-8">strength.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iFBfqTwMncQkDjZ8hH9xSsJna7Sf" cm:type="ex:png" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iFBfqTwMncQkDjZ8hH9xSsJna7Sf" cm:restriction="isM1rIBmvCO6NvJS4" cm:type="ex:png" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iFBfqTwMncQkDjZ8hH9xSsJna7Sfdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iDxB2M5uvbqcqCNYCTBksxf2T4-VR9_BwzgcqGyQQ" cm:class="ps:parents">
@@ -18224,6 +18528,20 @@
           <cm:target cm:id="iodZ8qKYS0TENzwGO1nMjsu8VnZiYgHDhcaTlsK-p">./iGzsT_Gutn6i0fAX_W3BW7tNgPFo</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i3koMwhgewvaixpne" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iR_MuUAci62Z95fMG" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5X47zZrMWOLLGZdm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iRNqI4__4S2VB8GkE" cm:type="ps:datetime">2019-05-31T11:16:22.578Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWzOinmuOcyJuuXOZ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="idZVRXDlRukAX1at0" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9zxzT-ZmYdF76WxG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ibz50Dr4-FMPqVPas" cm:type="ps:datetime">2019-05-31T11:16:22.578Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="icddQJ0cndDKK2eJb" cm:mimetype="text/plain" cm:encoding="utf-8">validate</cm:mimedesc>
       </cm:vname>
@@ -18553,7 +18871,7 @@
         <cm:mimedesc cm:id="iCo5tmXfZTJdzFXMQ" cm:mimetype="text/plain" cm:encoding="utf-8">tagWrapper.html</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iDXvGYh6n1NXsdM0gewfKCa0IeGd" cm:type="ex:html" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iDXvGYh6n1NXsdM0gewfKCa0IeGd" cm:restriction="isO83uk-vjileNsiK" cm:type="ex:html" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iDXvGYh6n1NXsdM0gewfKCa0IeGddependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ipZL5lcvvJOvLuvmZuvaqH4t0ChzwR67E8F7-W8hr" cm:class="ps:parents">
@@ -18566,6 +18884,20 @@
           <cm:target cm:id="ixfGijsKjI4AwDNKjJO4ond0Ddasey2aqF30T7ECx">./io6Ys2yxToBEqvk6VAW7LjYxaluc</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iOBqEsfHIg82sVOfJ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iwDjbVNdvwtQFwOzy" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9H3jI7O1nhqvTBhB" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ihvkEv4elUZTNRGu8" cm:type="ps:datetime">2019-06-02T11:36:30.694Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idMxMQiQeetkAUSKq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iaUCjxjj32G91P5NJ" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ilio-9Qg0QX263S_F" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i761UyphMDW-ywm3e" cm:type="ps:datetime">2019-06-02T11:36:30.694Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iowD72yvtPkqY-wIB" cm:mimetype="text/plain" cm:encoding="utf-8">toolset</cm:mimedesc>
       </cm:vname>
@@ -18602,7 +18934,7 @@
         <cm:mimedesc cm:id="ipDFv4JtrMIb_Rd-u" cm:mimetype="text/plain" cm:encoding="utf-8">toolset.html</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i8gqGcTOU-gnwqUqZPbdACXOaBYb" cm:type="ex:html" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i8gqGcTOU-gnwqUqZPbdACXOaBYb" cm:restriction="ipa9SGQ6pml5VkyHb" cm:type="ex:html" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i8gqGcTOU-gnwqUqZPbdACXOaBYbdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="idGcW2DjYrumdebXmisN5qu6E-F4omJiY9perdar0" cm:class="ps:parents">
@@ -18615,6 +18947,20 @@
           <cm:target cm:id="iURAg6-4U7UI4ygdq8pWC5-fXiY5UChH4qKOAtKSR">./ijW9BgeuMT_FBCHRf6319uhHI8xg</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iv3RAcFco5R1j-UZU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iZDH8aA6W7-PW37SB" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRmQQY1gECI3olrlR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iktVIERfLKHdC-e5s" cm:type="ps:datetime">2019-06-02T11:36:44.819Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJsUz9PpnnWNP7tKz" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="il4bLIksAohN3bL3e" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFJzJ4ZOHnvMN_s5b" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iFAT_UbCANGUsF12r" cm:type="ps:datetime">2019-06-02T11:36:44.819Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iGkM2eVr5PcvaPSRO" cm:mimetype="text/plain" cm:encoding="utf-8">userFilterWrapper</cm:mimedesc>
       </cm:vname>
@@ -18678,7 +19024,7 @@
         <cm:mimedesc cm:id="iIxTrq5Hgva_itloK" cm:mimetype="text/plain" cm:encoding="utf-8">specific</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iZTKtWlorEg6YinrxkXoFb1LC2Yn" cm:type="ex:html" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iZTKtWlorEg6YinrxkXoFb1LC2Yn" cm:restriction="ixdvewsnOtEE0Wf6Y" cm:type="ex:html" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iZTKtWlorEg6YinrxkXoFb1LC2Yndependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="i09isS7Eh5ULjfrAw5omd4UoZlIU7OAXmaWcWufMz" cm:class="ps:parents">
@@ -18691,6 +19037,20 @@
           <cm:target cm:id="izg09xLsuuvz2r0aq7UNPU7gHJyks09Pk3nufGO8_">./iL-h_FwiDdfUvBq4IzstIz5Tkyka</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iLhBkn5H44re12oB7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iJogejKgT5dwPHo9c" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGUcqfdz8idOElzhr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i4FYuib-38h2ePmCd" cm:type="ps:datetime">2019-06-02T11:37:38.733Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ic0diK2cLHlvXIG4i" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iH9GftKB2_r0VAAMW" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUZrdcWTi7gg5oOS-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iC1ic0sC39EFR34Rb" cm:type="ps:datetime">2019-06-02T11:37:38.733Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iFgySMq5FkKHyIzyd" cm:mimetype="text/plain" cm:encoding="utf-8">navigationRing</cm:mimedesc>
       </cm:vname>
@@ -18727,7 +19087,7 @@
         <cm:mimedesc cm:id="iFEE-3whD0ZhjAhHA" cm:mimetype="text/plain" cm:encoding="utf-8">navigationRing.html</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iDvZCXaUSvy3WrcDWiasmo870cMl" cm:type="ex:html" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iDvZCXaUSvy3WrcDWiasmo870cMl" cm:restriction="iG72gYhih1XibySj3" cm:type="ex:html" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iDvZCXaUSvy3WrcDWiasmo870cMldependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iy2xLX8rulcreJiXSOAG4-_GO5ocawvototquCNQA" cm:class="ps:parents">
@@ -18740,6 +19100,20 @@
           <cm:target cm:id="i5EeXChmZS7WSzModAMzwZChXDxpZBMI4kcGiuvJO">./iCIkxk-0DaMGc2962eMtURRUwBld</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iwqp9C6D829W3NAVa" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iAjWtVG7ZlOeAAAdc" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6s4LJeGDLwogITQx" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iLMiDjhASAUaHo6XS" cm:type="ps:datetime">2019-06-02T11:37:02.057Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iY6ntfZw5JhAHYvj0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iyYcHPoK7_0lbrH2-" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iVm3sTWPOOfNHqqS8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i8cHPQqmdQexIGB9I" cm:type="ps:datetime">2019-06-02T11:37:02.057Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i5wbyHxn0aiJpdZmW" cm:mimetype="text/plain" cm:encoding="utf-8">reviewCanvas</cm:mimedesc>
       </cm:vname>
@@ -18776,7 +19150,7 @@
         <cm:mimedesc cm:id="ij-_1ZkB1A50JMij9" cm:mimetype="text/plain" cm:encoding="utf-8">reviewCanvas.html</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iut_tsuZOyjqQnbxmsnMMxsW_THh" cm:type="ex:html" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iut_tsuZOyjqQnbxmsnMMxsW_THh" cm:restriction="iHUERvm5bDgVibQgR" cm:type="ex:html" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iut_tsuZOyjqQnbxmsnMMxsW_THhdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iYSvfksreufGOGOURquW86-x1FhS7DhKj5oZS8VHy" cm:class="ps:parents">
@@ -18789,6 +19163,20 @@
           <cm:target cm:id="ijsxfUBFhcGuficZSPQ__frks4UJy__4E9Vtu6-Vl">./iybW70D3ZE1xDt5MU1JsgBQHb3wh</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i0l2dL9XbfFgBhUVi" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="isxqUZ3KRd2a34j-8" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iElLBr90r_8XFRR3Y" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDMQdB4VMLqETkQR2" cm:type="ps:datetime">2019-06-02T11:37:18.667Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLp3DyVodCvFyqT5E" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="inM3CqWrS7uL0gXyB" cm:type="ps:string">Usuario</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPA0OZ9zFJNOmDqpR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iopvcyY3ACmiMQgN3" cm:type="ps:datetime">2019-06-02T11:37:18.667Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iTInhY8pNwFn8yfLI" cm:mimetype="text/plain" cm:encoding="utf-8">screenshots</cm:mimedesc>
       </cm:vname>

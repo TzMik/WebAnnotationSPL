@@ -762,11 +762,9 @@ class TagManager {
   //PVSCL:ENDCOND
   
   initEventHandlers (callback) {
-	//PVSCL:IFCOND(UserFilter, LINE)
 	// For user filter change
 	this.events.updatedCurrentAnnotationsEvent = {element: document, event: Events.updatedCurrentAnnotations, handler: this.createUpdatedCurrentAnnotationsEventHandler()}
 	this.events.updatedCurrentAnnotationsEvent.element.addEventListener(this.events.updatedCurrentAnnotationsEvent.event, this.events.updatedCurrentAnnotationsEvent.handler, false)
-	//PVSCL:ENDCOND
 	//PVSCL:IFCOND(ModeSelector, LINE)
 	// For mode change
     this.events.modeChange = {
@@ -1005,7 +1003,6 @@ class TagManager {
   }
   //PVSCL:ENDCOND
   
-  //PVSCL:IFCOND(UserFilter, LINE)
   getGroupAndSubgroup (annotation) {
     let tags = annotation.tags
     let group = null
@@ -1023,7 +1020,6 @@ class TagManager {
     }
     return {group: group, subgroup: subGroup}
   }
-  //PVSCL:ENDCOND
   //PVSCL:IFCOND(NOT(Spreadsheet))
   reorderGroupedTagContainer (order, container) {
     // Reorder marking container
