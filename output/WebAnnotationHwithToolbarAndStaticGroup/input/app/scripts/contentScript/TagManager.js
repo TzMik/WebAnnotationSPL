@@ -377,10 +377,12 @@ class TagManager {
 	if (event.detail.mode === ModeManager.modes.highlight) {
 	  // Show all the tags
       this.showAllTagsContainer()
-	} else if (event.detail.mode === ModeManager.modes.index) {
+	}
+	if (event.detail.mode === ModeManager.modes.index) {
 	  // TODO Update index tags (it is not really required because everytime user create/delete annotation is updated)
 	  this.showIndexTagsContainer()
 	}
+	this.showTagsContainerForMode(event.detail.mode)
   }
   
   showTagsContainerForMode (mode) {
@@ -424,6 +426,7 @@ class TagManager {
     }
     return {group: group, subgroup: subGroup}
   }
+  //*/
   initTagsStructure (callback) {
 	let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {

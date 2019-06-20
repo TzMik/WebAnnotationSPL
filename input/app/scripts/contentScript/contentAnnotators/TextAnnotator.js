@@ -1656,7 +1656,7 @@ class TextAnnotator extends ContentAnnotator {
     Promise.all(promises).catch(() => {
       Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
     }).then(() => {
-      //PVSCL:IFCOND(AllDeleter AND NOT(DefaultCriterias), LINE)	
+      //PVSCL:IFCOND(NOT(DefaultCriterias), LINE)	
       LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {allAnnotations: this.allAnnotations})
       //PVSCL:ENDCOND
       // Update annotation variables

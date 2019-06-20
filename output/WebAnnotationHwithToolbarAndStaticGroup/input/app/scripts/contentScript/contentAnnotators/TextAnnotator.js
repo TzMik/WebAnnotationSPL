@@ -661,7 +661,6 @@ class TextAnnotator extends ContentAnnotator {
     }
 
     let newComment
-    let suggestedLiterature
 	let level
 	let textObject = {}
     let criterionName = annotation.tags[1].replace('slr:code:','') || ''
@@ -669,7 +668,7 @@ class TextAnnotator extends ContentAnnotator {
 	let comment = textObject.comment || ''
 	Alerts.multipleInputAlert({
 	  title: criterionName,
-	  html: '<h3 class="criterionName">Insert your comment</h3><textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>',
+	  html: '<h3 class="criterionName">Insert your comment</h3><textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">'+ comment +'</textarea>'/**/,
 	  preConfirm: () => {
 	    newComment = $('#swal-textarea').val()
 	    suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
